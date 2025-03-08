@@ -16,6 +16,9 @@ import lombok.Setter;
 public class PositionPosting {
 
     //Article 10
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;  // Kimlik alanı (primary key)
 
     private String description1;
 
