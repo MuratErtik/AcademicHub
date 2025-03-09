@@ -41,7 +41,7 @@ public class JobOffer {
 
     private POSITION position;
 
-    // private ApplicationRequirements applicationRequirements;
+    private AppointmentRequirements appointmentRequirements;
 
     @OneToMany(mappedBy = "jobOffer",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Application> applications = new HashSet<>();
