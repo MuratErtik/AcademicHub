@@ -26,7 +26,7 @@ public class JuryEvaluation {
     private JuryApplication juryApplication;
 
 
-    //private String juryevalutationResponse;
+    private String juryevalutationResponse;
 
     private boolean isApproved;
 
