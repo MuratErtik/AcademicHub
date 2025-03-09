@@ -2,7 +2,6 @@ package com.yazlab.academichub.entities;
 
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yazlab.academichub.domain.USER_ROLE;
 
 import jakarta.persistence.*;
@@ -25,9 +24,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "tc_idn", unique = true, nullable = false)    private Long tcIdN;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    @Column(name = "tc_no", unique = true, nullable = false)
+    private Long tcNo;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -39,28 +37,12 @@ public class User {
 
     private String email;
 
+    private Long mobileNo;
+
     @ManyToOne
     @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
-    // @ManyToMany
-    // @JoinTable(
-    //     name = "departmentmanager_joboffer",
-    //     joinColumns = @JoinColumn(name = "user_id"),
-    //     inverseJoinColumns = @JoinColumn(name = "job_offer_id") 
-    // )
-    // private Set<JobOffer> departmentManagerJobOffers = new HashSet<>();
-
-    // @ManyToMany
-    // @JoinTable(
-    //     name = "admin_joboffer",
-    //     joinColumns = @JoinColumn(name = "user_id"),
-    //     inverseJoinColumns = @JoinColumn(name = "job_offer_id") 
-    // )
-    // private Set<JobOffer> adminJobOffers = new HashSet<>();
-
-    // @ManyToMany(mappedBy = "applicationJuries")
-    // private Set<Application> juryApplications;
 
     
 
