@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class CandidateDocument {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long candidateDocumentId;
