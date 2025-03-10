@@ -118,3 +118,160 @@ VALUES
     ('Deniz Ulaştırma İşletme Mühendisliği ', 8);
     
 
+
+
+INSERT INTO Article (category_id, content, point) VALUES
+    (1, 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q1 olarak taranan dergide)', 60),
+    (2, 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q2 olarak taranan dergide)', 55),
+    (3, 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q3 olarak taranan dergide)', 40),
+    (4, 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q4 olarak taranan dergide)', 30),
+    (5, 'ESCI tarafından taranan dergilerde yayımlanmış makale', 25),
+    (6, 'Scopus tarafından taranan dergilerde yayımlanmış makale', 20),
+    (7, 'Uluslararası diğer indekslerde taranan dergilerde yayımlanmış makale', 15),
+    (8, 'ULAKBİM TR Dizin tarafından taranan ulusal hakemli dergilerde yayımlanmış makale', 10),
+    (9, '8. madde dışındaki ulusal hakemli dergilerde yayımlanmış makale', 8);
+
+
+INSERT INTO ScientificMeetingActivity (category_id, content, point) VALUES
+    (1, 'Uluslararası bilimsel toplantılarda sözlü olarak sunulan, tam metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 8),
+    (2, 'Uluslararası bilimsel toplantılarda sözlü olarak sunulan, özet metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 7),
+    (3, 'Uluslararası bilimsel toplantılarda poster olarak sunulan çalışmalar', 6),
+    (4, 'Ulusal bilimsel toplantılarda sözlü olarak sunulan tam metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 7),
+    (5, 'Ulusal bilimsel toplantılarda sözlü olarak sunulan, özet metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 6),
+    (6, 'Ulusal bilimsel toplantılarda poster olarak sunulan çalışmalar', 5),
+    (7, 'Uluslararası bir kongre, konferans veya sempozyumda organizasyon veya yürütme komitesinde düzenleme kurulu üyeliği veya bilim kurulu üyeliği yapmak', 7),
+    (8, 'Ulusal bir kongre, konferans veya sempozyumda organizasyon veya yürütme komitesinde düzenleme kurulu üyeliği veya bilim kurulu üyeliği yapmak', 5),
+    (9, 'Uluslararası konferanslarda, bilimsel toplantı, seminerlerde davetli konuşmacı olarak yer almak', 8),
+    (10, 'Ulusal konferanslarda, bilimsel toplantı, seminerlerde davetli konuşmacı olarak yer almak', 6),
+    (11, 'Uluslararası veya ulusal çeşitli kurumlarla işbirliği içinde atölye, çalıştay, yaz okulu organize ederek gerçekleştirmek', 6),
+    (12, 'Uluslararası veya ulusal çeşitli kurumlarla işbirliği içinde atölye, çalıştay, panel, seminer, yaz okulunda konuşmacı veya panelist olarak görev almak', 5);
+
+
+INSERT INTO Book (category_id, content, foreignLanguage, point) VALUES
+    (1, 'Uluslararası yayınevleri tarafından yayımlanmış özgün kitap', 1.5, 60),
+    (2, 'Uluslararası yayınevleri tarafından yayımlanmış özgün kitap editörlüğü, bölüm yazarlığı (Her bir kitap için maksimum 2 bölüm yazarlığı)', 1.5, 20),
+    (3, 'Uluslararası yayımlanan ansiklopedi konusu/maddesi (en fazla 3 madde)', 1.5, 5),
+    (4, 'Ulusal yayınevleri tarafından yayımlanmış özgün kitap', 1.5, 40),
+    (5, 'Ulusal yayınevleri tarafından yayımlanmış özgün kitap editörlüğü, bölüm yazarlığı (Her bir kitap için maksimum 2 bölüm yazarlığı)', 1.5, 10),
+    (6, 'Tam kitap çevirisi (Yayınevleri için ilgili ÜAK kriterleri geçerlidir)', 1.5, 15),
+    (7, 'Çeviri kitap editörlüğü, kitap bölümü çevirisi (Yayınevleri için ilgili ÜAK kriterleri geçerlidir) (Her bir kitap için maksimum 2 bölüm çevirisi)', 1.5, 6),
+    (8, 'Alanında ulusal yayımlanan ansiklopedi konusu/maddesi (en fazla 3 madde)', 1.5, 3);
+
+
+INSERT INTO Citation (category_id, content, point) VALUES
+    (1, 'SCI-E, SSCI ve AHCI tarafından taranan dergilerde; Uluslararası yayınevleri tarafından yayımlanmış kitaplarda yayımlanan ve adayın yazar olarak yer almadığı yayınlardan her birinde, metin içindeki atıf sayısına bakılmaksızın adayın atıf yapılan her eseri için', 4),
+    (2, 'E-SCI tarafından taranan dergilerde ve adayın yazar olarak yer almadığı yayınlardan her birinde, metin içindeki atıf sayısına bakılmaksızın adayın atıf yapılan her eseri için', 3),
+    (3, 'SCI-E, SSCI, AHCI, E-SCI dışındaki diğer uluslararası indeksler tarafından taranan dergilerde; Uluslararası yayınevleri tarafından yayımlanmış kitaplarda bölüm yazarı olarak yayımlanan ve adayın yazar olarak yer almadığı yayınlardan her birinde, metin içindeki atıf sayısına bakılmaksızın adayın atıf yapılan her eseri için', 4),
+    (4, 'Ulusal hakemli dergilerde; Ulusal yayınevleri tarafından yayımlanmış kitaplarda yayımlanan ve adayın yazar olarak yer almadığı yayınlardan her birinde, metin içindeki atıf sayısına bakılmaksızın adayın atıf yapılan her eseri için', 1),
+    (5, 'Güzel sanatlardaki eserlerin uluslararası kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi', 3),
+    (6, 'Güzel sanatlardaki eserlerin ulusal kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi', 1);
+
+
+INSERT INTO EducationAction (category_id, content, point) VALUES
+    (1, 'Önlisans/lisans dersleri', 2),
+    (2, 'Önlisans/lisans dersleri (Yabancı dilde)', 3),
+    (3, 'Lisansüstü dersleri', 3),
+    (4, 'Lisansüstü dersleri (Yabancı dilde)', 4);
+
+
+INSERT INTO ThesisSupervision (category_id, content, point) VALUES
+    (1, 'Doktora/Sanatta Yeterlik veya Tıp/Diş Hekimliğinde Uzmanlık Tez Yönetimi', 40),
+    (2, 'Yüksek Lisans Tez Yönetimi', 15),
+    (3, 'Doktora/Sanatta Yeterlik (Eş Danışman)', 9),
+    (4, 'Yüksek Lisans/Sanatta Yeterlik Tez Yönetimi (Eş Danışman)', 4);
+
+
+INSERT INTO Patent (category_id, content, point) VALUES
+    (1, 'Lisanslanan Uluslararası Patent', 120),
+    (2, 'Tescillenmiş Uluslararası Patent', 100),
+    (3, 'Uluslararası Patent Başvurusu', 50),
+    (4, 'Lisanslanan Ulusal Patent', 80),
+    (5, 'Tescillenmiş Ulusal Patent', 60),
+    (6, 'Ulusal Patent Başvurusu', 30),
+    (7, 'Lisanslanan Faydalı Model, Endüstriyel Tasarım, Marka', 20),
+    (8, 'Faydalı Model ve Endüstriyel Tasarım', 15);
+
+
+INSERT INTO ResearchProjects (category_id, content, point) VALUES
+    (1, 'AB çerçeve programı/NSF/ERC bilimsel araştırma projesinde koordinatör/alt koordinatör olmak', 250),
+    (2, 'AB çerçeve programı/NSF/ERC bilimsel araştırma projesinde yürütücü olmak', 150),
+    (3, 'AB çerçeve programı/NSF/ERC bilimsel araştırma projesinde araştırmacı olmak', 100),
+    (4, 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde (derleme ve rapor hazırlama çalışmaları hariç) koordinatör/alt koordinatör olmak', 150),
+    (5, 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde (derleme ve rapor hazırlama çalışmaları hariç) yürütücü olmak', 120),
+    (6, 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde (derleme ve rapor hazırlama çalışmaları hariç) araştırmacı olmak', 70),
+    (7, 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde (derleme ve rapor hazırlama çalışmaları hariç) danışman olmak', 30),
+    (8, 'TÜBİTAK ARGE (ARDEB, TEYDEB) ve TÜSEB projelerinde yürütücü olmak', 100),
+    (9, 'Diğer TÜBİTAK veya Kalkınma Ajansları projelerinde yürütücü olmak', 50),
+    (10, 'TÜBİTAK dışındaki diğer kamu kurumlarıyla yapılan bilimsel araştırma projelerinde yürütücü olmak', 40),
+    (11, 'Sanayi kuruluşları ile yapılan Ar-Ge projelerinde yürütücü olmak', 40),
+    (12, 'Diğer özel kuruluşlar ile yapılan Ar-Ge projelerinde yürütücü olmak', 20),
+    (13, 'TÜBİTAK ARGE (ARDEB, TEYDEB) ve TÜSEB projelerinde araştırmacı olmak', 50),
+    (14, 'Diğer TÜBİTAK veya Kalkınma Ajansları projelerinde araştırmacı olmak', 25),
+    (15, 'TÜBİTAK dışındaki diğer kamu kurumlarıyla yapılan bilimsel araştırma projelerinde araştırmacı olmak', 20),
+    (16, 'Sanayi kuruluşları ile yapılan bilimsel araştırma projelerinde araştırmacı olmak', 20),
+    (17, 'Diğer özel kuruluşlar ile yapılan bilimsel araştırma projelerinde araştırmacı olmak', 10),
+    (18, 'TÜBİTAK ARGE (ARDEB, TEYDEB) ve TÜSEB projelerinde danışman olmak', 25),
+    (19, 'Diğer TÜBİTAK projelerinde danışman olmak', 12),
+    (20, 'TÜBİTAK dışındaki diğer kamu kurumlarıyla yapılan bilimsel araştırma projelerinde danışman olmak', 10),
+    (21, 'Sanayi kuruluşları ile yapılan Ar-Ge projelerinde danışman olmak', 10),
+    (22, 'Diğer özel kuruluşlar ile yapılan Ar-Ge projelerinde danışman olmak', 10),
+    (23, 'Üniversitelerin bilimsel araştırma projeleri (BAP) koordinatörlükleri destekli araştırma projelerinde (derleme ve rapor hazırlama çalışmaları hariç) yürütücü olmak (Hızlı destek, Altyapı, Lab. ve lisansüstü tez projeleri hariç)', 8),
+    (24, 'Üniversitelerin bilimsel araştırma projeleri (BAP) koordinatörlükleri destekli araştırma projelerinde araştırmacı olmak (Hızlı destek, Altyapı, Lab. ve lisansüstü tez projeleri hariç)', 6),
+    (25, 'Üniversitelerin bilimsel araştırma projeleri (BAP) koordinatörlükleri destekli araştırma projelerinde danışman olmak (Hızlı destek, Altyapı, Lab. ve lisansüstü tez projeleri hariç)', 3),
+    (26, 'En az dört aylık yurtdışı araştırma çalışmasında bulunmak', 100),
+    (27, 'En az dört aylık yurtiçi araştırma çalışmasında bulunmak (kurum dışında)', 50),
+    (28, 'TÜBİTAK 2209-A, 2209-B, 2242 projelerinde danışman olmak (En fazla 100 puan alınabilir. Kabul edildiği yıldaki en son açıklanan memur taban aylık katsayısı koşulu bu madde için geçerli değildir)', 10);
+
+
+INSERT INTO Editorship (category_id, content, point) VALUES
+    (1, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde baş editörlük görevinde bulunmak', 100),
+    (2, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde alan/yardımcı/ortak/asistan editörlük görevinde bulunmak', 70),
+    (3, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde misafir/davetli editörlük görevinde bulunmak', 50),
+    (4, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde yayın kurulu üyeliği', 40),
+    (5, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde baş editörlük görevinde bulunmak', 40),
+    (6, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde alan/yardımcı/ortak/asistan editörlük görevinde bulunmak', 30),
+    (7, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde misafir/davetli editörlük görevinde bulunmak', 20),
+    (8, 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde yayın kurulu üyeliği', 10),
+    (9, 'ULAKBİM tarafından taranan dergilerde baş editörlük görevi', 15),
+    (10, 'ULAKBİM tarafından taranan dergilerde yayın kurulu üyeliği veya alan/yardımcı/ortak/asistan editörlük görevinde bulunmak', 5),
+    (11, 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde tamamlanmış hakemlik faaliyeti (her bir hakemlik faaliyeti başına)', 3),
+    (12, 'SCI-E, SSCI veya AHCI kapsamı dışındaki uluslararası diğer indeksler tarafından dergilerde tamamlanmış hakemlik faaliyeti (her bir hakemlik faaliyeti başına)', 2),
+    (13, 'ULAKBİM tarafından taranan dergilerde hakemlik faaliyeti (her bir hakemlik faaliyeti başına)', 1);
+
+
+
+INSERT INTO Award (category_id, content, point) VALUES
+    (1, 'Sürekli ve periyodik olarak jürili uluslararası kurum veya kuruluşlar tarafından verilen bilim ve sanat ödülleri', 150),
+    (2, 'TÜBİTAK tarafından verilen Bilim, Özel ve Hizmet Ödülleri', 100),
+    (3, 'TÜBA tarafından verilen Akademi Ödülleri', 100),
+    (4, 'TÜBİTAK tarafından verilen Teşvik Ödülü (Yayın teşvik ödülü hariç)', 80),
+    (5, 'TÜBA tarafından verilen GEBİP ve TESEP ödülleri', 80),
+    (6, 'Sürekli ve periyodik olarak jürili ulusal kurum veya kuruluşlar tarafından verilen bilim ve sanat ödülleri', 50),
+    (7, 'Sürekli ve periyodik olarak verilen ve bir jüri değerlendirmesine tabi olmayan uluslararası/ulusal ödüller', 20),
+    (8, 'Uluslararası hakemli yarışmalarda birincilik derecesi', 20),
+    (9, 'Uluslararası hakemli yarışmalarda ikincilik derecesi', 10),
+    (10, 'Uluslararası hakemli yarışmalarda üçüncülük derecesi', 5),
+    (11, 'Ulusal hakemli yarışmalarda birincilik derecesi', 10),
+    (12, 'Ulusal hakemli yarışmalarda ikincilik derecesi', 5),
+    (13, 'Ulusal hakemli yarışmalarda üçüncülük derecesi', 3),
+    (14, 'Uluslararası bilimsel toplantılarda alınan ödüller', 5),
+    (15, 'Ulusal bilimsel toplantılarda alınan ödüller', 3),
+    (16, 'Sanat, tasarım ve mimarlık alanlarında Uluslararası hakemli/jürili yarışmalarda alınan ödüller', 20),
+    (17, 'Sanat, tasarım ve mimarlık alanlarında Ulusal hakemli/jürili yarışmalarda alınan ödüller', 10),
+    (18, 'Üniversite kurumsal ödülleri (üniversite genelinde ilgili alanda makale, patent, proje, v.b. dereceye girenler)', 10),
+    (19, 'Kitap veya makale gibi bilimsel eserlere atfedilen ödüller', 5);
+
+
+INSERT INTO ContributionActivities (category_id, content, point) VALUES
+    (1, 'Dekan/Enstitü/Yüksekokul/MYO/Merkez Müdürü', 15),
+    (2, 'Enstitü Müdür Yrd. / Dekan Yrd. / Yüksekokul Müdür Yrd. / MYO Müdür Yrd. / Merkez Müdürü Yrd./Bölüm Başkanı', 12),
+    (3, 'Bölüm Başkan Yrd. / Anabilim Dalı Başkanı', 10),
+    (4, 'Rektörlükçe görevlendirilen Koordinatörlük', 8),
+    (5, 'Rektörlükçe görevlendirilen Koordinatör Yardımcıları', 7),
+    (6, 'Rektörlükçe görevlendirilen üniversite düzeyinde Komisyon/Kurul üyelikleri', 6),
+    (7, 'Dekanlık/Y.O. Müdürlüğü/MYO Müdürlüğü /Konservatuvar Müdürlüğü tarafından görevlendirilen Komisyon/Kurul üyelikleri', 5),
+    (8, 'Bölüm Başkanlıkları tarafından görevlendirilen Komisyon/Kurul üyelikleri', 4),
+    (9, 'Rektörlük/Dekanlık/Y.O. Müdürlüğü/MYO Müdürlüğü /Konservatuvar Müdürlüğü/ Bölüm Başkanlığı görevlendirmeleriyle kurum içi ve dışı eğitim, işbirliği vb konularda katkı sağlamak', 3),
+    (10, 'Uluslararası nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak', 5),
+    (11, 'Ulusal nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak', 4),
+    (12, 'Yerel nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak', 3);
