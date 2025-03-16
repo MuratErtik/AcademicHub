@@ -20,5 +20,5 @@ public class AuthorType {
 
     private int authorType;
 
-    private int coefficient;
+    private double coefficient;
 }

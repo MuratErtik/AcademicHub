@@ -1,4 +1,4 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateDocuments;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,18 +12,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class CandidateCitation {
+public class CandidateContributionActivity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long candidateCitationId;
+    private Long candidateContributionActivityId;
 
-    private String citationCategory;
+    private String category;
 
-    private String articleToCitation;
+    private String departmentName;
 
-    private int numberOfCitation;
+    private String year ;
 
     private String photoLink;
-
 }

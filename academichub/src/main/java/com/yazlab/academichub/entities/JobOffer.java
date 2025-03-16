@@ -39,8 +39,11 @@ public class JobOffer {
     @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
+    @Enumerated(EnumType.STRING)
     private POSITION position;
 
+    @ManyToOne
+    @JoinColumn(name = "appointment_requirment_id",nullable = false)
     private AppointmentRequirements appointmentRequirements;
 
     @OneToMany(mappedBy = "jobOffer",cascade = CascadeType.ALL,orphanRemoval = true)

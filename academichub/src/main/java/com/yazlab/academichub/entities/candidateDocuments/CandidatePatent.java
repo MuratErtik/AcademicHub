@@ -1,4 +1,4 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateDocuments;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

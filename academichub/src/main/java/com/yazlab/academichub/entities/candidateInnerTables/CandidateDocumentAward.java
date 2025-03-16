@@ -1,4 +1,7 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateInnerTables;
+import com.yazlab.academichub.entities.CandidateDocument;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateAward;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,15 +15,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class CandidateDocumentEditorship{
+public class CandidateDocumentAward {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long candidateDocumentEditorshipId;
+    private Long candidateDocumentAwardId;
 
     @ManyToOne
-    @JoinColumn(name = "article_id",nullable = false)
-    private CandidateEditorship editorship;
+    @JoinColumn(name = "award_id",nullable = false)
+    private CandidateAward award;
 
     @ManyToOne
     @JoinColumn(name = "candidate_document_id",nullable = false)

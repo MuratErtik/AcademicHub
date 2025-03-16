@@ -22,6 +22,7 @@ public class ImportantThingsToFillTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long importantThingsToFillTableId;
 
+    @Enumerated(EnumType.STRING)
     private POSITION position;
     
     private String description1;

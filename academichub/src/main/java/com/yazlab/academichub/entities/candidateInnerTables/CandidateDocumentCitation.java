@@ -1,4 +1,7 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateInnerTables;
+import com.yazlab.academichub.entities.CandidateDocument;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,15 +15,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class CandidateDocumentContributionActivity {
+public class CandidateDocumentCitation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long candidateDocumentContributionActivityId;
+    private Long candidateDocumentCitationId;
 
     @ManyToOne
-    @JoinColumn(name = "candidate_contribution_activity_id",nullable = false)
-    private CandidateContributionActivity candidateContributionActivity;
+    @JoinColumn(name = "article_id",nullable = false)
+    private CandidateCitation citation;
 
     @ManyToOne
     @JoinColumn(name = "candidate_document_id",nullable = false)

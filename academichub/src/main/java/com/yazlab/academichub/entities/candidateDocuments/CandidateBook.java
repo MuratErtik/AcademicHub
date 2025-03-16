@@ -1,7 +1,4 @@
-package com.yazlab.academichub.entities;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+package com.yazlab.academichub.entities.candidateDocuments;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,21 +12,27 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class CandidateThesisSupervision {
+public class CandidateBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long candidateThesisSupervisionId;
+    private Long candidateBookId;
 
-    private String category;
+    private String bookName ;
 
-    private String studentName;
+    private String publisher;
 
-    private String thesisName;
+    private String bookCategory ; 
 
-    private String enstitu;
+    private int editionNumber;
+
+    private String publicationVenue;
 
     private String year;
 
     private String photoLink;
+
+
+
+
 }

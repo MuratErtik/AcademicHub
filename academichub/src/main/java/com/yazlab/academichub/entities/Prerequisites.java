@@ -20,6 +20,7 @@ public class Prerequisites {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long prerequisitesId;
 
+    @Enumerated(EnumType.STRING)
     private POSITION position;
 
     private int foreignLanguageExamPoint;

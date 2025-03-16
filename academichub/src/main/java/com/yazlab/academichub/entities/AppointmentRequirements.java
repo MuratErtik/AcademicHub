@@ -21,6 +21,7 @@ public class AppointmentRequirements {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long appointmentRequirementsId;
 
+    @Enumerated(EnumType.STRING)
     private POSITION position;
 
     @ManyToOne

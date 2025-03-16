@@ -20,5 +20,5 @@ public class ArticleType {
 
     private int articleType;
 
-    private int coefficient;
+    private double coefficient;
 }

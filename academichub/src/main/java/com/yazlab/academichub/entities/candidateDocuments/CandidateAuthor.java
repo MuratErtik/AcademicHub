@@ -1,4 +1,6 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateDocuments;
+import com.yazlab.academichub.entities.AuthorType;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,5 +24,7 @@ public class CandidateAuthor {
 
     private String surname;
 
+    @ManyToOne
+    @JoinColumn(name = "author_type_id",nullable = false)
     private AuthorType authorType;
 }

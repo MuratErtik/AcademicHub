@@ -21,5 +21,5 @@ public class Table4 {
 
     private int publisherCount;
 
-    private int coefficient;
+    private double coefficient;
 }

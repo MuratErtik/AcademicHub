@@ -1,4 +1,4 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateDocuments;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,14 +12,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class ArticleAuthor {
+public class SmaAuthor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long articleAuthorId;
 
     @ManyToOne
-    @JoinColumn(name = "article_id",nullable = false)
-    private CandidateArticle article;
+    @JoinColumn(name = "sma_id",nullable = false)
+    private CandidateSMA sma;
 
     @ManyToOne
     @JoinColumn(name = "candidate_author_id",nullable = false)

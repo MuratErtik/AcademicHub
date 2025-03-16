@@ -1,4 +1,6 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateDocuments;
+import com.yazlab.academichub.entities.ArticleType;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -20,6 +22,8 @@ public class CandidateArticle {
 
     private String articleName ;
 
+    @ManyToOne
+    @JoinColumn(name = "article_type_id",nullable = false)
     private ArticleType articleType ; 
 
     private String articleCategory ; //A1,A2...  it will equal to category+id in Article class.

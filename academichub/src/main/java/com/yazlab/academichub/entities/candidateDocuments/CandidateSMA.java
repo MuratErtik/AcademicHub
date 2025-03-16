@@ -1,4 +1,7 @@
-package com.yazlab.academichub.entities;
+package com.yazlab.academichub.entities.candidateDocuments;
+
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,25 +15,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class CandidateEducationAction {
+public class CandidateSMA {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long candidateEducationActionId;
+    private Long candidateSMAId;
 
-    private String educationActionCategory;
+    private String sMACategory;
 
-    private String lectureName;
+    private String smaName; 
 
-    private boolean lectureLanguage;
+    private String conferenceName;
 
-    private String programName;
+    private String place;
 
-    private String term;
+    private int numberOfPage;
 
-    private String year;
+    private LocalDate date; 
 
     private String photoLink;
-
 
 }

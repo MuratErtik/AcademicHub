@@ -24,5 +24,5 @@ public class PublicationCriteria {
 
     private int articleCount; 
 
-    private int LeadAuthorCount;
+    // private int leadAuthorCount;
 }
