@@ -117,8 +117,34 @@ VALUES
     ('Gemi Makineleri İşletme Mühendisliği', 8),
     ('Deniz Ulaştırma İşletme Mühendisliği ', 8);
     
+INSERT INTO category (category_id, category_name,category_description) VALUES 
+('K', 'İdari Görevler ve Üniversiteye Katkı Faaliyetleri','İdari görevlerde vekaleten de olsa en az 6 ay görev yapmış olmak şartı aranır ve normal süresi dolup yeniden
+atamalar ayrıca puanlanır. Bu kısımda en fazla 50 puan dikkate alınır.');
+INSERT INTO category (category_id, category_name,category_description) VALUES 
+('J', 'Ödüller','Temel alanı ile ilgili olmak üzere');
+INSERT INTO category (category_id, category_name) VALUES 
+('I', 'Editörlük, Yayın Kurulu Üyeliği ve Hakemlik Faaliyetleri');
+INSERT INTO category (category_id, category_name, category_description) VALUES 
+('H', 'Araştırma Projeleri', 'Tamamlanmış veya devam ediyor olmak koşuluyla, projenin en az dokuz ay süreli
+olduğu ve hakem değerlendirilmesinden geçtiği belgelenir ve projenin bütçesi, kabul edildiği yıldaki en son açıklanan
+memur taban aylık katsayısının en az 4000 katı olmalıdır.');
+INSERT INTO category (category_id, category_name, category_description) VALUES 
+('G', 'Patentler', 'Aynı faaliyet sadece bir maddede puanlanır.');
+INSERT INTO category (category_id, category_name, category_description) VALUES 
+('F', 'Tez Yöneticiliği', 'Tamamlanmış olması kaydıyla.');
+INSERT INTO category (category_id, category_name, category_description) VALUES 
+('E', 'Eğitim Öğretim Faaliyetleri', 'Son üç yılda verdiği aynı veya farklı dersler, Azami 50 puan, doktora
+unvanından sonra.');
+INSERT INTO category (category_id, category_name, category_description) VALUES 
+('D', 'Atıf', 'Atıf yapan eserlerin belgelenmesi kaydıyla, bu yönetmeliğin Temel İlkeler bölümündeki atıflara ilişkin
+açıklamalar dikkate alınır.');
+INSERT INTO category (category_id, category_name, category_description) VALUES 
+('C', 'Kitaplar', 'Yabancı dildeki kitapların puanları 1.5 ile çarpıldıktan sonra hesaplama kullanılır.');
+INSERT INTO category (category_id, category_name, category_description) VALUES 
+('A', 'Makale', 'Başvurulan bilim alanı ile ilgili tam araştırma ve derleme makaleleri');
 
 
+<<<<<<< HEAD
 
 INSERT INTO Article (category_id, content, point) VALUES
     ('A1', 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q1 olarak taranan dergide)', 60),
@@ -274,3 +300,345 @@ INSERT INTO ContributionActivities (category_id, content, point) VALUES
     ('K10', 'Uluslararası nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak', 5),
     ('K11', 'Ulusal nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak', 4),
     ('K12', 'Yerel nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak', 3);
+=======
+INSERT INTO article ( category_id,content, point) VALUES
+    ('A', 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q1 olarak taranan dergide)', 60),
+    ('A', 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q2 olarak taranan dergide)', 55),
+    ('A', 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q3 olarak taranan dergide)', 40),
+    ('A', 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde yayımlanmış makale (Q4 olarak taranan dergide)', 30),
+    ('A', 'ESCI tarafından taranan dergilerde yayımlanmış makale', 25),
+    ('A', 'Scopus tarafından taranan dergilerde yayımlanmış makale', 20),
+    ('A', 'Uluslararası diğer indekslerde taranan dergilerde yayımlanmış makale', 15),
+    ('A', 'ULAKBİM TR Dizin tarafından taranan ulusal hakemli dergilerde yayımlanmış makale', 10),
+    ('A', '8. madde dışındaki ulusal hakemli dergilerde yayımlanmış makale', 8);
+
+
+INSERT INTO scientific_meeting_activity (category_id, content, point) VALUES
+    ('B', 'Uluslararası bilimsel toplantılarda sözlü olarak sunulan, tam metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 8),
+    ('B', 'Uluslararası bilimsel toplantılarda sözlü olarak sunulan, özet metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 7),
+    ('B', 'Uluslararası bilimsel toplantılarda poster olarak sunulan çalışmalar', 6),
+    ('B', 'Ulusal bilimsel toplantılarda sözlü olarak sunulan tam metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 7),
+    ('B', 'Ulusal bilimsel toplantılarda sözlü olarak sunulan, özet metni matbu veya elektronik olarak bildiri kitapçığında yayımlanmış çalışmalar', 6),
+    ('B', 'Ulusal bilimsel toplantılarda poster olarak sunulan çalışmalar', 5),
+    ('B', 'Uluslararası bir kongre, konferans veya sempozyumda organizasyon veya yürütme komitesinde düzenleme kurulu üyeliği veya bilim kurulu üyeliği yapmak', 7),
+    ('B', 'Ulusal bir kongre, konferans veya sempozyumda organizasyon veya yürütme komitesinde düzenleme kurulu üyeliği veya bilim kurulu üyeliği yapmak', 5),
+    ('B', 'Uluslararası konferanslarda, bilimsel toplantı, seminerlerde davetli konuşmacı olarak yer almak', 8),
+    ('B', 'Ulusal konferanslarda, bilimsel toplantı, seminerlerde davetli konuşmacı olarak yer almak', 6),
+    ('B', 'Uluslararası veya ulusal çeşitli kurumlarla işbirliği içinde atölye, çalıştay, yaz okulu organize ederek gerçekleştirmek', 6),
+    ('B', 'Uluslararası veya ulusal çeşitli kurumlarla işbirliği içinde atölye, çalıştay, panel, seminer, yaz okulunda konuşmacı veya panelist olarak görev almak', 5);
+
+
+INSERT INTO Book (category_id, content, foreign_language, point) VALUES
+    ('C', 'Uluslararası yayınevleri tarafından yayımlanmış özgün kitap', 1.5, 60),
+    ('C', 'Uluslararası yayınevleri tarafından yayımlanmış özgün kitap editörlüğü, bölüm yazarlığı (Her bir kitap için maksimum 2 bölüm yazarlığı)', 1.5, 20),
+    ('C', 'Uluslararası yayımlanan ansiklopedi konusu/maddesi (en fazla 3 madde)', 1.5, 5),
+    ('C', 'Ulusal yayınevleri tarafından yayımlanmış özgün kitap', 1.5, 40),
+    ('C', 'Ulusal yayınevleri tarafından yayımlanmış özgün kitap editörlüğü, bölüm yazarlığı (Her bir kitap için maksimum 2 bölüm yazarlığı)', 1.5, 10),
+    ('C', 'Tam kitap çevirisi (Yayınevleri için ilgili ÜAK kriterleri geçerlidir)', 1.5, 15),
+    ('C', 'Çeviri kitap editörlüğü, kitap bölümü çevirisi (Yayınevleri için ilgili ÜAK kriterleri geçerlidir) (Her bir kitap için maksimum 2 bölüm çevirisi)', 1.5, 6),
+    ('C','Alanında ulusal yayımlanan ansiklopedi konusu/maddesi (en fazla 3 madde)', 1.5, 3);
+
+
+INSERT INTO citation (category_id, content, point) VALUES
+    ('D', 'SCI-E,SSCI,AHCI tarafından taranan dergilerde;Uluslararası yayınevlerinin yayımladığı,adayın yazar olmadığı yayınlardan birinde adayın atıf yapılan eseri için', 4),
+    ('D', 'E-SCI tarafından taranan dergilerde ve adayın yazar olmadığı yayınlardan her birinde adayın atıf yapılan her eseri için', 3),
+    ('D', 'SCI-E,SSCI,AHCI,E-SCI harici diğer uluslararası dergilerde;bölüm yazarı olduğu,yazar olmadığı yayınlardan atıf yapılan eseri için', 4),
+    ('D', 'Ulusal yayınevleri tarafından yayımlanmış kitaplarda yayımlanan ve adayın olmadığı yayınlardan her birinde adayın atıf yapılan her eseri için', 1),
+    ('D', 'Güzel sanatlardaki eserlerin uluslararası kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi', 3),
+    ('D', 'Güzel sanatlardaki eserlerin ulusal kaynak veya yayın organlarında yer alması veya gösterime ya da dinletime girmesi', 1);
+
+
+INSERT INTO education_action (category_id, content, point) VALUES
+    ('E', 'Önlisans/lisans dersleri', 2),
+    ('E', 'Önlisans/lisans dersleri (Yabancı dilde)', 3),
+    ('E', 'Lisansüstü dersleri', 3),
+    ('E', 'Lisansüstü dersleri (Yabancı dilde)', 4);
+
+
+INSERT INTO thesis_supervision (category_id, content, point) VALUES
+    ('F', 'Doktora/Sanatta Yeterlik veya Tıp/Diş Hekimliğinde Uzmanlık Tez Yönetimi', 40),
+    ('F', 'Yüksek Lisans Tez Yönetimi', 15),
+    ('F', 'Doktora/Sanatta Yeterlik (Eş Danışman)', 9),
+    ('F', 'Yüksek Lisans/Sanatta Yeterlik Tez Yönetimi (Eş Danışman)', 4);
+
+
+INSERT INTO patent (category_id, content, point) VALUES
+    ('G', 'Lisanslanan Uluslararası Patent', 120),
+    ('G', 'Tescillenmiş Uluslararası Patent', 100),
+    ('G', 'Uluslararası Patent Başvurusu', 50),
+    ('G', 'Lisanslanan Ulusal Patent', 80),
+    ('G', 'Tescillenmiş Ulusal Patent', 60),
+    ('G', 'Ulusal Patent Başvurusu', 30),
+    ('G', 'Lisanslanan Faydalı Model, Endüstriyel Tasarım, Marka', 20),
+    ('G', 'Faydalı Model ve Endüstriyel Tasarım', 15);
+
+
+INSERT INTO research_projects (category_id, content, point) VALUES
+    ('H', 'AB çerçeve programı/NSF/ERC bilimsel araştırma projesinde koordinatör/alt koordinatör olmak', 250),
+    ('H', 'AB çerçeve programı/NSF/ERC bilimsel araştırma projesinde yürütücü olmak', 150),
+    ('H', 'AB çerçeve programı/NSF/ERC bilimsel araştırma projesinde araştırmacı olmak', 100),
+    ('H', 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde koordinatör/alt koordinatör olmak', 150),
+    ('H', 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde yürütücü olmak', 120),
+    ('H', 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde araştırmacı olmak', 70),
+    ('H', 'AB Çerçeve Programı/NSF/ERC bilimsel araştırma projeleri dışındaki uluslararası destekli bilimsel araştırma projelerinde danışman olmak', 30),
+    ('H', 'TÜBİTAK ARGE (ARDEB, TEYDEB) ve TÜSEB projelerinde yürütücü olmak', 100),
+    ('H', 'Diğer TÜBİTAK veya Kalkınma Ajansları projelerinde yürütücü olmak', 50),
+    ('H', 'TÜBİTAK dışındaki diğer kamu kurumlarıyla yapılan bilimsel araştırma projelerinde yürütücü olmak', 40),
+    ('H', 'Sanayi kuruluşları ile yapılan Ar-Ge projelerinde yürütücü olmak', 40),
+    ('H', 'Diğer özel kuruluşlar ile yapılan Ar-Ge projelerinde yürütücü olmak', 20),
+    ('H', 'TÜBİTAK ARGE (ARDEB, TEYDEB) ve TÜSEB projelerinde araştırmacı olmak', 50),
+    ('H', 'Diğer TÜBİTAK veya Kalkınma Ajansları projelerinde araştırmacı olmak', 25),
+    ('H', 'TÜBİTAK dışındaki diğer kamu kurumlarıyla yapılan bilimsel araştırma projelerinde araştırmacı olmak', 20),
+    ('H', 'Sanayi kuruluşları ile yapılan bilimsel araştırma projelerinde araştırmacı olmak', 20),
+    ('H', 'Diğer özel kuruluşlar ile yapılan bilimsel araştırma projelerinde araştırmacı olmak', 10),
+    ('H', 'TÜBİTAK ARGE (ARDEB, TEYDEB) ve TÜSEB projelerinde danışman olmak', 25),
+    ('H', 'Diğer TÜBİTAK projelerinde danışman olmak', 12),
+    ('H', 'TÜBİTAK dışındaki diğer kamu kurumlarıyla yapılan bilimsel araştırma projelerinde danışman olmak', 10),
+    ('H', 'Sanayi kuruluşları ile yapılan Ar-Ge projelerinde danışman olmak', 10),
+    ('H', 'Diğer özel kuruluşlar ile yapılan Ar-Ge projelerinde danışman olmak', 10),
+    ('H', 'Üniversitelerin bilimsel araştırma projeleri (BAP) koordinatörlükleri destekli araştırma projelerinde yürütücü olmak', 8),
+    ('H', 'Üniversitelerin bilimsel araştırma projeleri (BAP) koordinatörlükleri destekli araştırma projelerinde araştırmacı olmak', 6),
+    ('H', 'Üniversitelerin bilimsel araştırma projeleri (BAP) koordinatörlükleri destekli araştırma projelerinde danışman olmak', 3),
+    ('H', 'En az dört aylık yurtdışı araştırma çalışmasında bulunmak', 100),
+    ('H', 'En az dört aylık yurtiçi araştırma çalışmasında bulunmak (kurum dışında)', 50),
+    ('H', 'TÜBİTAK 2209-A, 2209-B, 2242 projelerinde danışman olmak', 10);
+
+
+INSERT INTO editorship (category_id, content, point) VALUES
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde baş editörlük görevinde bulunmak', 100),
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde alan/yardımcı/ortak/asistan editörlük görevinde bulunmak', 70),
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde misafir/davetli editörlük görevinde bulunmak', 50),
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamındaki dergilerde yayın kurulu üyeliği', 40),
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde baş editörlük görevinde bulunmak', 40),
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde alan/yardımcı/ortak/asistan editörlük görevinde bulunmak', 30),
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde misafir/davetli editörlük görevinde bulunmak', 20),
+    ('I', 'SCI-E, SSCI, AHCI, E-SCI veya SCOPUS kapsamı dışındaki uluslararası diğer indeksler tarafından taranan dergilerde yayın kurulu üyeliği', 10),
+    ('I', 'ULAKBİM tarafından taranan dergilerde baş editörlük görevi', 15),
+    ('I', 'ULAKBİM tarafından taranan dergilerde yayın kurulu üyeliği veya alan/yardımcı/ortak/asistan editörlük görevinde bulunmak', 5),
+    ('I', 'SCI-E, SSCI veya AHCI kapsamındaki dergilerde tamamlanmış hakemlik faaliyeti (her bir hakemlik faaliyeti başına)', 3),
+    ('I', 'SCI-E, SSCI veya AHCI kapsamı dışındaki uluslararası diğer indeksler tarafından dergilerde tamamlanmış hakemlik faaliyeti (her bir hakemlik faaliyeti başına)', 2),
+    ('I', 'ULAKBİM tarafından taranan dergilerde hakemlik faaliyeti (her bir hakemlik faaliyeti başına)', 1);
+
+
+
+INSERT INTO award (category_id, content, point) VALUES
+    ('J', 'Sürekli ve periyodik olarak jürili uluslararası kurum veya kuruluşlar tarafından verilen bilim ve sanat ödülleri', 150),
+    ('J', 'TÜBİTAK tarafından verilen Bilim, Özel ve Hizmet Ödülleri', 100),
+    ('J', 'TÜBA tarafından verilen Akademi Ödülleri', 100),
+    ('J', 'TÜBİTAK tarafından verilen Teşvik Ödülü (Yayın teşvik ödülü hariç)', 80),
+    ('J', 'TÜBA tarafından verilen GEBİP ve TESEP ödülleri', 80),
+    ('J', 'Sürekli ve periyodik olarak jürili ulusal kurum veya kuruluşlar tarafından verilen bilim ve sanat ödülleri', 50),
+    ('J', 'Sürekli ve periyodik olarak verilen ve bir jüri değerlendirmesine tabi olmayan uluslararası/ulusal ödüller', 20),
+    ('J', 'Uluslararası hakemli yarışmalarda birincilik derecesi', 20),
+    ('J', 'Uluslararası hakemli yarışmalarda ikincilik derecesi', 10),
+    ('J', 'Uluslararası hakemli yarışmalarda üçüncülük derecesi', 5),
+    ('J', 'Ulusal hakemli yarışmalarda birincilik derecesi', 10),
+    ('J', 'Ulusal hakemli yarışmalarda ikincilik derecesi', 5),
+    ('J', 'Ulusal hakemli yarışmalarda üçüncülük derecesi', 3),
+    ('J', 'Uluslararası bilimsel toplantılarda alınan ödüller', 5),
+    ('J', 'Ulusal bilimsel toplantılarda alınan ödüller', 3),
+    ('J', 'Sanat, tasarım ve mimarlık alanlarında Uluslararası hakemli/jürili yarışmalarda alınan ödüller', 20),
+    ('J', 'Sanat, tasarım ve mimarlık alanlarında Ulusal hakemli/jürili yarışmalarda alınan ödüller', 10),
+    ('J', 'Üniversite kurumsal ödülleri (üniversite genelinde ilgili alanda makale, patent, proje, v.b. dereceye girenler)', 10),
+    ('J', 'Kitap veya makale gibi bilimsel eserlere atfedilen ödüller', 5);
+
+
+INSERT INTO contribution_activities (category_id, content,max_point, point) VALUES
+    ('K', 'Dekan/Enstitü/Yüksekokul/MYO/Merkez Müdürü',50, 15),
+    ('K', 'Enstitü Müdür Yrd. / Dekan Yrd. / Yüksekokul Müdür Yrd. / MYO Müdür Yrd. / Merkez Müdürü Yrd./Bölüm Başkanı',50, 12),
+    ('K', 'Bölüm Başkan Yrd. / Anabilim Dalı Başkanı',50, 10),
+    ('K', 'Rektörlükçe görevlendirilen Koordinatörlük',50, 8),
+    ('K', 'Rektörlükçe görevlendirilen Koordinatör Yardımcıları',50, 7),
+    ('K', 'Rektörlükçe görevlendirilen üniversite düzeyinde Komisyon/Kurul üyelikleri',50, 6),
+    ('K', 'Dekanlık/Y.O. Müdürlüğü/MYO Müdürlüğü /Konservatuvar Müdürlüğü tarafından görevlendirilen Komisyon/Kurul üyelikleri',50, 5),
+    ('K', 'Bölüm Başkanlıkları tarafından görevlendirilen Komisyon/Kurul üyelikleri',50, 4),
+    ('K', 'Rektörlük/Dekanlık/Y.O. Müdürlüğü/MYO Müdürlüğü /Konservatuvar Müdürlüğü/ Bölüm Başkanlığı görevlendirmeleriyle,işbirliği vb konularda katkı sağlamak',50, 3),
+    ('K', 'Uluslararası nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak',50, 5),
+    ('K', 'Ulusal nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak',50, 4),
+    ('K', 'Yerel nitelikteki bilimsel ve mesleki kurum/kuruluşların yönetimlerinde, kurullarında, komisyon veya komitelerinde görev almak',50, 3);
+
+
+
+    INSERT INTO position_posting (description1, description2, description3, description4)
+VALUES (
+    'İlan edilen kadroya başvuracak olan aday “2547 Sayılı Kanun” hükmünce tüm bilgileri, Tablo 1 ve Tablo 2 göz önüne alınarak uygun biçimde başvuru dosyasına koymak zorundadır.',
+    'Jüri üyelerine gönderilmek üzere,adayın başvuru dosyasında;YÖKSİS formatında özgeçmişi, diplomaları ve başarı göstergeleri,yayınları,atıfları,ders yükleri,proje,patent belgeleri gibi puanlamaya esas bütün belgelerin yer alması gerekmektedir.',
+    'Başvuru dosyası,Tablo 3’de yer alan faaliyet alanlarına göre Doçentlik kadrosu için “Doktora Sonrası”,Profesörlük kadrosu için de “Doçentlik Ünvanı Sonrası” şeklinde düzenlenmiş olmalıdır.',
+    'Farklı temel alan içeren birimlerde ABD kurul kararı ve Fakülte Yönetim Kurulu’nun talebi ve Rektörün onayı ile uygun temel alan gözetilerek atamalar yapılabilir.'
+);
+
+-- INSERT INTO important_things_to_fill_table (position, description1)
+-- VALUES (
+--     'ASSISTANT PROFESSOR',
+--     'Tablo 5, aday tarafından başvurduğu akademik kadro belirtilerek son atama tarihinden başvuru tarihine kadar
+-- olmak üzere doldurulacak ve jüri üyelerine gönderilecektir. Jüriler,adayların bilgilerini raporuna ekleyeceklerdir.'
+-- );
+
+-- INSERT INTO important_things_to_fill_table (position, description1)
+-- VALUES (
+--     'REPLACEMENT ASSISTANT PROFESSOR',
+--     'Tablo 5, aday tarafından başvurduğu akademik kadro belirtilerek kendisinin lisansüstü tez çalışmalarından
+-- üretilmemek koşuluyla doktora/tıp/diş hekimliğinde uzmanlık ya da sanatta yeterlik ünvanını aldığı tarihten
+-- sonrası için titizlikle doldurulacak.Jüriler,aday tarafından beyan edilen tablodaki bilgileri raporuna ekleyeceklerdir.'
+-- );
+-- INSERT INTO important_things_to_fill_table (position, description1)
+-- VALUES (
+--     'ASSOCIATE PROFESSOR',
+--     'Profesörlük başvurusu için gerekli belgeler: YÖKSİS özgeçmiş, yayın listesi, atıf belgeleri, proje raporları ve danışmanlık belgeleri.'
+-- );
+-- INSERT INTO important_things_to_fill_table (position, description1)
+-- VALUES (
+--     'PROFESSOR',
+--     'Profesörlük başvurusu için gerekli belgeler: YÖKSİS özgeçmiş, yayın listesi, atıf belgeleri, proje raporları ve danışmanlık belgeleri.'
+-- );
+
+INSERT INTO table3action (action_name, facultygroup_id, position) VALUES 
+
+('A1-A2',1,3),
+('A1-A2',1,4),
+('A1-A4',1,1),
+('A1-A4',1,3),
+('A1-A4',1,4),
+('A1-A5',1,1),
+('A1-A5',1,3),
+('A1-A5',1,4),
+('A1-A6',1,1),
+('A1-A6',1,3),
+('A1-A6',1,4),
+('A1-A8',1,1),
+('A1-A8',1,3),
+('A1-A8',1,4),
+('Başlıca Yazar',1,1),
+('Başlıca Yazar',1,3),
+('Başlıca Yazar',1,4),
+('Toplam Makale',1,1),
+('Toplam Makale',1,3),
+('Toplam Makale',1,4),
+('Kişisel ve Karma Etkinlik',1,1),
+('Kişisel ve Karma Etkinlik',1,3),
+('Kişisel ve Karma Etkinlik',1,4),
+('F1',1,1),
+('F1',1,3),
+('F1',1,4),
+('F2',1,1),
+('F2',1,3),
+('F2',1,4),
+('H1-H12',1,1),
+('H1-H12',1,3),
+('H1-H12',1,4),
+('H13-H17',1,1),
+('H13-H17',1,3),
+('H13-H17',1,4),
+('H13-H22',1,1),
+('H13-H22',1,3),
+('H13-H22',1,4),
+('D1-D6',1,1),
+('D1-D6',1,3),
+('D1-D6',1,4),
+('E1-E4',1,1),
+('E1-E4',1,3),
+('E1-E4',1,4),
+('F1-F2',1,1),
+('F1-F2',1,3),
+('F1-F2',1,4),
+('H1-H17',1,1),
+('H1-H17',1,3),
+('H1-H17',1,4),
+('H1-H22',1,1),
+('H1-H22',1,3),
+('H1-H22',1,4),
+('K1-K11',1,1),
+('K1-K11',1,3),
+('K1-K11',1,4),
+('Toplam Puan',1,1),
+('Toplam Puan',1,3),
+('Toplam Puan',1,4);
+
+
+INSERT INTO publication_criteria (table3action_id, article_count) VALUES
+ ( 20, 0),
+ ( 21, 0),
+ ( 22, 0),
+ ( 23, 1),
+ ( 24, 2),
+ ( 25, 3),
+  ( 26, 4),
+ ( 27, 7),
+ ( 28, 7),
+   ( 29, 0),
+ ( 30, 0),
+ ( 31, 0),
+  ( 32, 0),
+ ( 33, 1),
+ (34,1),
+   ( 35, 0),
+ ( 36, 1),
+ (37,2),
+    ( 38, 0),
+ ( 39, 1),
+ (40,1),
+     ( 41, 0),
+ ( 42, 2),
+ (43,2),
+      ( 38, 0),
+ ( 39, 0),
+ (40,0),
+       ( 44, 0),
+ ( 45, 0),
+ (46,0)
+
+ ;
+
+INSERT INTO min_max_point_criteria (table3action_id, min_point,max_point) VALUES
+ (11,45,0),
+ (12,125,0),
+ (13,125,0),
+ (14,5,0),
+ (15,0,0),
+ (16,0,0),
+  (17,0,0),
+ (18,0,0),
+ (19,0,0),
+   (20,0,0),
+ (21,0,0),
+ (22,0,0),
+   (47,0,1500),
+ (48,0,1500),
+ (49,0,1500),
+    (50,0,50),
+ (51,0,50),
+ (52,0,50),
+     (53,0,0),
+ (54,15,0),
+ (55,15,0),
+      (56,0,0),
+ (57,20,0),
+ (58,20,0),
+    (59,0,0),
+ (60,0,0),
+ (61,0,0),
+     (62,0,50),
+ (63,0,50),
+ (64,0,50),
+      (65,100,50),
+ (66,250,0),
+ (67,250,0);
+
+
+
+
+INSERT INTO table4 (publisher_count,coefficient ) VALUES
+(1,1),
+(2,0.8),
+(3,0.6),
+(4,0.5),
+(5,0.2),
+(6,0.16),
+(7,0.14),
+(8,0.12),
+(9,0.11),
+(10,0.1);
+
+
+--2 more table going to add document must read again
+>>>>>>> 9f320b7 (scripts have been added.)
