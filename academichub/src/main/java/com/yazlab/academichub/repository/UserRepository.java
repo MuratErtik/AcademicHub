@@ -1,4 +1,4 @@
-package com.yazlab.academichub;
+package com.yazlab.academichub.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

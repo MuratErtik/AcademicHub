@@ -11,11 +11,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.yazlab.academichub.UserRepository;
 import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AuthException;
+import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.SignupRequest;
 import com.yazlab.academichub.response.AuthResponse;
 
