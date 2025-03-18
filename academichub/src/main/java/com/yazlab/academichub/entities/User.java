@@ -25,7 +25,7 @@ public class User {
     private Long userId;
 
     @Column(name = "tc_no", unique = true, nullable = false)
-    private Long tcNo;
+    private String tcNo;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -36,6 +36,8 @@ public class User {
     private String lastname;
 
     private String email;
+
+    private String password;
 
     private Long mobileNo;
 
