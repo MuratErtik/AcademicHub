@@ -1,5 +1,6 @@
 package com.yazlab.academichub.request;
 
+
 import lombok.Data;
 
 @Data
@@ -16,5 +17,7 @@ public class OtherSignupRequest {
     private Long mobileNo;
 
     private String password;
+
+    private String departmentName; 
 
 }
