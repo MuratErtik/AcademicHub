@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.domain.USER_ROLE;
+import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AuthException;
+import com.yazlab.academichub.repository.DepartmentRepository;
 import com.yazlab.academichub.repository.UserRepository;
+import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.request.SignupRequest;
 import com.yazlab.academichub.response.AuthResponse;
 
@@ -31,41 +34,40 @@ public class AuthService {
 
     private final JwtProvider jwtProvider;
 
-    public String createCandidate(SignupRequest req) {
+    private final DepartmentRepository departmentRepository;
 
-        User user = userRepository.findByEmail(req.getEmail());
+    public User createCandidate(SignupRequest req) {
 
-        if (user == null) {
+        // User user = userRepository.findByEmail(req.getEmail());
 
-            User newUser = new User();
+        User newUser = new User();
 
-            newUser.setEmail(req.getEmail());
+        newUser.setEmail(req.getEmail());
 
-            newUser.setLastname(req.getLastname());
+        newUser.setLastname(req.getLastname());
 
-            newUser.setMobileNo(req.getMobileNo());
+        newUser.setMobileNo(req.getMobileNo());
 
-            newUser.setName(req.getName());
+        newUser.setName(req.getName());
 
-            newUser.setTcNo(passwordEncoder.encode(req.getTcNo()));
+        newUser.setTcNo(passwordEncoder.encode(req.getTcNo()));
 
-            newUser.setUserRole(USER_ROLE.CANDIDATE);
+        newUser.setUserRole(USER_ROLE.CANDIDATE);
 
-            user = userRepository.save(newUser);
+        return userRepository.save(newUser);
 
-            // yeni nesneler olusturulabilir buradan -> basvuru vs...
+        // yeni nesneler olusturulabilir buradan -> basvuru vs...
 
-        }
+        // List<GrantedAuthority> authorities = new ArrayList<>();
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        // authorities.add(new SimpleGrantedAuthority(USER_ROLE.CANDIDATE.toString()));
 
-        authorities.add(new SimpleGrantedAuthority(USER_ROLE.CANDIDATE.toString()));
+        // Authentication authentication = new
+        // UsernamePasswordAuthenticationToken(req.getEmail(), null, authorities);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(req.getEmail(), null, authorities);
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return jwtProvider.generateToken(authentication);
+        // return jwtProvider.generateToken(authentication);
 
     }
 
@@ -74,7 +76,8 @@ public class AuthService {
         User user = userRepository.findByEmail(req.getEmail());
 
         if (user == null) {
-            createCandidate(req);
+            user = createCandidate(req);
+            //
         }
 
         if (!passwordEncoder.matches(req.getTcNo(), user.getTcNo())) {
@@ -103,4 +106,87 @@ public class AuthService {
         return authResponse;
 
     }
+
+    public String createUser(OtherSignupRequest req, USER_ROLE role) {
+
+        User user = userRepository.findByEmail(req.getEmail());
+
+        if (user == null) {
+            user = new User();
+            user.setEmail(req.getEmail());
+            user.setLastname(req.getLastname());
+            user.setMobileNo(req.getMobileNo());
+            user.setName(req.getName());
+            user.setTcNo(passwordEncoder.encode(req.getTcNo()));
+            user.setPassword(passwordEncoder.encode(req.getPassword()));
+            user.setUserRole(role);
+
+            if (req.getDepartmentName() != null) {
+                Department department = departmentRepository.findByDepartmentName(req.getDepartmentName());
+                user.setDepartment(department);
+                // System.out.println("************************************************************************");
+                // System.out.println(req.getDepartmentName());
+                // System.out.println("************************************************************************");
+
+                // System.out.println(department.getDepartmentName());
+                // System.out.println(department.getDepartmentId());
+                // System.out.println(department.getFaculty().getFacultyName());
+
+            }
+
+            user = userRepository.save(user);
+        }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(role.toString()));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(req.getEmail(), null, authorities);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return jwtProvider.generateToken(authentication);
+
+        // yeni nesneler olusturulabilir buradan -> basvuru vs...
+
+    }
+
+    public AuthResponse userSignIn(OtherSignupRequest request) throws AuthException {
+
+        User user = userRepository.findByEmail(request.getEmail());
+
+        if (user == null) {
+            throw new AuthException("User not found with email -> " + request.getEmail());
+        }
+
+        if (!passwordEncoder.matches(request.getTcNo(), user.getTcNo())) {
+            throw new AuthException("Invalid Tc No!");
+        }
+
+        if (user.getPassword() != null && !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new AuthException("Invalid password!");
+        }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getUserRole().toString()));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, authorities);
+
+        String token = jwtProvider.generateToken(authentication);
+
+        String message = "login successfully!";
+
+        String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setJwt(token);
+
+        authResponse.setMessage(message);
+
+        authResponse.setRole(USER_ROLE.valueOf(roleName));
+
+        return authResponse;
+    }
+
 }

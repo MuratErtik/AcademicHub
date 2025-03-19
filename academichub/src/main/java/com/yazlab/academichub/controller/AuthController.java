@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.exception.AuthException;
+import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.request.SignupRequest;
 import com.yazlab.academichub.response.AuthResponse;
 import com.yazlab.academichub.service.AuthService;
@@ -22,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> loginHandler(@RequestBody SignupRequest signupRequest) throws AuthException{
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody SignupRequest signupRequest) throws AuthException {
 
         AuthResponse authResponse = authService.signIn(signupRequest);
 
@@ -30,10 +30,27 @@ public class AuthController {
 
     }
 
-    @PostMapping("signup")
-    public ResponseEntity<AuthResponse> createCandidateHandler(@RequestBody SignupRequest request){
+    // @PostMapping("signup")
+    // public ResponseEntity<AuthResponse> createCandidateHandler(@RequestBody
+    // SignupRequest request){
 
-        String jwt = authService.createCandidate(request);
+    // String jwt = authService.createCandidate(request);
+
+    // AuthResponse authResponse = new AuthResponse();
+
+    // authResponse.setJwt(jwt);
+
+    // authResponse.setMessage("Registered Successfully");
+
+    // authResponse.setRole(USER_ROLE.CANDIDATE);
+
+    // return ResponseEntity.ok(authResponse);
+    // }
+
+    @PostMapping("user-signup")
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody OtherSignupRequest request) {
+
+        String jwt = authService.createUser(request, request.getRole());
 
         AuthResponse authResponse = new AuthResponse();
 
@@ -41,10 +58,19 @@ public class AuthController {
 
         authResponse.setMessage("Registered Successfully");
 
-        authResponse.setRole(USER_ROLE.CANDIDATE);
+        authResponse.setRole(request.getRole());
 
         return ResponseEntity.ok(authResponse);
+
+    }
+
+    @PostMapping("/user-signin")
+    public ResponseEntity<AuthResponse> userLoginHandler(@RequestBody OtherSignupRequest request) throws AuthException {
+
+        AuthResponse authResponse = authService.userSignIn(request);
+
+        return ResponseEntity.ok(authResponse);
+
     }
 
 }
-    

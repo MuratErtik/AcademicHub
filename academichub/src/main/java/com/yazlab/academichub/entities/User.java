@@ -41,7 +41,7 @@ public class User {
 
     private Long mobileNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;
 
