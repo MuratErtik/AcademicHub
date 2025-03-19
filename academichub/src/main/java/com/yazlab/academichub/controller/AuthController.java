@@ -49,7 +49,7 @@ public class AuthController {
     // }
 
     @PostMapping("admin-signup")
-    public ResponseEntity<AuthResponse> createCandidateHandler(@RequestBody OtherSignupRequest request) {
+    public ResponseEntity<AuthResponse> createAdminHandler(@RequestBody OtherSignupRequest request) {
 
         String jwt = authService.createAdmin(request);
 
@@ -70,6 +70,37 @@ public class AuthController {
     public ResponseEntity<AuthResponse> adminLoginHandler(@RequestBody OtherSignupRequest signupRequest) throws AuthException {
 
         AuthResponse authResponse = authService.adminSignIn(signupRequest);
+
+        return ResponseEntity.ok(authResponse);
+
+    }
+
+
+
+
+
+    @PostMapping("departmentmenager-signup")
+    public ResponseEntity<AuthResponse> createdeparmentMenagerHandler(@RequestBody OtherSignupRequest request) {
+
+        String jwt = authService.createDepartmentManager(request);
+
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setJwt(jwt);
+
+        authResponse.setMessage("Registered Successfully");
+
+        authResponse.setRole(USER_ROLE.DEPARTMENT_MANAGER);
+
+        return ResponseEntity.ok(authResponse);
+
+
+    }
+
+    @PostMapping("/departmentmenager-signin")
+    public ResponseEntity<AuthResponse> departmentManagerLoginHandler(@RequestBody OtherSignupRequest signupRequest) throws AuthException {
+
+        AuthResponse authResponse = authService.departmentManagerSignIn(signupRequest);
 
         return ResponseEntity.ok(authResponse);
 

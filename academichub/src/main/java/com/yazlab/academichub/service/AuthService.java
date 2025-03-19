@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.domain.USER_ROLE;
+import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AuthException;
+import com.yazlab.academichub.repository.DepartmentRepository;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.request.SignupRequest;
@@ -31,6 +33,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtProvider jwtProvider;
+
+    private final DepartmentRepository departmentRepository;
 
     public User createCandidate(SignupRequest req) {
 
@@ -64,7 +68,6 @@ public class AuthService {
         // SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // return jwtProvider.generateToken(authentication);
-
 
     }
 
@@ -106,7 +109,7 @@ public class AuthService {
 
     public String createAdmin(OtherSignupRequest req) {
 
-        User user = userRepository.findByEmail(req.getTcNo());
+        User user = userRepository.findByEmail(req.getEmail());
 
         if (user == null) {
 
@@ -146,7 +149,101 @@ public class AuthService {
 
     public AuthResponse adminSignIn(OtherSignupRequest req) throws AuthException {
 
-        User user = userRepository.findByEmail(req.getEmail()); 
+        User user = userRepository.findByEmail(req.getEmail());
+
+        if (user == null) {
+            throw new AuthException("User has not been sign up before!");
+        }
+
+        if (!passwordEncoder.matches(req.getTcNo(), user.getTcNo())) {
+            throw new AuthException("Invalid Tc No!");
+        }
+
+        if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
+            throw new AuthException("Invalid password!");
+        }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getUserRole().toString()));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, authorities);
+
+        String token = jwtProvider.generateToken(authentication);
+
+        String message = "login successfully!";
+
+        String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setJwt(token);
+
+        authResponse.setMessage(message);
+
+        authResponse.setRole(USER_ROLE.valueOf(roleName));
+
+        return authResponse;
+
+    }
+
+    public String createDepartmentManager(OtherSignupRequest req) {
+
+        User user = userRepository.findByEmail(req.getEmail());
+
+        Department department = departmentRepository.findByDepartmentName(req.getDepartmentName());
+
+        System.out.println("************************************************************************");
+        System.out.println(req.getDepartmentName());
+        System.out.println("************************************************************************");
+
+        System.out.println(department.getDepartmentName());
+        System.out.println(department.getDepartmentId());
+        System.out.println(department.getFaculty().getFacultyName());
+
+
+
+        if (user == null) {
+
+            User newUser = new User();
+
+            newUser.setEmail(req.getEmail());
+
+            newUser.setLastname(req.getLastname());
+
+            newUser.setMobileNo(req.getMobileNo());
+
+            newUser.setName(req.getName());
+
+            newUser.setTcNo(passwordEncoder.encode(req.getTcNo()));
+
+            newUser.setPassword(passwordEncoder.encode(req.getPassword()));
+
+            newUser.setUserRole(USER_ROLE.DEPARTMENT_MANAGER);
+
+            newUser.setDepartment(department);
+
+            user = userRepository.save(newUser);
+
+            // yeni nesneler olusturulabilir buradan -> basvuru vs...
+
+        }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(USER_ROLE.DEPARTMENT_MANAGER.toString()));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(req.getEmail(), null, authorities);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+        return jwtProvider.generateToken(authentication);
+
+    }
+
+    public AuthResponse departmentManagerSignIn(OtherSignupRequest req) throws AuthException {
+
+        User user = userRepository.findByEmail(req.getEmail());
 
         if (user == null) {
             throw new AuthException("User has not been sign up before!");
