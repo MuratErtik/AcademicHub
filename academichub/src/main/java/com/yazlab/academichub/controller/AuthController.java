@@ -106,4 +106,31 @@ public class AuthController {
 
     }
 
+    @PostMapping("jury-signup")
+    public ResponseEntity<AuthResponse> createJuryHandler(@RequestBody OtherSignupRequest request) {
+
+        String jwt = authService.createJury(request);
+
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setJwt(jwt);
+
+        authResponse.setMessage("Registered Successfully");
+
+        authResponse.setRole(USER_ROLE.JURY);
+
+        return ResponseEntity.ok(authResponse);
+
+
+    }
+
+    @PostMapping("/jury-signin")
+    public ResponseEntity<AuthResponse> juryLoginHandler(@RequestBody OtherSignupRequest signupRequest) throws AuthException {
+
+        AuthResponse authResponse = authService.jurySignIn(signupRequest);
+
+        return ResponseEntity.ok(authResponse);
+
+    }
+
 }

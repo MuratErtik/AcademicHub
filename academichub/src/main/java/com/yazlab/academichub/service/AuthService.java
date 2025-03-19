@@ -192,13 +192,13 @@ public class AuthService {
 
         Department department = departmentRepository.findByDepartmentName(req.getDepartmentName());
 
-        System.out.println("************************************************************************");
-        System.out.println(req.getDepartmentName());
-        System.out.println("************************************************************************");
+        // System.out.println("************************************************************************");
+        // System.out.println(req.getDepartmentName());
+        // System.out.println("************************************************************************");
 
-        System.out.println(department.getDepartmentName());
-        System.out.println(department.getDepartmentId());
-        System.out.println(department.getFaculty().getFacultyName());
+        // System.out.println(department.getDepartmentName());
+        // System.out.println(department.getDepartmentId());
+        // System.out.println(department.getFaculty().getFacultyName());
 
 
 
@@ -242,6 +242,91 @@ public class AuthService {
     }
 
     public AuthResponse departmentManagerSignIn(OtherSignupRequest req) throws AuthException {
+
+        User user = userRepository.findByEmail(req.getEmail());
+
+        if (user == null) {
+            throw new AuthException("User has not been sign up before!");
+        }
+
+        if (!passwordEncoder.matches(req.getTcNo(), user.getTcNo())) {
+            throw new AuthException("Invalid Tc No!");
+        }
+
+        if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
+            throw new AuthException("Invalid password!");
+        }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getUserRole().toString()));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, authorities);
+
+        String token = jwtProvider.generateToken(authentication);
+
+        String message = "login successfully!";
+
+        String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setJwt(token);
+
+        authResponse.setMessage(message);
+
+        authResponse.setRole(USER_ROLE.valueOf(roleName));
+
+        return authResponse;
+
+    }
+
+    public String createJury(OtherSignupRequest req) {
+
+        User user = userRepository.findByEmail(req.getEmail());
+
+        Department department = departmentRepository.findByDepartmentName(req.getDepartmentName());
+
+
+        if (user == null) {
+
+            User newUser = new User();
+
+            newUser.setEmail(req.getEmail());
+
+            newUser.setLastname(req.getLastname());
+
+            newUser.setMobileNo(req.getMobileNo());
+
+            newUser.setName(req.getName());
+
+            newUser.setTcNo(passwordEncoder.encode(req.getTcNo()));
+
+            newUser.setPassword(passwordEncoder.encode(req.getPassword()));
+
+            newUser.setUserRole(USER_ROLE.JURY);
+
+            newUser.setDepartment(department);
+
+            user = userRepository.save(newUser);
+
+            // yeni nesneler olusturulabilir buradan -> basvuru vs...
+
+        }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(USER_ROLE.DEPARTMENT_MANAGER.toString()));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(req.getEmail(), null, authorities);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+        return jwtProvider.generateToken(authentication);
+
+    }
+
+    public AuthResponse jurySignIn(OtherSignupRequest req) throws AuthException {
 
         User user = userRepository.findByEmail(req.getEmail());
 
