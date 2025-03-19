@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.exception.AuthException;
 import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.request.SignupRequest;
@@ -48,41 +47,10 @@ public class AuthController {
     // return ResponseEntity.ok(authResponse);
     // }
 
-    @PostMapping("admin-signup")
-    public ResponseEntity<AuthResponse> createAdminHandler(@RequestBody OtherSignupRequest request) {
+    @PostMapping("user-signup")
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody OtherSignupRequest request) {
 
-        String jwt = authService.createAdmin(request);
-
-        AuthResponse authResponse = new AuthResponse();
-
-        authResponse.setJwt(jwt);
-
-        authResponse.setMessage("Registered Successfully");
-
-        authResponse.setRole(USER_ROLE.ADMIN);
-
-        return ResponseEntity.ok(authResponse);
-
-
-    }
-
-    @PostMapping("/admin-signin")
-    public ResponseEntity<AuthResponse> adminLoginHandler(@RequestBody OtherSignupRequest signupRequest) throws AuthException {
-
-        AuthResponse authResponse = authService.adminSignIn(signupRequest);
-
-        return ResponseEntity.ok(authResponse);
-
-    }
-
-
-
-
-
-    @PostMapping("departmentmenager-signup")
-    public ResponseEntity<AuthResponse> createdeparmentMenagerHandler(@RequestBody OtherSignupRequest request) {
-
-        String jwt = authService.createDepartmentManager(request);
+        String jwt = authService.createUser(request, request.getRole());
 
         AuthResponse authResponse = new AuthResponse();
 
@@ -90,44 +58,16 @@ public class AuthController {
 
         authResponse.setMessage("Registered Successfully");
 
-        authResponse.setRole(USER_ROLE.DEPARTMENT_MANAGER);
-
-        return ResponseEntity.ok(authResponse);
-
-
-    }
-
-    @PostMapping("/departmentmenager-signin")
-    public ResponseEntity<AuthResponse> departmentManagerLoginHandler(@RequestBody OtherSignupRequest signupRequest) throws AuthException {
-
-        AuthResponse authResponse = authService.departmentManagerSignIn(signupRequest);
+        authResponse.setRole(request.getRole());
 
         return ResponseEntity.ok(authResponse);
 
     }
 
-    @PostMapping("jury-signup")
-    public ResponseEntity<AuthResponse> createJuryHandler(@RequestBody OtherSignupRequest request) {
+    @PostMapping("/user-signin")
+    public ResponseEntity<AuthResponse> userLoginHandler(@RequestBody OtherSignupRequest request) throws AuthException {
 
-        String jwt = authService.createJury(request);
-
-        AuthResponse authResponse = new AuthResponse();
-
-        authResponse.setJwt(jwt);
-
-        authResponse.setMessage("Registered Successfully");
-
-        authResponse.setRole(USER_ROLE.JURY);
-
-        return ResponseEntity.ok(authResponse);
-
-
-    }
-
-    @PostMapping("/jury-signin")
-    public ResponseEntity<AuthResponse> juryLoginHandler(@RequestBody OtherSignupRequest signupRequest) throws AuthException {
-
-        AuthResponse authResponse = authService.jurySignIn(signupRequest);
+        AuthResponse authResponse = authService.userSignIn(request);
 
         return ResponseEntity.ok(authResponse);
 
