@@ -1,14 +1,14 @@
 package com.yazlab.academichub.response;
 
-import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.entities.Department;
+import com.yazlab.academichub.entities.UserRole;
 
 import lombok.Data;
 
 @Data
 public class UserResponse {
 
-    private USER_ROLE userRole;
+    private UserRole userRole;
 
     private String name;
 
