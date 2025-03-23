@@ -12,12 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.config.JwtProvider;
-import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.entities.UserRole;
 import com.yazlab.academichub.exception.AuthException;
 import com.yazlab.academichub.repository.DepartmentRepository;
 import com.yazlab.academichub.repository.UserRepository;
+import com.yazlab.academichub.repository.UserRoleRepository;
 import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.request.SignupRequest;
 import com.yazlab.academichub.response.AuthResponse;
@@ -36,6 +37,8 @@ public class AuthService {
 
     private final DepartmentRepository departmentRepository;
 
+    private final UserRoleRepository userRoleRepository;
+
     public User createCandidate(SignupRequest req) {
 
         // User user = userRepository.findByEmail(req.getEmail());
@@ -52,7 +55,9 @@ public class AuthService {
 
         newUser.setTcNo(passwordEncoder.encode(req.getTcNo()));
 
-        newUser.setUserRole(USER_ROLE.CANDIDATE);
+        UserRole userRole = userRoleRepository.findUserRoleByUserRole(req.getUserRole());
+
+        newUser.setUserRole(userRole);
 
         return userRepository.save(newUser);
 
@@ -93,7 +98,7 @@ public class AuthService {
 
         String message = "login successfully!";
 
-        String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+        // String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
 
         AuthResponse authResponse = new AuthResponse();
 
@@ -101,13 +106,15 @@ public class AuthService {
 
         authResponse.setMessage(message);
 
-        authResponse.setRole(USER_ROLE.valueOf(roleName));
+        UserRole userRole = userRoleRepository.findUserRoleByUserRole(req.getUserRole());
+
+        authResponse.setRole(userRole);
 
         return authResponse;
 
     }
 
-    public String createUser(OtherSignupRequest req, USER_ROLE role) {
+    public String createUser(OtherSignupRequest req, UserRole role) {
 
         User user = userRepository.findByEmail(req.getEmail());
 
@@ -119,7 +126,8 @@ public class AuthService {
             user.setName(req.getName());
             user.setTcNo(passwordEncoder.encode(req.getTcNo()));
             user.setPassword(passwordEncoder.encode(req.getPassword()));
-            user.setUserRole(role);
+            UserRole userRole = userRoleRepository.findUserRoleByUserRole(req.getRole());
+            user.setUserRole(userRole);
 
             if (req.getDepartmentName() != null) {
                 Department department = departmentRepository.findByDepartmentName(req.getDepartmentName());
@@ -176,7 +184,7 @@ public class AuthService {
 
         String message = "login successfully!";
 
-        String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
+        // String roleName = authorities.isEmpty() ? null : authorities.iterator().next().getAuthority();
 
         AuthResponse authResponse = new AuthResponse();
 
@@ -184,7 +192,10 @@ public class AuthService {
 
         authResponse.setMessage(message);
 
-        authResponse.setRole(USER_ROLE.valueOf(roleName));
+        // UserRole userRole = userRoleRepository.findUserRoleByUserRole(request.getRole());
+
+
+        authResponse.setRole(user.getUserRole());
 
         return authResponse;
     }

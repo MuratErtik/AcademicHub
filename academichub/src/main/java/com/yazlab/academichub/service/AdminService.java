@@ -5,13 +5,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.entities.DepartmentMenagerJobOffer;
 import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.entities.UserRole;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.repository.DepartmentMenagerJobOfferRepository;
 import com.yazlab.academichub.repository.UserRepository;
+import com.yazlab.academichub.repository.UserRoleRepository;
 import com.yazlab.academichub.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,13 @@ public class AdminService {
 
     private final DepartmentMenagerJobOfferRepository departmentMenagerJobOfferRepository;
 
-    public List<UserResponse> getUsersByRole(USER_ROLE role) {
+    private final UserRoleRepository userRoleRepository;
 
-        List<User> users = userRepository.findByUserRole(role);
+    public List<UserResponse> getUsersByRole(String role) {
+
+        UserRole userRole = userRoleRepository.findUserRoleByUserRole(role);
+
+        List<User> users = userRepository.findByUserRole(userRole);
 
         List<UserResponse> userResponses = users.stream()
                 .map(this::convertToUserResponse)
@@ -65,9 +70,9 @@ public class AdminService {
     // ilana yonetici eklemem lazim!
     // ilan acildigi zaman yonetici de eklemek gerekir
 
-    public List<DepartmentMenagerJobOffer> addManegerToJobOffer(USER_ROLE role, Long departmentId, JobOffer jobOffer) {
+    public List<DepartmentMenagerJobOffer> addManegerToJobOffer(Long roleId, Long departmentId, JobOffer jobOffer) {
 
-        List<User> usersToAddMenagerJobOffer = userRepository.findByUserRoleAndDepartment(role, departmentId);
+        List<User> usersToAddMenagerJobOffer = userRepository.findByUserRoleAndDepartment(roleId, departmentId);
 
         List<DepartmentMenagerJobOffer> departmentMenagerJobOffers = usersToAddMenagerJobOffer.stream()
                 .map(user -> addToInnerTable(user, jobOffer))

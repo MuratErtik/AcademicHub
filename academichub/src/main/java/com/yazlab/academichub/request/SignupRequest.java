@@ -15,5 +15,7 @@ public class SignupRequest {
 
     private Long mobileNo;
 
+    private String userRole = "ADAY";
+
 
 }
