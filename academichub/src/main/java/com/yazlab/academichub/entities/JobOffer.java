@@ -1,6 +1,6 @@
 package com.yazlab.academichub.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,15 +25,19 @@ public class JobOffer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobOfferId;
 
+    private String title;
+
+    private String description;
+
     // @ManyToMany(mappedBy = "adminJobOffers")
     // private Set<User> admins;
 
     // @ManyToMany(mappedBy = "departmentManagerJobOffers")
     // private Set<User> departmentManagers;
 
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn(name = "department_id",nullable = false)
@@ -42,11 +46,20 @@ public class JobOffer {
     @Enumerated(EnumType.STRING)
     private POSITION position;
 
-    @ManyToOne
-    @JoinColumn(name = "appointment_requirment_id",nullable = false)
-    private AppointmentRequirements appointmentRequirements;
+    // @ManyToOne
+    // @JoinColumn(name = "appointment_requirment_id",nullable = false)
+    // private AppointmentRequirements appointmentRequirements;
 
-    @OneToMany(mappedBy = "jobOffer",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "jobOffer" /* cascade = CascadeType.ALL, orphanRemoval = true */)
+    private Set<MinMaxPointCriteria> minMaxPointCriterias = new HashSet<>();
+
+    @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
+    private Set<PublicationCriteria> publicationCriterias = new HashSet<>();
+
+    //prerequ
+
+
+    @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
     private Set<Application> applications = new HashSet<>();
 
 
