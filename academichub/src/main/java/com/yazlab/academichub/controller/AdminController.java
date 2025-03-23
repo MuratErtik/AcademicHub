@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.response.UserResponse;
@@ -24,7 +23,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping("/users")
-    public List<UserResponse> getUsersByRole(@RequestParam USER_ROLE userRole) {
+    public List<UserResponse> getUsersByRole(@RequestParam String userRole) {
 
         return adminService.getUsersByRole(userRole);
     }
