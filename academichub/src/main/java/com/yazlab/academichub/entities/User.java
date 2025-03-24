@@ -1,15 +1,8 @@
 package com.yazlab.academichub.entities;
 
-
-
 import com.yazlab.academichub.domain.USER_ROLE;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -45,8 +38,7 @@ public class User {
     @JoinColumn(name = "department_id")
     private Department department;
 
-
-    
-
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
 }
