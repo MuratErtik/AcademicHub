@@ -43,7 +43,7 @@ public class JobOffer {
     private Department department;
 
     @ManyToOne
-    @JoinColumn(name = "position_id", nullable = false)
+    @JoinColumn(name = "position", nullable = false)
     private Position position;
 
     // @ManyToOne
