@@ -2,7 +2,6 @@ package com.yazlab.academichub.service;
 
 import org.springframework.stereotype.Service;
 
-import com.yazlab.academichub.domain.USER_ROLE;
 import com.yazlab.academichub.entities.AdminJobOffer;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.JobOffer;
@@ -53,7 +52,19 @@ public class JobOfferService {
 
         addAdminToJobOffer(user, jobOffer);
 
-        adminService.addManegerToJobOffer(USER_ROLE.DEPARTMENT_MANAGER, department.getDepartmentId(), jobOffer);
+        // UserRole userRole =
+        // userRoleRepository.findUserRoleByUserRole(user.getUserRole().getUserRole());
+
+        // System.out.println("**************************************************************");
+        // // System.out.println(userRole);
+        // // System.out.println(roleId);
+        // System.out.println(request.getDepartmentName());
+        // System.out.println(department.getDepartmentName());
+        // System.out.println(department.getDepartmentId());
+
+        // System.out.println("**************************************************************");
+
+        adminService.addManegerToJobOffer(department.getDepartmentId(), jobOffer);
 
         return jobOffer;
 
