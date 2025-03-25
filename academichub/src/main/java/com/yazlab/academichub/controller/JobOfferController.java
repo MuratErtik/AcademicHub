@@ -1,7 +1,5 @@
 package com.yazlab.academichub.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,11 +33,19 @@ public class JobOfferController {
     public ResponseEntity<?> createJobOffer(@RequestBody CreateJobOfferRequest request,
             @RequestHeader("Authorization") String jwt) throws AdminException {
 
-        List<String> roles = jwtProvider.getUserRolesFromJwtToken(jwt);
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+        String role = jwtProvider.getRolefromjwtByEmail(email);
 
-        if (roles.contains("ADMIN")) {
+        // System.out.println("************************************");
+        // System.out.println(jwtProvider.getEmailFromJwtToken(jwt));
+        // System.out.println(role);
+        // System.out.println();
 
-            User user = adminService.getAdminByEmail(jwtProvider.getEmailFromJwtToken(jwt));
+        // System.out.println("************************************");
+
+        if (role.equals("ADMIN")) {
+
+            User user = adminService.getAdminByEmail(email);
 
             JobOffer jobOffer = jobOfferService.createJobOffer(request, user);
 
