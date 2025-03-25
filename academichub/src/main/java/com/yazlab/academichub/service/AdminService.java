@@ -70,15 +70,13 @@ public class AdminService {
     // ilana yonetici eklemem lazim!
     // ilan acildigi zaman yonetici de eklemek gerekir
 
-    public List<DepartmentMenagerJobOffer> addManegerToJobOffer(Long roleId, Long departmentId, JobOffer jobOffer) {
+    public void addManegerToJobOffer(Long departmentId, JobOffer jobOffer) {
 
-        List<User> usersToAddMenagerJobOffer = userRepository.findByUserRoleAndDepartment(roleId, departmentId);
+        List<User> usersToAddMenagerJobOffer = userRepository.findByUserRoleAndDepartment(2L, departmentId);
 
-        List<DepartmentMenagerJobOffer> departmentMenagerJobOffers = usersToAddMenagerJobOffer.stream()
+        usersToAddMenagerJobOffer.stream()
                 .map(user -> addToInnerTable(user, jobOffer))
                 .collect(Collectors.toList());
-
-        return departmentMenagerJobOffers;
 
     }
 
@@ -93,18 +91,15 @@ public class AdminService {
         return departmentMenagerJobOfferRepository.save(departmentMenagerJobOffer);
     }
 
-    public User getAdminByEmail(String email) throws AdminException{
+    public User getAdminByEmail(String email) throws AdminException {
 
         String cleanedEmail = email.trim().replace("\"", "");
 
         User user = userRepository.findByEmail(cleanedEmail);
 
-        System.out.println("*********************************************");
-        System.out.println(email);
-        System.out.println("*********************************************");
-
-
-        
+        // System.out.println("*********************************************");
+        // System.out.println(email);
+        // System.out.println("*********************************************");
 
         if (user == null) {
             throw new AdminException("Admin could not find with email -> " + cleanedEmail);
