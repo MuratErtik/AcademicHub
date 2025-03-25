@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.yazlab.academichub.entities.MinMaxPointCriteria;
-import com.yazlab.academichub.entities.Position;
 import com.yazlab.academichub.entities.PublicationCriteria;
 
 
@@ -24,7 +23,7 @@ public class CreateJobOfferRequest {
 
     private String departmentName; //admin
 
-    private Position position; //admin
+    private String positionName; //admin
 
     private Set<MinMaxPointCriteria> minMaxPointCriterias = new HashSet<>();
 

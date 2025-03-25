@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import com.yazlab.academichub.entities.AdminJobOffer;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.JobOffer;
+import com.yazlab.academichub.entities.Position;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.repository.AdminJobOfferRepository;
 import com.yazlab.academichub.repository.DepartmentRepository;
 import com.yazlab.academichub.repository.JobOfferRepository;
+import com.yazlab.academichub.repository.PositionRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class JobOfferService {
     private final AdminService adminService;
 
     private final DepartmentRepository departmentRepository;
+
+    private final PositionRepository positionRepository;
 
     // create new one
     // delete one
@@ -44,6 +48,10 @@ public class JobOfferService {
         jobOffer.setStartDate(request.getStartDate());
 
         jobOffer.setEndDate(request.getEndDate());
+
+        Position position = positionRepository.findByPositionName(request.getPositionName());
+
+        jobOffer.setPosition(position);
 
         jobOfferRepository.save(jobOffer);
 
