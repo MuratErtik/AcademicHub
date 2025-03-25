@@ -1,5 +1,4 @@
 package com.yazlab.academichub.entities;
-import com.yazlab.academichub.domain.POSITION;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ public class Table3Action {
     @JoinColumn(name = "facultygroup_id", nullable = false)
     private FacultyGroup facultyGroup;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "position", columnDefinition = "VARCHAR(50) NOT NULL")
-    private POSITION position;
+    @ManyToOne
+    @JoinColumn(name = "position_id", nullable = false)
+    private Position position;
 }

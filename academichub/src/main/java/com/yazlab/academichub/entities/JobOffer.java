@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.yazlab.academichub.domain.POSITION;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,8 +42,9 @@ public class JobOffer {
     @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
-    @Enumerated(EnumType.STRING)
-    private POSITION position;
+    @ManyToOne
+    @JoinColumn(name = "position_id", nullable = false)
+    private Position position;
 
     // @ManyToOne
     // @JoinColumn(name = "appointment_requirment_id",nullable = false)
@@ -56,7 +56,7 @@ public class JobOffer {
     @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
     private Set<PublicationCriteria> publicationCriterias = new HashSet<>();
 
-    //prerequ
+    //prerequ do not forget
 
 
     @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)

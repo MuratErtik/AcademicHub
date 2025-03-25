@@ -1,7 +1,8 @@
 package com.yazlab.academichub.entities;
 
-
 import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,19 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class ImportantThingsToFillTable {
-    //Article 7.2
-
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long importantThingsToFillTableId;
+    private Long positionId;
 
-    @ManyToOne
-    @JoinColumn(name = "position_id", nullable = false)
-    private Position position;
-    
-    private String description1;
-
- 
-
+    private String positionName;
 }
