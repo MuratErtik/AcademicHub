@@ -14,6 +14,7 @@ import com.yazlab.academichub.entities.MinMaxPointCriteria;
 import com.yazlab.academichub.entities.Position;
 import com.yazlab.academichub.entities.Table3Action;
 import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.repository.AdminJobOfferRepository;
 import com.yazlab.academichub.repository.DepartmentRepository;
 import com.yazlab.academichub.repository.JobOfferRepository;
@@ -39,13 +40,11 @@ public class JobOfferService {
 
     private final MinMaxPointCriteriaRepository minMaxPointCriteriaRepository;
 
-    // create new one
+    // create new one DONE
     // delete one
     // update one
-    // findjobofferbyId
-    // findjobofferbyposition vs...
-    // searchjobOffer
-    // getAllProduct
+    // findjobofferbyId DONE
+    // findjobofferbyposition vs... DONE
 
     public JobOffer createJobOffer(CreateJobOfferRequest request, User user) {
 
@@ -125,5 +124,34 @@ public class JobOfferService {
 
         return jobOfferRepository.save(jobOffer);
     }
+
+    public JobOffer getJobOfferById(Long jobOfferId) throws JobOfferException{
+
+        JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
+
+        if (jobOffer==null) {
+            throw new  JobOfferException("The product has not been found with id -> " + jobOfferId.toString());
+        }
+        else{
+            return jobOffer;
+        }
+
+    }
+
+    public List<JobOffer> getJobOfferByPosition(String positionName){
+
+        Position position = positionRepository.findByPositionName(positionName);
+
+        String positionId = position.getPositionId().toString();
+        
+
+        return jobOfferRepository.findByPosition(positionId);
+    }
+
+    public List<JobOffer> getAllJobOffer(){
+
+        return jobOfferRepository.findAll();
+    }
+
 
 }
