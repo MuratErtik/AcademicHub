@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -39,7 +38,7 @@ public class JobOffer {
     private LocalDateTime endDate;
 
     @ManyToOne
-    @JoinColumn(name = "department_id",nullable = false)
+    @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
     @ManyToOne
@@ -50,18 +49,16 @@ public class JobOffer {
     // @JoinColumn(name = "appointment_requirment_id",nullable = false)
     // private AppointmentRequirements appointmentRequirements;
 
-    @OneToMany(mappedBy = "jobOffer" /* cascade = CascadeType.ALL, orphanRemoval = true */)
+    @OneToMany
+    @JoinTable(name = "job_offer_criteria_mapping", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "criteria_id"))
     private Set<MinMaxPointCriteria> minMaxPointCriterias = new HashSet<>();
 
     @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
     private Set<PublicationCriteria> publicationCriterias = new HashSet<>();
 
-    //prerequ do not forget
-
+    // prerequ do not forget
 
     @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
     private Set<Application> applications = new HashSet<>();
-
-
 
 }

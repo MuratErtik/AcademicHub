@@ -26,6 +26,6 @@ public class Table3Action {
     private FacultyGroup facultyGroup;
 
     @ManyToOne
-    @JoinColumn(name = "position_id", nullable = false)
+    @JoinColumn(name = "position", nullable = false)
     private Position position;
 }
