@@ -1,15 +1,23 @@
 package com.yazlab.academichub.service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.yazlab.academichub.dto.MinMaxPointCriteriaDTO;
 import com.yazlab.academichub.entities.AdminJobOffer;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.JobOffer;
+import com.yazlab.academichub.entities.MinMaxPointCriteria;
 import com.yazlab.academichub.entities.Position;
+import com.yazlab.academichub.entities.Table3Action;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.repository.AdminJobOfferRepository;
 import com.yazlab.academichub.repository.DepartmentRepository;
 import com.yazlab.academichub.repository.JobOfferRepository;
+import com.yazlab.academichub.repository.MinMaxPointCriteriaRepository;
 import com.yazlab.academichub.repository.PositionRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
 
@@ -28,6 +36,8 @@ public class JobOfferService {
     private final DepartmentRepository departmentRepository;
 
     private final PositionRepository positionRepository;
+
+    private final MinMaxPointCriteriaRepository minMaxPointCriteriaRepository;
 
     // create new one
     // delete one
@@ -60,9 +70,6 @@ public class JobOfferService {
 
         addAdminToJobOffer(user, jobOffer);
 
-        // UserRole userRole =
-        // userRoleRepository.findUserRoleByUserRole(user.getUserRole().getUserRole());
-
         // System.out.println("**************************************************************");
         // // System.out.println(userRole);
         // // System.out.println(roleId);
@@ -88,6 +95,35 @@ public class JobOfferService {
 
         adminJobOfferRepository.save(adminJobOffer);
 
+    }
+
+    public JobOffer addCriteriaToJobOffer(Long jobOfferId) {
+
+        JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
+
+        Long positionId = jobOffer.getPosition().getPositionId();
+
+        List<MinMaxPointCriteriaDTO> criteriaDTOs = minMaxPointCriteriaRepository
+                .findAllWithActionDetails(positionId);
+
+        Set<MinMaxPointCriteria> criteriaSet = criteriaDTOs.stream()
+                .map(dto -> {
+                    MinMaxPointCriteria criteria = new MinMaxPointCriteria();
+                    criteria.setMinMaxPointCriteriaId(dto.getMinMaxPointCriteriaId());
+                    criteria.setMinPoint(dto.getMinPoint());
+                    criteria.setMaxPoint(dto.getMaxPoint());
+
+                    Table3Action action = new Table3Action();
+                    action.setActionName(dto.getActionName());
+                    criteria.setTable3Action(action);
+
+                    return criteria;
+                })
+                .collect(Collectors.toSet());
+
+        jobOffer.setMinMaxPointCriterias(criteriaSet);
+
+        return jobOfferRepository.save(jobOffer);
     }
 
 }
