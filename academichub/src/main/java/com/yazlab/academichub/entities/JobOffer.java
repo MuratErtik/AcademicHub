@@ -1,8 +1,12 @@
 package com.yazlab.academichub.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -60,5 +64,13 @@ public class JobOffer {
 
     @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
     private Set<Application> applications = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "jobOffer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AdminJobOffer> adminJobOffers = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "jobOffer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DepartmentMenagerJobOffer> departmentManagerJobOffers = new ArrayList<>();
 
 }

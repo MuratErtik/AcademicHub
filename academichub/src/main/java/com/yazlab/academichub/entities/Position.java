@@ -1,5 +1,7 @@
 package com.yazlab.academichub.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Position {
+
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long positionId;
