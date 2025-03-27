@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,7 +72,7 @@ public class JobOfferController {
         String email = jwtProvider.getEmailFromJwtToken(jwt);
         String role = jwtProvider.getRolefromjwtByEmail(email);
 
-        if (role.equals("YONETICI") || role.equals("ADMIN") ) {
+        if (role.equals("YONETICI") || role.equals("ADMIN")) {
 
             JobOffer jobOffer = jobOfferService.getJobOfferById(jobOfferId);
 
@@ -84,13 +85,14 @@ public class JobOfferController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getJobOfferByPosition(@RequestHeader("Authorization") String jwt, @RequestParam String positionName)
+    public ResponseEntity<?> getJobOfferByPosition(@RequestHeader("Authorization") String jwt,
+            @RequestParam String positionName)
             throws AdminException, JobOfferException {
 
         String email = jwtProvider.getEmailFromJwtToken(jwt);
         String role = jwtProvider.getRolefromjwtByEmail(email);
 
-        if (role.equals("YONETICI") || role.equals("ADMIN") ) {
+        if (role.equals("YONETICI") || role.equals("ADMIN")) {
 
             List<JobOffer> jobOffers = jobOfferService.getJobOfferByPosition(positionName);
 
@@ -109,7 +111,7 @@ public class JobOfferController {
         String email = jwtProvider.getEmailFromJwtToken(jwt);
         String role = jwtProvider.getRolefromjwtByEmail(email);
 
-        if (role.equals("YONETICI") || role.equals("ADMIN") ) {
+        if (role.equals("YONETICI") || role.equals("ADMIN")) {
 
             List<JobOffer> jobOffers = jobOfferService.getAllJobOffer();
 
@@ -140,4 +142,22 @@ public class JobOfferController {
 
     }
 
+    @DeleteMapping("/{jobOfferId}")
+    public ResponseEntity<Void> deleteProduct(@RequestHeader("Authorization") String jwt, @PathVariable Long jobOfferId)
+            throws JobOfferException, AdminException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+        if (role.equals("YONETICI") || role.equals("ADMIN")) {
+
+            jobOfferService.deleteJobOffer(jobOfferId);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
 }

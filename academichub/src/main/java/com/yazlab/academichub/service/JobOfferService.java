@@ -153,5 +153,11 @@ public class JobOfferService {
         return jobOfferRepository.findAll();
     }
 
+    public void deleteJobOffer(Long jobOfferId){
+
+        JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
+
+        jobOfferRepository.delete(jobOffer);
+    }
 
 }
