@@ -4,6 +4,9 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,15 +19,18 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
     private String secretKey;
 
     @Value("${jwt.expiration}")
-    private long validityInMs; // milliseconds
+    private long validityInMs;
 
     private Key key;
+
+    private final UserRepository userRepository;
 
     @PostConstruct
     protected void init() {
@@ -46,7 +52,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // Token'dan username çıkart
+    // Token'dan username çıkar
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -66,7 +72,7 @@ public class JwtTokenProvider {
         }
     }
 
-    // Request'ten token'ı çek
+    // Request'ten token'ı al
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
@@ -78,12 +84,18 @@ public class JwtTokenProvider {
     // Token'dan Authentication nesnesi üret
     public Authentication getAuthentication(String token) {
         String username = getUsernameFromToken(token);
-
-        // ⚠️ Basit kullanım: kullanıcıya geçici ROLE_USER veriyoruz
+    
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+    
+        String roleName = "ROLE_" + user.getUserRole().name();
+    
         return new UsernamePasswordAuthenticationToken(
                 username,
                 null,
-                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                List.of(new SimpleGrantedAuthority(roleName))
         );
-    }
+    }    
 }

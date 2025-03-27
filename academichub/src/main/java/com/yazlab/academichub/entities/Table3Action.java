@@ -26,7 +26,7 @@ public class Table3Action {
     @JoinColumn(name = "facultygroup_id", nullable = false)
     private FacultyGroup facultyGroup;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "position", columnDefinition = "VARCHAR(50) NOT NULL")
+    //@Enumerated(EnumType.STRING)
+    //@Column(name = "position", columnDefinition = "VARCHAR(50) NOT NULL")
     private POSITION position;
 }
