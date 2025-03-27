@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.dto.MinMaxPointCriteriaDTO;
+import com.yazlab.academichub.dto.PublicationCriteriaDTO;
 import com.yazlab.academichub.entities.AdminJobOffer;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.MinMaxPointCriteria;
 import com.yazlab.academichub.entities.Position;
+import com.yazlab.academichub.entities.PublicationCriteria;
 import com.yazlab.academichub.entities.Table3Action;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.JobOfferException;
@@ -20,6 +22,7 @@ import com.yazlab.academichub.repository.DepartmentRepository;
 import com.yazlab.academichub.repository.JobOfferRepository;
 import com.yazlab.academichub.repository.MinMaxPointCriteriaRepository;
 import com.yazlab.academichub.repository.PositionRepository;
+import com.yazlab.academichub.repository.PublicationCriteriaRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -40,8 +43,10 @@ public class JobOfferService {
 
     private final MinMaxPointCriteriaRepository minMaxPointCriteriaRepository;
 
+    private final PublicationCriteriaRepository publicationCriteriaRepository;
+
     // create new one DONE
-    // delete one
+    // delete one DONE
     // update one
     // findjobofferbyId DONE
     // findjobofferbyposition vs... DONE
@@ -121,6 +126,25 @@ public class JobOfferService {
                 .collect(Collectors.toSet());
 
         jobOffer.setMinMaxPointCriterias(criteriaSet);
+
+        List<PublicationCriteriaDTO> publicationCriteriaDTOs = publicationCriteriaRepository
+                .findAllWithActionDetails(positionId);
+
+        Set<PublicationCriteria> publicationCriteriaSet = publicationCriteriaDTOs.stream()
+                .map(dto -> {
+                    PublicationCriteria criteria = new PublicationCriteria();
+                    criteria.setPublicationCriteriaId(dto.getPublicationCriteriaId());
+                    criteria.setArticleCount(dto.getArticleCount());
+
+                    Table3Action action = new Table3Action();
+                    action.setActionName(dto.getActionName());
+                    criteria.setTable3Action(action);
+
+                    return criteria;
+                })
+                .collect(Collectors.toSet());
+
+        jobOffer.setPublicationCriterias(publicationCriteriaSet);
 
         return jobOfferRepository.save(jobOffer);
     }

@@ -23,6 +23,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class JobOffer {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobOfferId;
@@ -57,7 +58,8 @@ public class JobOffer {
     @JoinTable(name = "job_offer_criteria_mapping", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "criteria_id"))
     private Set<MinMaxPointCriteria> minMaxPointCriterias = new HashSet<>();
 
-    @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
+    @OneToMany
+    @JoinTable(name = "job_offer_publication_criteria_mapping", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "criteria_id"))
     private Set<PublicationCriteria> publicationCriterias = new HashSet<>();
 
     // prerequ do not forget

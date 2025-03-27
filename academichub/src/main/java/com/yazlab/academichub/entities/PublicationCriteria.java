@@ -22,9 +22,9 @@ public class PublicationCriteria {
     @JoinColumn(name = "table3Action_id", nullable = false)
     private Table3Action table3Action;
 
-    @ManyToOne
-    @JoinColumn(name = "job_offer_id")
-    private JobOffer jobOffer;
+    // @ManyToOne
+    // @JoinColumn(name = "job_offer_id")
+    // private JobOffer jobOffer;
 
     private int articleCount; 
 
