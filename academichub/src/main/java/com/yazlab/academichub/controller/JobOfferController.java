@@ -160,4 +160,19 @@ public class JobOfferController {
         }
 
     }
+
+    @PutMapping("/{jobOfferId}")
+    public ResponseEntity<JobOffer> updateProduct(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long jobOfferId, @RequestBody CreateJobOfferRequest request) {
+        try {
+
+            jobOfferService.updateJobOffer(jobOfferId, request);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (JobOfferException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+
+    }
 }

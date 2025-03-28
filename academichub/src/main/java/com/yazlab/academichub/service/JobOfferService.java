@@ -149,39 +149,78 @@ public class JobOfferService {
         return jobOfferRepository.save(jobOffer);
     }
 
-    public JobOffer getJobOfferById(Long jobOfferId) throws JobOfferException{
+    public JobOffer getJobOfferById(Long jobOfferId) throws JobOfferException {
 
         JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
 
-        if (jobOffer==null) {
-            throw new  JobOfferException("The product has not been found with id -> " + jobOfferId.toString());
-        }
-        else{
+        if (jobOffer == null) {
+            throw new JobOfferException("The product has not been found with id -> " + jobOfferId.toString());
+        } else {
             return jobOffer;
         }
 
     }
 
-    public List<JobOffer> getJobOfferByPosition(String positionName){
+    public List<JobOffer> getJobOfferByPosition(String positionName) {
 
         Position position = positionRepository.findByPositionName(positionName);
 
         String positionId = position.getPositionId().toString();
-        
 
         return jobOfferRepository.findByPosition(positionId);
     }
 
-    public List<JobOffer> getAllJobOffer(){
+    public List<JobOffer> getAllJobOffer() {
 
         return jobOfferRepository.findAll();
     }
 
-    public void deleteJobOffer(Long jobOfferId){
+    public void deleteJobOffer(Long jobOfferId) {
 
         JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
 
         jobOfferRepository.delete(jobOffer);
     }
 
+    public JobOffer updateJobOffer(Long jobOfferId, CreateJobOfferRequest request) throws JobOfferException {
+
+        JobOffer existJobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
+
+        if (existJobOffer.getTitle() != null) {
+            existJobOffer.setTitle(request.getTitle());
+        }
+
+        if (existJobOffer.getDescription() != null) {
+            existJobOffer.setDescription(request.getDescription());
+        }
+
+        if (existJobOffer.getDescription() != null) {
+            existJobOffer.setDescription(request.getDescription());
+        }
+
+        if (existJobOffer.getStartDate() != null) {
+            existJobOffer.setStartDate(request.getStartDate());
+        }
+
+        if (existJobOffer.getEndDate() != null) {
+            existJobOffer.setEndDate(request.getEndDate());
+        }
+
+        Department department = departmentRepository.findByDepartmentName(request.getDepartmentName());
+
+        if (existJobOffer.getDepartment() != null) {
+            existJobOffer.setDepartment(department);
+        }
+
+        Position position = positionRepository.findByPositionName(request.getPositionName());
+
+        if (existJobOffer.getPosition() != null) {
+            existJobOffer.setPosition(position);
+        }
+
+        adminService.addManegerToJobOffer(department.getDepartmentId(), existJobOffer);
+
+        return jobOfferRepository.save(existJobOffer);
+
+    }
 }
