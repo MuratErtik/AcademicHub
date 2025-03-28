@@ -1,7 +1,6 @@
 package com.yazlab.academichub.request;
 
 
-import com.yazlab.academichub.domain.USER_ROLE;
 
 import lombok.Data;
 
@@ -22,6 +21,6 @@ public class OtherSignupRequest {
 
     private String departmentName; 
 
-    private USER_ROLE role;
+    private String role;
 
 }

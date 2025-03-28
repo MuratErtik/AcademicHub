@@ -34,4 +34,28 @@ public class GlobalException {
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(AdminException.class)
+    public ResponseEntity<ErrorDetail> AdminExceptionHandler(AdminException ae, WebRequest webRequest) {
+
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(ae.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(JobOfferException.class)
+    public ResponseEntity<ErrorDetail> AdminExceptionHandler(JobOfferException joe, WebRequest webRequest) {
+
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(joe.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+
+    }
 }

@@ -1,6 +1,5 @@
 package com.yazlab.academichub.entities;
 
-import com.yazlab.academichub.domain.POSITION;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,8 +21,9 @@ public class ImportantThingsToFillTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long importantThingsToFillTableId;
 
-    @Enumerated(EnumType.STRING)
-    private POSITION position;
+    @ManyToOne
+    @JoinColumn(name = "position_id", nullable = false)
+    private Position position;
     
     private String description1;
 

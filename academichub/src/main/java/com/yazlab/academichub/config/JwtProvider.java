@@ -1,10 +1,8 @@
 package com.yazlab.academichub.config;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.crypto.SecretKey;
@@ -13,12 +11,24 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.entities.UserRole;
+import com.yazlab.academichub.exception.AdminException;
+import com.yazlab.academichub.repository.UserRepository;
+import com.yazlab.academichub.repository.UserRoleRepository;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class JwtProvider {
+
+    private final UserRoleRepository userRoleRepository;
+
+    private final UserRepository userRepository;
 
     SecretKey secretKey = Keys.hmacShaKeyFor(JWT_CONSTANT.SECRET_KEY.getBytes());
 
@@ -63,27 +73,36 @@ public class JwtProvider {
 
     }
 
-    public List<String> getUserRolesFromJwtToken(String jwt) {
-
+    public UserRole getUserRoleFromJwtToken(String jwt) {
         try {
-
             if (jwt == null || !jwt.startsWith("Bearer ")) {
-
                 throw new IllegalArgumentException("Invalid token");
-
             }
 
             jwt = jwt.substring(7);
 
             Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwt).getBody();
-
             String authorities = (String) claims.get("authorities");
 
-            return Arrays.asList(authorities.split(","));
+            System.out.println("Authorities from token: " + authorities);
+            System.out.println("************************************");
+
+            
+            String authority = authorities.split(",")[0].trim(); 
+
+           
+            UserRole userRole = userRoleRepository.findUserRoleByUserRole(authority);
+
+            if (userRole == null) {
+                System.out.println("User role not found in database for authority: " + authority);
+                System.out.println("************************************");
+
+            }
+
+            return userRole;
 
         } catch (Exception e) {
-
-            throw new RuntimeException("Failed to extract user roles from JWT", e);
+            throw new RuntimeException("Failed to extract user role from JWT", e);
         }
     }
 
@@ -98,6 +117,17 @@ public class JwtProvider {
         }
 
         return String.join(",", auths);
+
+    }
+
+    public String getRolefromjwtByEmail(String email) throws AdminException {
+
+        User user = userRepository.findByEmail(email);
+
+        UserRole userRole = userRoleRepository.findById(user.getUserRole().getUserRoleId())
+                .orElseThrow(() -> new AdminException("Role has not found!"));
+
+        return userRole.getUserRole();
 
     }
 }

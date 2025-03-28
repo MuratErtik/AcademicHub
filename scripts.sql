@@ -642,3 +642,14 @@ INSERT INTO table4 (publisher_count,coefficient ) VALUES
 
 --2 more table going to add document must read again
 >>>>>>> 9f320b7 (scripts have been added.)
+
+
+INSERT INTO prerequisites (position, foreign_language_exam_point, ethics_committee_statement)
+VALUES (1, 65, 'Adli Sicil Kaydı ve Dil Sınavı PDF Formatında girilmelidir.'),
+ (2, 65, 'Adli Sicil Kaydı ve Dil Sınavı PDF Formatında girilmelidir.'),
+ (3, 65, 'Adli Sicil Kaydı ve Dil Sınavı PDF Formatında girilmelidir.'),
+ (4, 65, 'Adli Sicil Kaydı ve Dil Sınavı PDF Formatında girilmelidir.');
+
+
+INSERT INTO appointment_requirements (position, facultygroup_id, minmaxxpointcriteria_id, prerequisites_id, publicationcriteria_id)
+VALUES (1, 1, 1, 1, 101);

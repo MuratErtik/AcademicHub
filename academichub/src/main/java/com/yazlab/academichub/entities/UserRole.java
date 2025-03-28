@@ -1,9 +1,8 @@
 package com.yazlab.academichub.entities;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,18 +15,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Department {
+public class UserRole {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long departmentId;
+    private Long userRoleId;
 
-    private String departmentName;
+    private String userRole;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "faculty_id",nullable = false)
-    private Faculty faculty;
+
 
 }

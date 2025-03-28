@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yazlab.academichub.entities.UserRole;
 import com.yazlab.academichub.exception.AuthException;
+import com.yazlab.academichub.repository.UserRoleRepository;
 import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.request.SignupRequest;
 import com.yazlab.academichub.response.AuthResponse;
@@ -20,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
+
+    private final UserRoleRepository userRoleRepository;
 
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> loginHandler(@RequestBody SignupRequest signupRequest) throws AuthException {
@@ -50,7 +54,10 @@ public class AuthController {
     @PostMapping("user-signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody OtherSignupRequest request) {
 
-        String jwt = authService.createUser(request, request.getRole());
+        UserRole userRole = userRoleRepository.findUserRoleByUserRole(request.getRole());
+
+
+        String jwt = authService.createUser(request, userRole);
 
         AuthResponse authResponse = new AuthResponse();
 
@@ -58,7 +65,7 @@ public class AuthController {
 
         authResponse.setMessage("Registered Successfully");
 
-        authResponse.setRole(request.getRole());
+        authResponse.setRole(userRole);
 
         return ResponseEntity.ok(authResponse);
 

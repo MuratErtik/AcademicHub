@@ -3,6 +3,8 @@ package com.yazlab.academichub.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,22 +17,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Table3Action {
+public class Position {
 
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long table3ActionId;
+    private Long positionId;
 
-    private String actionName; 
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "facultygroup_id", nullable = false)
-    private FacultyGroup facultyGroup;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "position", nullable = false)
-    private Position position;
+    private String positionName;
 }

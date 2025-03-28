@@ -2,7 +2,6 @@ package com.yazlab.academichub.entities;
 
 
 
-import com.yazlab.academichub.domain.USER_ROLE;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,9 +26,10 @@ public class User {
     @Column(name = "tc_no", unique = true, nullable = false)
     private String tcNo;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private USER_ROLE userRole;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id",nullable = false)
+    private UserRole userRole;
 
     private String name;
 
