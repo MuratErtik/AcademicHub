@@ -57,6 +57,10 @@ public class JobOfferService {
 
         Department department = departmentRepository.findByDepartmentName(request.getDepartmentName());
 
+        jobOffer.setTitle(request.getTitle());
+
+        jobOffer.setDescription(request.getDescription());
+
         jobOffer.setDepartment(department);
 
         jobOffer.setStartDate(request.getStartDate());
