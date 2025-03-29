@@ -22,6 +22,7 @@ import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.JobOfferResonseToAdmin;
 import com.yazlab.academichub.response.UserResponse;
 import com.yazlab.academichub.service.AdminService;
 import com.yazlab.academichub.service.JobOfferService;
@@ -80,7 +81,7 @@ public class JobOfferController {
 
         if (role.equals("YONETICI") || role.equals("ADMIN")) {
 
-            JobOffer jobOffer = jobOfferService.getJobOfferById(jobOfferId);
+            JobOfferResonseToAdmin jobOffer = jobOfferService.getJobOfferById(jobOfferId);
 
             return new ResponseEntity<>(jobOffer, HttpStatus.OK);
 

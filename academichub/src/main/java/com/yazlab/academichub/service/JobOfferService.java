@@ -24,6 +24,7 @@ import com.yazlab.academichub.repository.MinMaxPointCriteriaRepository;
 import com.yazlab.academichub.repository.PositionRepository;
 import com.yazlab.academichub.repository.PublicationCriteriaRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.JobOfferResonseToAdmin;
 
 import lombok.RequiredArgsConstructor;
 
@@ -153,15 +154,39 @@ public class JobOfferService {
         return jobOfferRepository.save(jobOffer);
     }
 
-    public JobOffer getJobOfferById(Long jobOfferId) throws JobOfferException {
+    public JobOfferResonseToAdmin getJobOfferById(Long jobOfferId) throws JobOfferException {
 
         JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
 
         if (jobOffer == null) {
             throw new JobOfferException("The product has not been found with id -> " + jobOfferId.toString());
         } else {
-            return jobOffer;
+            return convertResonseToAdmin(jobOffer);
         }
+
+    }
+
+    public JobOfferResonseToAdmin convertResonseToAdmin(JobOffer jobOffer){
+
+        JobOfferResonseToAdmin jobOfferResonseToAdmin = new JobOfferResonseToAdmin();
+
+        jobOfferResonseToAdmin.setTitle(jobOffer.getTitle());
+
+        jobOfferResonseToAdmin.setDescription(jobOffer.getDescription());
+
+        jobOfferResonseToAdmin.setStartDate(jobOffer.getStartDate());
+
+        jobOfferResonseToAdmin.setEndDate(jobOffer.getEndDate());
+
+        jobOfferResonseToAdmin.setDepartmentName(jobOffer.getDepartment().getDepartmentName());
+
+        jobOfferResonseToAdmin.setPositionName(jobOffer.getPosition().getPositionName());
+
+        jobOfferResonseToAdmin.setMinMaxPointCriterias(jobOffer.getMinMaxPointCriterias());
+
+        jobOfferResonseToAdmin.setPublicationCriterias(jobOffer.getPublicationCriterias());
+
+        return jobOfferResonseToAdmin;
 
     }
 
@@ -173,6 +198,8 @@ public class JobOfferService {
 
         return jobOfferRepository.findByPosition(positionId);
     }
+
+
 
     public List<JobOffer> getAllJobOffer() {
 
