@@ -104,7 +104,7 @@ public class JobOfferController {
 
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<?> getAllJobOffer(@RequestHeader("Authorization") String jwt)
             throws AdminException, JobOfferException {
 
