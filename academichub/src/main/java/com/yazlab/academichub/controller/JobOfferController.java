@@ -62,7 +62,7 @@ public class JobOfferController {
 
             User user2 = userRepository.findByEmail(user.getEmail());
 
-            JobOffer jobOffer = jobOfferService.createJobOffer(request, user2);
+            JobOfferResonseToAdmin jobOffer = jobOfferService.createJobOffer(request, user2);
 
             return new ResponseEntity<>(jobOffer, HttpStatus.CREATED);
 
@@ -139,7 +139,7 @@ public class JobOfferController {
 
         if (role.equals("YONETICI")) {
 
-            JobOffer jobOffer = jobOfferService.addCriteriaToJobOffer(jobOfferId);
+            JobOfferResonseToAdmin jobOffer = jobOfferService.addCriteriaToJobOffer(jobOfferId);
 
             return new ResponseEntity<>(jobOffer, HttpStatus.OK);
 

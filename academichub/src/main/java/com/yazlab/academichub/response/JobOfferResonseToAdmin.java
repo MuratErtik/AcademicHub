@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.MinMaxPointCriteria;
 import com.yazlab.academichub.entities.PublicationCriteria;
 
@@ -27,4 +28,6 @@ public class JobOfferResonseToAdmin {
     private Set<MinMaxPointCriteria> minMaxPointCriterias = new HashSet<>();
 
     private Set<PublicationCriteria> publicationCriterias = new HashSet<>();
+
+    private Set<Application> applications = new HashSet<>();
 }

@@ -52,7 +52,7 @@ public class JobOfferService {
     // findjobofferbyId DONE
     // findjobofferbyposition vs... DONE
 
-    public JobOffer createJobOffer(CreateJobOfferRequest request, User user) {
+    public JobOfferResonseToAdmin createJobOffer(CreateJobOfferRequest request, User user) {
 
         JobOffer jobOffer = new JobOffer();
 
@@ -90,7 +90,7 @@ public class JobOfferService {
 
         adminService.addManegerToJobOffer(department.getDepartmentId(), jobOffer);
 
-        return jobOffer;
+        return convertResonseToAdmin(jobOffer);
 
     }
 
@@ -106,7 +106,7 @@ public class JobOfferService {
 
     }
 
-    public JobOffer addCriteriaToJobOffer(Long jobOfferId) {
+    public JobOfferResonseToAdmin addCriteriaToJobOffer(Long jobOfferId) {
 
         JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
 
@@ -151,7 +151,9 @@ public class JobOfferService {
 
         jobOffer.setPublicationCriterias(publicationCriteriaSet);
 
-        return jobOfferRepository.save(jobOffer);
+        jobOfferRepository.save(jobOffer);
+
+        return convertResonseToAdmin(jobOffer);
     }
 
     public JobOfferResonseToAdmin getJobOfferById(Long jobOfferId) throws JobOfferException {
