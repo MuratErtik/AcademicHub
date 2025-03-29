@@ -1,14 +1,15 @@
 package com.yazlab.academichub.response;
 
-import com.yazlab.academichub.entities.Department;
-import com.yazlab.academichub.entities.UserRole;
+
 
 import lombok.Data;
 
 @Data
 public class UserResponse {
 
-    private UserRole userRole;
+    private Long userId;
+
+    private String userRole;
 
     private String name;
 
@@ -18,5 +19,5 @@ public class UserResponse {
 
     private Long mobileNo;
 
-    private Department department;
+    private String departmentName;
 }
