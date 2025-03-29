@@ -20,7 +20,9 @@ import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.JobOfferException;
+import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.UserResponse;
 import com.yazlab.academichub.service.AdminService;
 import com.yazlab.academichub.service.JobOfferService;
 
@@ -36,6 +38,8 @@ public class JobOfferController {
     private final JwtProvider jwtProvider;
 
     private final AdminService adminService;
+
+    private final UserRepository userRepository;
 
     @PostMapping("/add")
     public ResponseEntity<?> createJobOffer(@RequestBody CreateJobOfferRequest request,
@@ -53,9 +57,11 @@ public class JobOfferController {
 
         if (role.equals("ADMIN")) {
 
-            User user = adminService.getAdminByEmail(email);
+            UserResponse user = (UserResponse) adminService.getAdminByEmail(email);
 
-            JobOffer jobOffer = jobOfferService.createJobOffer(request, user);
+            User user2 = userRepository.findByEmail(user.getEmail());
+
+            JobOffer jobOffer = jobOfferService.createJobOffer(request, user2);
 
             return new ResponseEntity<>(jobOffer, HttpStatus.CREATED);
 
