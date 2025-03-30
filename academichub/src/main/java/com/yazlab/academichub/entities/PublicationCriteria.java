@@ -1,4 +1,6 @@
 package com.yazlab.academichub.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -14,6 +16,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class PublicationCriteria {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long publicationCriteriaId;
