@@ -2,8 +2,6 @@ package com.yazlab.academichub.entities;
 
 import java.time.LocalDate;
 
-import com.yazlab.academichub.domain.APPLICATIONSTATUS;
-import com.yazlab.academichub.domain.IsCompleted;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,11 +32,12 @@ public class Application {
 
     private LocalDate applicationDate;
 
-    @Enumerated(EnumType.STRING)
-    private IsCompleted isCompleted = IsCompleted.START;
+    // @Enumerated(EnumType.STRING)
+    // private IsCompleted isCompleted = IsCompleted.START;
 
-    @Enumerated(EnumType.STRING)
-    private APPLICATIONSTATUS applicationStatus;
+    @ManyToOne
+    @JoinColumn(name = "application_status_id")
+    private ApplicationStatus applicationStatus;
 
     // @ManyToOne
     // @JoinColumn(name = "candidate_document_id", nullable = false)
