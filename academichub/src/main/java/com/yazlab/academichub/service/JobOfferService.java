@@ -1,5 +1,6 @@
 package com.yazlab.academichub.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.yazlab.academichub.dto.MinMaxPointCriteriaDTO;
 import com.yazlab.academichub.dto.PublicationCriteriaDTO;
 import com.yazlab.academichub.entities.AdminJobOffer;
+import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.MinMaxPointCriteria;
@@ -24,6 +26,7 @@ import com.yazlab.academichub.repository.MinMaxPointCriteriaRepository;
 import com.yazlab.academichub.repository.PositionRepository;
 import com.yazlab.academichub.repository.PublicationCriteriaRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.ApplicationResponse;
 import com.yazlab.academichub.response.JobOfferResonseToAdmin;
 
 import lombok.RequiredArgsConstructor;
@@ -168,7 +171,7 @@ public class JobOfferService {
 
     }
 
-    public JobOfferResonseToAdmin convertResonseToAdmin(JobOffer jobOffer){
+    public JobOfferResonseToAdmin convertResonseToAdmin(JobOffer jobOffer) {
 
         JobOfferResonseToAdmin jobOfferResonseToAdmin = new JobOfferResonseToAdmin();
 
@@ -190,8 +193,43 @@ public class JobOfferService {
 
         jobOfferResonseToAdmin.setPublicationCriterias(jobOffer.getPublicationCriterias());
 
+        
+        Set<ApplicationResponse> applicationResponses = convert(jobOffer.getApplications());
+
+        jobOfferResonseToAdmin.setApplications(applicationResponses);
+
         return jobOfferResonseToAdmin;
 
+    }
+
+    public Set<ApplicationResponse> convert(Set<Application> applications) {
+        return applications.stream()
+                .map(this::convertSingleApplication)
+                .collect(Collectors.toSet());
+    }
+
+    private ApplicationResponse convertSingleApplication(Application application) {
+        ApplicationResponse applicationResponse = new ApplicationResponse();
+
+        applicationResponse.setApplicationId(application.getApplicationId());
+
+        if (application.getCandidate() != null) {
+            applicationResponse.setUserId(application.getCandidate().getUserId());
+        }
+
+        applicationResponse.setApplicationDate(application.getApplicationDate());
+
+        if (application.getApplicationStatus() != null) {
+            applicationResponse.setApplicationStatusName(application.getApplicationStatus().getApplicationStatus());
+        }
+
+        if (application.getArticles() != null) {
+            applicationResponse.setArticles(application.getArticles());
+        } else {
+            applicationResponse.setArticles(new HashSet<>());
+        }
+
+        return applicationResponse;
     }
 
     public List<JobOffer> getJobOfferByPosition(String positionName) {
@@ -202,8 +240,6 @@ public class JobOfferService {
 
         return jobOfferRepository.findByPosition(positionId);
     }
-
-
 
     public List<JobOffer> getAllJobOffer() {
 
