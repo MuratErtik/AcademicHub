@@ -77,9 +77,6 @@ public class JobOffer {
     private List<DepartmentMenagerJobOffer> departmentManagerJobOffers = new ArrayList<>();
 
     public void addApplication(Application application) {
-        if (this.applications == null) {
-            this.applications = new HashSet<>();
-        }
         this.applications.add(application);
         application.setJobOffer(this);
     }
