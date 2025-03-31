@@ -1,7 +1,10 @@
 package com.yazlab.academichub.entities;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,4 +46,6 @@ public class Application {
     // @JoinColumn(name = "candidate_document_id", nullable = false)
     // private CandidateDocument candidateDocument;
 
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateArticle> articles = new HashSet<>();
 }
