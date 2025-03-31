@@ -35,7 +35,8 @@ public class CandidateArticle {
 
     private int authorCount;
 
-    @OneToMany(mappedBy = "candidateArticle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "article_id") 
     private Set<CandidateAuthor> authors = new HashSet<>();
 
     private String photoLink;
