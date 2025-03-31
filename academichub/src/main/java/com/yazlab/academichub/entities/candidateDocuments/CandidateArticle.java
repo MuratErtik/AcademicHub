@@ -1,5 +1,8 @@
 package com.yazlab.academichub.entities.candidateDocuments;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.ArticleType;
 
@@ -31,6 +34,9 @@ public class CandidateArticle {
     private String articleCategory; // A1,A2... it will equal to category+id in Article class.
 
     private int authorCount;
+
+    @OneToMany(mappedBy = "candidateArticle", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CandidateAuthor> authors = new HashSet<>();
 
     private String photoLink;
 

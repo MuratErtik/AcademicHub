@@ -18,7 +18,7 @@ public class AuthorType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int authorType;
+    private String authorTypeName;
 
     private double coefficient;
 }
