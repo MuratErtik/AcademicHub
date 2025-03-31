@@ -65,7 +65,8 @@ public class AuthController {
 
         authResponse.setMessage("Registered Successfully");
 
-        authResponse.setRole(userRole);
+        authResponse.setRole(userRole.getUserRole());
+
 
         return ResponseEntity.ok(authResponse);
 

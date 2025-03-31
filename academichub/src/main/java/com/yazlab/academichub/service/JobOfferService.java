@@ -24,6 +24,7 @@ import com.yazlab.academichub.repository.MinMaxPointCriteriaRepository;
 import com.yazlab.academichub.repository.PositionRepository;
 import com.yazlab.academichub.repository.PublicationCriteriaRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.JobOfferResonseToAdmin;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,7 +52,7 @@ public class JobOfferService {
     // findjobofferbyId DONE
     // findjobofferbyposition vs... DONE
 
-    public JobOffer createJobOffer(CreateJobOfferRequest request, User user) {
+    public JobOfferResonseToAdmin createJobOffer(CreateJobOfferRequest request, User user) {
 
         JobOffer jobOffer = new JobOffer();
 
@@ -89,7 +90,7 @@ public class JobOfferService {
 
         adminService.addManegerToJobOffer(department.getDepartmentId(), jobOffer);
 
-        return jobOffer;
+        return convertResonseToAdmin(jobOffer);
 
     }
 
@@ -105,7 +106,7 @@ public class JobOfferService {
 
     }
 
-    public JobOffer addCriteriaToJobOffer(Long jobOfferId) {
+    public JobOfferResonseToAdmin addCriteriaToJobOffer(Long jobOfferId) {
 
         JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
 
@@ -150,18 +151,46 @@ public class JobOfferService {
 
         jobOffer.setPublicationCriterias(publicationCriteriaSet);
 
-        return jobOfferRepository.save(jobOffer);
+        jobOfferRepository.save(jobOffer);
+
+        return convertResonseToAdmin(jobOffer);
     }
 
-    public JobOffer getJobOfferById(Long jobOfferId) throws JobOfferException {
+    public JobOfferResonseToAdmin getJobOfferById(Long jobOfferId) throws JobOfferException {
 
         JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
 
         if (jobOffer == null) {
             throw new JobOfferException("The product has not been found with id -> " + jobOfferId.toString());
         } else {
-            return jobOffer;
+            return convertResonseToAdmin(jobOffer);
         }
+
+    }
+
+    public JobOfferResonseToAdmin convertResonseToAdmin(JobOffer jobOffer){
+
+        JobOfferResonseToAdmin jobOfferResonseToAdmin = new JobOfferResonseToAdmin();
+
+        jobOfferResonseToAdmin.setJobOfferId(jobOffer.getJobOfferId());
+
+        jobOfferResonseToAdmin.setTitle(jobOffer.getTitle());
+
+        jobOfferResonseToAdmin.setDescription(jobOffer.getDescription());
+
+        jobOfferResonseToAdmin.setStartDate(jobOffer.getStartDate());
+
+        jobOfferResonseToAdmin.setEndDate(jobOffer.getEndDate());
+
+        jobOfferResonseToAdmin.setDepartmentName(jobOffer.getDepartment().getDepartmentName());
+
+        jobOfferResonseToAdmin.setPositionName(jobOffer.getPosition().getPositionName());
+
+        jobOfferResonseToAdmin.setMinMaxPointCriterias(jobOffer.getMinMaxPointCriterias());
+
+        jobOfferResonseToAdmin.setPublicationCriterias(jobOffer.getPublicationCriterias());
+
+        return jobOfferResonseToAdmin;
 
     }
 
@@ -173,6 +202,8 @@ public class JobOfferService {
 
         return jobOfferRepository.findByPosition(positionId);
     }
+
+
 
     public List<JobOffer> getAllJobOffer() {
 

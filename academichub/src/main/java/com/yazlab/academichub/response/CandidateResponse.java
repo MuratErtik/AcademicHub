@@ -1,11 +1,13 @@
 package com.yazlab.academichub.response;
 
+import java.util.Set;
 
+import com.yazlab.academichub.entities.Application;
 
 import lombok.Data;
 
 @Data
-public class UserResponse {
+public class CandidateResponse {
 
     private Long userId;
 
@@ -19,5 +21,7 @@ public class UserResponse {
 
     private Long mobileNo;
 
-    private String departmentName;
+    private Set<Application> applications;    
 }
+
+

@@ -108,7 +108,9 @@ public class AuthService {
 
         UserRole userRole = userRoleRepository.findUserRoleByUserRole(req.getUserRole());
 
-        authResponse.setRole(userRole);
+        authResponse.setRole(userRole.getUserRole());
+
+        authResponse.setUserId(user.getUserId());
 
         return authResponse;
 
@@ -195,7 +197,9 @@ public class AuthService {
         // UserRole userRole = userRoleRepository.findUserRoleByUserRole(request.getRole());
 
 
-        authResponse.setRole(user.getUserRole());
+        authResponse.setRole(user.getUserRole().getUserRole());
+
+        authResponse.setUserId(user.getUserId());
 
         return authResponse;
     }

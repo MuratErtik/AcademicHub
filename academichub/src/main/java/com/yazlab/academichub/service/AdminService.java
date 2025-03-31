@@ -1,10 +1,12 @@
 package com.yazlab.academichub.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.DepartmentMenagerJobOffer;
 import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.User;
@@ -13,6 +15,7 @@ import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.repository.DepartmentMenagerJobOfferRepository;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.repository.UserRoleRepository;
+import com.yazlab.academichub.response.CandidateResponse;
 import com.yazlab.academichub.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -35,36 +38,73 @@ public class AdminService {
 
     private final UserRoleRepository userRoleRepository;
 
-    public List<UserResponse> getUsersByRole(String role) {
+    public List<?> getUsersByRole(String role) {
 
         UserRole userRole = userRoleRepository.findUserRoleByUserRole(role);
 
         List<User> users = userRepository.findByUserRole(userRole);
 
-        List<UserResponse> userResponses = users.stream()
-                .map(this::convertToUserResponse)
-                .collect(Collectors.toList());
+        if (role.equals("ADAY")) {
 
-        return userResponses;
+            List<CandidateResponse> candidateResponse = users.stream()
+                    .map(this::convertToCandidateResponse)
+                    .collect(Collectors.toList());
+
+            return candidateResponse;
+
+
+        } else {
+            List<UserResponse> userResponses = users.stream()
+                    .map(this::convertToUserResponse)
+                    .collect(Collectors.toList());
+
+            return userResponses;
+        }
+
     }
 
     public UserResponse convertToUserResponse(User user) {
 
         UserResponse userResponse = new UserResponse();
 
+        userResponse.setUserId(user.getUserId());
+
         userResponse.setName(user.getName());
 
         userResponse.setLastname(user.getLastname());
 
-        userResponse.setDepartment(user.getDepartment());
+        userResponse.setDepartmentName(Optional.ofNullable(user.getDepartment())
+                .map(Department::getDepartmentName)
+                .orElse(null));
 
         userResponse.setEmail(user.getEmail());
 
         userResponse.setMobileNo(user.getMobileNo());
 
-        userResponse.setUserRole(user.getUserRole());
+        userResponse.setUserRole(user.getUserRole().getUserRole());
 
         return userResponse;
+    }
+
+    public CandidateResponse convertToCandidateResponse(User user) {
+
+        CandidateResponse candidateResponse = new CandidateResponse();
+
+        candidateResponse.setUserId(user.getUserId());
+
+        candidateResponse.setName(user.getName());
+
+        candidateResponse.setLastname(user.getLastname());
+
+        candidateResponse.setEmail(user.getEmail());
+
+        candidateResponse.setMobileNo(user.getMobileNo());
+
+        candidateResponse.setUserRole(user.getUserRole().getUserRole());
+
+        // candidateResponse.setApplications(); handle it later!!!
+
+        return candidateResponse;
     }
 
     // ilana yonetici eklemem lazim!
@@ -91,21 +131,39 @@ public class AdminService {
         return departmentMenagerJobOfferRepository.save(departmentMenagerJobOffer);
     }
 
-    public User getAdminByEmail(String email) throws AdminException {
+    public Object getAdminByEmail(String email) throws AdminException {
 
         String cleanedEmail = email.trim().replace("\"", "");
 
         User user = userRepository.findByEmail(cleanedEmail);
 
-        // System.out.println("*********************************************");
-        // System.out.println(email);
-        // System.out.println("*********************************************");
-
         if (user == null) {
             throw new AdminException("Admin could not find with email -> " + cleanedEmail);
         }
 
-        return user;
+        if (user.getUserRole().getUserRole().equals("ADAY")) {
+            
+            CandidateResponse candidateResponse = convertToCandidateResponse(user);
+
+            return candidateResponse;
+        }
+
+        else{
+
+            UserResponse userResponse = convertToUserResponse(user);
+
+            return userResponse;
+
+        }
+
+        
+
+        // System.out.println("*********************************************");
+        // System.out.println(email);
+        // System.out.println("*********************************************");
+
+
+
     }
 
 }

@@ -20,7 +20,10 @@ import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.JobOfferException;
+import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.JobOfferResonseToAdmin;
+import com.yazlab.academichub.response.UserResponse;
 import com.yazlab.academichub.service.AdminService;
 import com.yazlab.academichub.service.JobOfferService;
 
@@ -36,6 +39,8 @@ public class JobOfferController {
     private final JwtProvider jwtProvider;
 
     private final AdminService adminService;
+
+    private final UserRepository userRepository;
 
     @PostMapping("/add")
     public ResponseEntity<?> createJobOffer(@RequestBody CreateJobOfferRequest request,
@@ -53,9 +58,11 @@ public class JobOfferController {
 
         if (role.equals("ADMIN")) {
 
-            User user = adminService.getAdminByEmail(email);
+            UserResponse user = (UserResponse) adminService.getAdminByEmail(email);
 
-            JobOffer jobOffer = jobOfferService.createJobOffer(request, user);
+            User user2 = userRepository.findByEmail(user.getEmail());
+
+            JobOfferResonseToAdmin jobOffer = jobOfferService.createJobOffer(request, user2);
 
             return new ResponseEntity<>(jobOffer, HttpStatus.CREATED);
 
@@ -74,7 +81,7 @@ public class JobOfferController {
 
         if (role.equals("YONETICI") || role.equals("ADMIN")) {
 
-            JobOffer jobOffer = jobOfferService.getJobOfferById(jobOfferId);
+            JobOfferResonseToAdmin jobOffer = jobOfferService.getJobOfferById(jobOfferId);
 
             return new ResponseEntity<>(jobOffer, HttpStatus.OK);
 
@@ -104,7 +111,7 @@ public class JobOfferController {
 
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<?> getAllJobOffer(@RequestHeader("Authorization") String jwt)
             throws AdminException, JobOfferException {
 
@@ -132,7 +139,7 @@ public class JobOfferController {
 
         if (role.equals("YONETICI")) {
 
-            JobOffer jobOffer = jobOfferService.addCriteriaToJobOffer(jobOfferId);
+            JobOfferResonseToAdmin jobOffer = jobOfferService.addCriteriaToJobOffer(jobOfferId);
 
             return new ResponseEntity<>(jobOffer, HttpStatus.OK);
 
