@@ -11,6 +11,9 @@ import lombok.Data;
 
 @Data
 public class JobOfferResponse {
+
+    private Long jobOfferId;
+
     private String title;
 
     private String description;

@@ -172,6 +172,8 @@ public class JobOfferService {
 
         JobOfferResonseToAdmin jobOfferResonseToAdmin = new JobOfferResonseToAdmin();
 
+        jobOfferResonseToAdmin.setJobOfferId(jobOffer.getJobOfferId());
+
         jobOfferResonseToAdmin.setTitle(jobOffer.getTitle());
 
         jobOfferResonseToAdmin.setDescription(jobOffer.getDescription());

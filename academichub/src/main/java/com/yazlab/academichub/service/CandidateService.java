@@ -47,6 +47,8 @@ public class CandidateService {
 
         JobOfferResponse response = new JobOfferResponse();
 
+        response.setJobOfferId(offer.getJobOfferId());
+
         response.setTitle(offer.getTitle());
 
         response.setDescription(offer.getDescription());

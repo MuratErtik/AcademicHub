@@ -13,6 +13,8 @@ import lombok.Data;
 @Data
 public class JobOfferResonseToAdmin {
 
+    private Long jobOfferId;
+
     private String title;
 
     private String description;
