@@ -1,6 +1,6 @@
 package com.yazlab.academichub.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +33,7 @@ public class Application {
     @JoinColumn(name = "job_offer_id", nullable = false)
     private JobOffer jobOffer;
 
-    private LocalDate applicationDate;
+    private LocalDateTime applicationDate;
 
     // @Enumerated(EnumType.STRING)
     // private IsCompleted isCompleted = IsCompleted.START;
