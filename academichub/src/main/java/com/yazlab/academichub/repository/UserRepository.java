@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query(value = "select * from users where role_id = :roleId and department_id = :departmentId", nativeQuery = true)
     List<User>  findByUserRoleAndDepartment(@Param("roleId") Long roleId, @Param("departmentId") Long departmentId);
+
+    User findByUserId(Long userId);
 }
