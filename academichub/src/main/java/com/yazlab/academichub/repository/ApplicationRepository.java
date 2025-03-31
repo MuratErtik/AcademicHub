@@ -11,4 +11,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     @Query(value = "select * from application where user_id = :userId and job_offer_id = :jobOfferId", nativeQuery = true)
     Application findByUserAndJobOffer(@Param("userId") Long userId, @Param("jobOfferId") Long jobOfferId);
+
+    Application findByApplicationId(Long applicationId);
 }
