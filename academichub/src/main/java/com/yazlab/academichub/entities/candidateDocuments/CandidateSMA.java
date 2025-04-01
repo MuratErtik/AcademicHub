@@ -1,6 +1,8 @@
 package com.yazlab.academichub.entities.candidateDocuments;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import com.yazlab.academichub.entities.Application;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,10 +31,12 @@ public class CandidateSMA {
 
     private String place;
 
-    private int numberOfPage;
-
-    private LocalDate date; 
+    private LocalDateTime date; 
 
     private String photoLink;
+
+    @ManyToOne
+    @JoinColumn(name = "application_id", nullable = false)
+    private Application application;
 
 }
