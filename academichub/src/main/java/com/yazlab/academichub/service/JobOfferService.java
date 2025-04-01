@@ -1,5 +1,6 @@
 package com.yazlab.academichub.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.yazlab.academichub.dto.MinMaxPointCriteriaDTO;
 import com.yazlab.academichub.dto.PublicationCriteriaDTO;
 import com.yazlab.academichub.entities.AdminJobOffer;
+import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.MinMaxPointCriteria;
@@ -16,6 +18,8 @@ import com.yazlab.academichub.entities.Position;
 import com.yazlab.academichub.entities.PublicationCriteria;
 import com.yazlab.academichub.entities.Table3Action;
 import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateAuthor;
 import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.repository.AdminJobOfferRepository;
 import com.yazlab.academichub.repository.DepartmentRepository;
@@ -24,6 +28,9 @@ import com.yazlab.academichub.repository.MinMaxPointCriteriaRepository;
 import com.yazlab.academichub.repository.PositionRepository;
 import com.yazlab.academichub.repository.PublicationCriteriaRepository;
 import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.ApplicationResponse;
+import com.yazlab.academichub.response.CandidateArticleResponse;
+import com.yazlab.academichub.response.CandidateAuthorResponse;
 import com.yazlab.academichub.response.JobOfferResonseToAdmin;
 
 import lombok.RequiredArgsConstructor;
@@ -168,7 +175,7 @@ public class JobOfferService {
 
     }
 
-    public JobOfferResonseToAdmin convertResonseToAdmin(JobOffer jobOffer){
+    public JobOfferResonseToAdmin convertResonseToAdmin(JobOffer jobOffer) {
 
         JobOfferResonseToAdmin jobOfferResonseToAdmin = new JobOfferResonseToAdmin();
 
@@ -190,7 +197,96 @@ public class JobOfferService {
 
         jobOfferResonseToAdmin.setPublicationCriterias(jobOffer.getPublicationCriterias());
 
+        Set<ApplicationResponse> applicationResponses = convert(jobOffer.getApplications());
+
+        jobOfferResonseToAdmin.setApplications(applicationResponses);
+
         return jobOfferResonseToAdmin;
+
+    }
+
+    public Set<ApplicationResponse> convert(Set<Application> applications) {
+        return applications.stream()
+                .map(this::convertSingleApplication)
+                .collect(Collectors.toSet());
+    }
+
+    private ApplicationResponse convertSingleApplication(Application application) {
+        ApplicationResponse applicationResponse = new ApplicationResponse();
+
+        applicationResponse.setApplicationId(application.getApplicationId());
+
+        if (application.getCandidate() != null) {
+            applicationResponse.setUserId(application.getCandidate().getUserId());
+        }
+
+        applicationResponse.setApplicationDate(application.getApplicationDate());
+
+        if (application.getApplicationStatus() != null) {
+            applicationResponse.setApplicationStatusName(application.getApplicationStatus().getApplicationStatus());
+        }
+
+        if (application.getArticles() != null) {
+
+            Set<CandidateArticleResponse> candidateArticleResponses = convertArticle(application.getArticles());
+
+            applicationResponse.setArticles(candidateArticleResponses);
+        } else {
+            applicationResponse.setArticles(new HashSet<>());
+        }
+
+        return applicationResponse;
+    }
+
+    public Set<CandidateArticleResponse> convertArticle(Set<CandidateArticle> articles) {
+        return articles.stream()
+                .map(this::convertSingleArticleResponse)
+                .collect(Collectors.toSet());
+    }
+
+    public CandidateArticleResponse convertSingleArticleResponse(CandidateArticle candidateArticle) {
+
+        CandidateArticleResponse candidateArticleResponse = new CandidateArticleResponse();
+
+        candidateArticleResponse.setCandidateArticleId(candidateArticle.getCandidateArticleId());
+
+        candidateArticleResponse.setArticleName(candidateArticle.getArticleName());
+
+        candidateArticleResponse.setArticleCategory(candidateArticle.getArticleCategory());
+
+        candidateArticleResponse.setArticleTypeName(candidateArticle.getArticleType().getArticleTypeName());
+
+        candidateArticleResponse.setAuthorCount(candidateArticle.getAuthorCount());
+
+        Set<CandidateAuthorResponse> authorResponses = convertAuthor(candidateArticle.getAuthors());
+
+        candidateArticleResponse.setAuthors(authorResponses);
+
+        candidateArticleResponse.setPhotoLink(candidateArticle.getPhotoLink());
+
+        return candidateArticleResponse;
+
+    }
+
+    public Set<CandidateAuthorResponse> convertAuthor(Set<CandidateAuthor> authors) {
+        return authors.stream()
+                .map(this::convertSingleAuthorResponse)
+                .collect(Collectors.toSet());
+    }
+
+    public CandidateAuthorResponse convertSingleAuthorResponse(CandidateAuthor candidateAuthor) {
+
+        CandidateAuthorResponse candidateAuthorResponse = new CandidateAuthorResponse();
+
+        candidateAuthorResponse.setCandidateArticleId(candidateAuthor.getCandidateArticleId());
+
+        candidateAuthorResponse.setName(candidateAuthor.getName());
+
+        candidateAuthorResponse.setSurname(candidateAuthor.getSurname());
+
+        candidateAuthorResponse.setAuthorTypeName(candidateAuthor.getAuthorType().getAuthorTypeName());
+
+        return candidateAuthorResponse;
 
     }
 
@@ -202,8 +298,6 @@ public class JobOfferService {
 
         return jobOfferRepository.findByPosition(positionId);
     }
-
-
 
     public List<JobOffer> getAllJobOffer() {
 

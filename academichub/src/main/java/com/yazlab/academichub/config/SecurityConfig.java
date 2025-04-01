@@ -26,6 +26,7 @@ public class SecurityConfig {
         httpSecurity.sessionManagement(management -> management.sessionCreationPolicy(
                 SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/**").authenticated()
+                        // .requestMatchers("/api/candidate/**").permitAll()
                         //ekleme yapilacak...
                         .anyRequest().permitAll()
 

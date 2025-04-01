@@ -16,9 +16,9 @@ public class ArticleType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long articleTypeId;
 
-    private int articleType;
+    private String articleTypeName;
 
     private double coefficient;
 }

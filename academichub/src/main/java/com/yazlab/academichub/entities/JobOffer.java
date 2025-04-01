@@ -10,17 +10,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+
 public class JobOffer {
 
     @JsonIgnore
@@ -47,7 +47,7 @@ public class JobOffer {
     private Department department;
 
     @ManyToOne
-    @JoinColumn(name = "position", nullable = false)
+    @JoinColumn(name = "position_id", nullable = false)
     private Position position;
 
     // @ManyToOne
@@ -64,7 +64,8 @@ public class JobOffer {
 
     // prerequ do not forget
 
-    @OneToMany(mappedBy = "jobOffer"/* cascade = CascadeType.ALL, orphanRemoval = true */)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "jobOffer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Application> applications = new HashSet<>();
 
     @JsonIgnore
@@ -74,5 +75,10 @@ public class JobOffer {
     @JsonIgnore
     @OneToMany(mappedBy = "jobOffer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DepartmentMenagerJobOffer> departmentManagerJobOffers = new ArrayList<>();
+
+    public void addApplication(Application application) {
+        this.applications.add(application);
+        application.setJobOffer(this);
+    }
 
 }

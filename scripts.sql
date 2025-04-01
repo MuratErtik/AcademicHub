@@ -653,3 +653,17 @@ VALUES (1, 65, 'Adli Sicil Kaydı ve Dil Sınavı PDF Formatında girilmelidir.'
 
 INSERT INTO appointment_requirements (position, facultygroup_id, minmaxxpointcriteria_id, prerequisites_id, publicationcriteria_id)
 VALUES (1, 1, 1, 1, 101);
+
+
+
+
+INSERT INTO author_type (coefficient, author_type_name)
+VALUES
+    (1.0, 'Başlıca Yazar'),
+    (1.8, 'Sorumlu Yazar'),
+    (1.0, 'Akademik Danışman'),
+    (1.0, 'Lisans Öğrencisi'),
+ (1.3, 'Kurum Dışından Yazar'),
+ (1.0, 'Başka Yazar'),
+ (1.8, 'İlk Yazar'),
+    (1.0, 'Eş Danışman');

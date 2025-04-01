@@ -6,9 +6,18 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.JobOffer;
+import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.exception.AdminException;
+import com.yazlab.academichub.exception.JobOfferException;
+import com.yazlab.academichub.repository.ApplicationRepository;
+import com.yazlab.academichub.repository.JobOfferRepository;
+import com.yazlab.academichub.repository.UserRepository;
+import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.JobOfferResponse;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -16,6 +25,12 @@ import lombok.RequiredArgsConstructor;
 public class CandidateService {
 
     private final JobOfferService jobOfferService;
+
+    private final UserRepository userRepository;
+
+    private final JobOfferRepository jobOfferRepository;
+
+    private final ApplicationRepository applicationRepository;
 
     public List<JobOfferResponse> listAllOffers() {
 
@@ -34,12 +49,10 @@ public class CandidateService {
                         && !offer.getPublicationCriterias().isEmpty())
                 .collect(Collectors.toList());
 
-
         List<JobOfferResponse> jobOfferResponses = jobOffersToList.stream()
-            .map(this::convertToResponse)
-            .collect(Collectors.toList());
-        
-                
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+
         return jobOfferResponses;
     }
 
@@ -68,4 +81,50 @@ public class CandidateService {
         return response;
     }
 
+    @Transactional
+    public ApiResponse createApplication(Long jobOfferId, Long userId) throws AdminException, JobOfferException {
+
+        Application existApplication = applicationRepository.findByUserAndJobOffer(userId, jobOfferId);
+
+        if (existApplication != null) {
+
+            ApiResponse apiResponse = new ApiResponse();
+
+            apiResponse.setMessage("The Application created already!");
+            
+            return apiResponse;
+        }
+
+        Application application = new Application();
+
+        User candidate = userRepository.findByUserId(userId);
+
+        if (candidate == null) {
+            throw new AdminException("Candidate could not find by Id-> " + userId.toString());
+        }
+
+        application.setCandidate(candidate);
+
+        JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
+
+        if (jobOffer == null) {
+            throw new JobOfferException("Job offer could not find by Id-> " + jobOfferId.toString());
+        }
+
+        application.setJobOffer(jobOffer);
+
+        application.setApplicationDate(LocalDateTime.now());
+
+        applicationRepository.save(application);
+
+        jobOffer.addApplication(application);
+
+        jobOfferRepository.save(jobOffer);
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setMessage("The Application just created!");
+
+        return apiResponse;
+    }
 }

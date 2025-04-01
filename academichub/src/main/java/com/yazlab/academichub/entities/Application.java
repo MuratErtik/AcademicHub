@@ -1,11 +1,13 @@
 package com.yazlab.academichub.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +17,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Application {
 
     @Id
@@ -30,7 +31,7 @@ public class Application {
     @JoinColumn(name = "job_offer_id", nullable = false)
     private JobOffer jobOffer;
 
-    private LocalDate applicationDate;
+    private LocalDateTime applicationDate;
 
     // @Enumerated(EnumType.STRING)
     // private IsCompleted isCompleted = IsCompleted.START;
@@ -43,4 +44,11 @@ public class Application {
     // @JoinColumn(name = "candidate_document_id", nullable = false)
     // private CandidateDocument candidateDocument;
 
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateArticle> articles = new HashSet<>();
+
+    public void addArticle(CandidateArticle article) {
+        this.articles.add(article);
+        article.setApplication(this);
+    }
 }
