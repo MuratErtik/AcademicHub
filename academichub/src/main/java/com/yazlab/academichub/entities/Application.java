@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 
 import jakarta.persistence.*;
@@ -59,5 +60,13 @@ public class Application {
     public void addSma(CandidateSMA sma) {
         this.smas.add(sma);
         sma.setApplication(this);
+    }
+
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateBook> books = new HashSet<>();
+
+    public void addBook(CandidateBook book) {
+        this.books.add(book);
+        book.setApplication(this);
     }
 }

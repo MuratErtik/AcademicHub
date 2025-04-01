@@ -1,4 +1,7 @@
 package com.yazlab.academichub.entities.candidateDocuments;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yazlab.academichub.entities.Application;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -31,6 +34,13 @@ public class CandidateBook {
     private String year;
 
     private String photoLink;
+
+    private boolean foreignLanguage;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "application_id", nullable = false)
+    private Application application;
 
 
 
