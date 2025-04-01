@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,6 +94,27 @@ public class CandidateController {
             ApiResponse apiResponse = candidateArticleService.addArticle(applicationId, request);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-article/{articleId}")
+    public ResponseEntity<ApiResponse> addArticle(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long articleId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateArticleService.deleteArticle(applicationId, articleId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

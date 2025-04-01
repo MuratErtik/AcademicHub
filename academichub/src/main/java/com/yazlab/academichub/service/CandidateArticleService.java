@@ -118,4 +118,28 @@ public class CandidateArticleService {
         return candidateAuthor;
     }
 
+    public ApiResponse deleteArticle(Long applictionId, Long articleId ) throws ApplicationException{
+
+        Application application = applicationRepository.findByApplicationId(applictionId);
+
+        if (application == null) {
+            throw new ApplicationException("Application could not find by Id -> " + applictionId.toString());
+        }
+
+        CandidateArticle candidateArticle = candidateArticleRepository.findByArticleNameAndApplicationId(articleId, applictionId);
+
+        if (candidateArticle==null) {
+            throw new ApplicationException("Article could not find by Id -> " + articleId.toString());
+        }
+
+        candidateArticleRepository.delete(candidateArticle);
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setMessage("Article delete successfully!");
+
+        return apiResponse;
+        
+    }
+
 }
