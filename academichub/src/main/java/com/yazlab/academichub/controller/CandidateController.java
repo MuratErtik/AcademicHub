@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.ApplicationException;
+import com.yazlab.academichub.exception.CandidateBookException;
 import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.exception.SmaException;
 import com.yazlab.academichub.repository.UserRepository;
@@ -25,6 +27,7 @@ import com.yazlab.academichub.request.CreateArticleRequest;
 import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.JobOfferResponse;
 import com.yazlab.academichub.service.CandidateArticleService;
+import com.yazlab.academichub.service.CandidateBookService;
 import com.yazlab.academichub.service.CandidateService;
 import com.yazlab.academichub.service.CandidateSmaService;
 
@@ -44,6 +47,8 @@ public class CandidateController {
     private final CandidateArticleService candidateArticleService;
 
     private final CandidateSmaService candidateSmaService;
+
+    private final CandidateBookService candidateBookService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -168,4 +173,47 @@ public class CandidateController {
         }
 
     }
+
+    @PostMapping("/{applicationId}/add-book")
+    public ResponseEntity<ApiResponse> addBook(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateBook request) throws AdminException, ApplicationException, CandidateBookException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateBookService.addBook(applicationId, request);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-book/{bookId}")
+    public ResponseEntity<ApiResponse> deleteBook(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long bookId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateBookService.deleteBook(applicationId, bookId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+    
 }
