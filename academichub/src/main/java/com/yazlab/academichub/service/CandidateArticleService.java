@@ -1,14 +1,21 @@
 package com.yazlab.academichub.service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.ArticleType;
+import com.yazlab.academichub.entities.AuthorType;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateAuthor;
 import com.yazlab.academichub.exception.ApplicationException;
 import com.yazlab.academichub.repository.ApplicationRepository;
 import com.yazlab.academichub.repository.ArticleTypeRepository;
+import com.yazlab.academichub.repository.AuthorTypeRepository;
 import com.yazlab.academichub.repository.CandidateArticleRepository;
+import com.yazlab.academichub.request.AddAuthorRequest;
 import com.yazlab.academichub.request.CreateArticleRequest;
 import com.yazlab.academichub.response.ApiResponse;
 
@@ -23,6 +30,8 @@ public class CandidateArticleService {
     private final CandidateArticleRepository candidateArticleRepository;
 
     private final ArticleTypeRepository articleTypeRepository;
+
+    private final AuthorTypeRepository authorTypeRepository;
 
     public ApiResponse addArticle(Long applictionId, CreateArticleRequest request) throws ApplicationException {
 
@@ -59,11 +68,19 @@ public class CandidateArticleService {
 
         candidateArticle.setAuthorCount(request.getAuthorCount());
 
-        candidateArticle.setAuthors(request.getAuthors()); // solve morning...
+        Set<CandidateAuthor> candidateAuthors = convert(request.getAuthors());
+
+        candidateArticle.setAuthors(candidateAuthors);
 
         candidateArticle.setApplication(application);
 
         candidateArticle.setPhotoLink(request.getPhotoLink());
+
+        candidateArticleRepository.save(candidateArticle);
+
+        application.addArticle(candidateArticle);
+
+        applicationRepository.save(application);
 
         ApiResponse apiResponse = new ApiResponse();
 
@@ -71,7 +88,29 @@ public class CandidateArticleService {
 
         //change the application!!! add the new article to set of articles of application
 
+
+
         return apiResponse;
+    }
+    
+    public Set<CandidateAuthor> convert(Set<AddAuthorRequest> addAuthorRequests) {
+
+        return addAuthorRequests.stream().map(this::convertSingleAuthor).collect(Collectors.toSet());
+    }
+
+    public CandidateAuthor convertSingleAuthor(AddAuthorRequest request){
+
+        CandidateAuthor candidateAuthor = new CandidateAuthor();
+
+        candidateAuthor.setName(request.getName());
+
+        candidateAuthor.setSurname(request.getSurname());
+
+        AuthorType authorType = authorTypeRepository.findByAuthorTypeName(request.getAuthorTypeName());
+
+        candidateAuthor.setAuthorType(authorType);
+
+        return candidateAuthor;
     }
 
 }

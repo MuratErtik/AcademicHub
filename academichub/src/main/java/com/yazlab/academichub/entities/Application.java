@@ -46,4 +46,9 @@ public class Application {
 
     @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
     private Set<CandidateArticle> articles = new HashSet<>();
+
+    public void addArticle(CandidateArticle article) {
+        this.articles.add(article);
+        article.setApplication(this);
+    }
 }
