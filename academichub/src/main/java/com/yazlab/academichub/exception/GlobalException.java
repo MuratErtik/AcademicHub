@@ -70,4 +70,16 @@ public class GlobalException {
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(SmaException.class)
+    public ResponseEntity<ErrorDetail> AdminExceptionHandler(SmaException smae, WebRequest webRequest) {
+
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(smae.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+
+    }
 }
