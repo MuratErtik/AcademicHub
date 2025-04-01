@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
 
 import lombok.Data;
 
@@ -19,5 +18,5 @@ public class ApplicationResponse {
 
     private String applicationStatusName;
 
-    private Set<CandidateArticle> articles = new HashSet<>();
+    private Set<CandidateArticleResponse> articles = new HashSet<>();
 }

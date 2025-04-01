@@ -18,7 +18,7 @@ public class CandidateAuthor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long candidateArticleId;
+    private Long candidateArticleId; // it would be candidateAuthorId do not forget it!
 
     private String name; 
 
