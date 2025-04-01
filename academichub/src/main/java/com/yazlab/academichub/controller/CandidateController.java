@@ -107,7 +107,7 @@ public class CandidateController {
     }
 
     @DeleteMapping("/{applicationId}/delete-article/{articleId}")
-    public ResponseEntity<ApiResponse> addArticle(@RequestHeader("Authorization") String jwt,
+    public ResponseEntity<ApiResponse> deleteArticle(@RequestHeader("Authorization") String jwt,
             @PathVariable Long applicationId, @PathVariable Long articleId ) throws AdminException, ApplicationException {
 
         String email = jwtProvider.getEmailFromJwtToken(jwt);
@@ -141,6 +141,27 @@ public class CandidateController {
             ApiResponse apiResponse = candidateSmaService.addSma(applicationId, request);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-sma/{smaId}")
+    public ResponseEntity<ApiResponse> deleteSma(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long smaId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateSmaService.deleteSma(applicationId, smaId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
+import com.yazlab.academichub.exception.ApplicationException;
 import com.yazlab.academichub.exception.SmaException;
 import com.yazlab.academichub.repository.ApplicationRepository;
 import com.yazlab.academichub.repository.CandidateSMARepository;
@@ -71,5 +72,29 @@ public class CandidateSmaService {
         apiResponse.setMessage("Scientific Meeting Activity has been loaded successfully!");
 
         return apiResponse;
+    }
+
+    public ApiResponse deleteSma(Long applictionId, Long smaId ) throws ApplicationException{
+
+        Application application = applicationRepository.findByApplicationId(applictionId);
+
+        if (application == null) {
+            throw new ApplicationException("Application could not find by Id -> " + applictionId.toString());
+        }
+
+        CandidateSMA candidateSMA = candidateSMARepository.findBySmaNameAndApplicationId(smaId, applictionId);
+
+        if (candidateSMA==null) {
+            throw new ApplicationException("SMA could not find by Id -> " + smaId.toString());
+        }
+
+        candidateSMARepository.delete(candidateSMA);
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setMessage("SMA delete successfully!");
+
+        return apiResponse;
+        
     }
 }
