@@ -2,6 +2,7 @@ package com.yazlab.academichub.entities.candidateDocuments;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yazlab.academichub.entities.Application;
 
 import jakarta.persistence.*;
@@ -35,6 +36,7 @@ public class CandidateSMA {
 
     private String photoLink;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;

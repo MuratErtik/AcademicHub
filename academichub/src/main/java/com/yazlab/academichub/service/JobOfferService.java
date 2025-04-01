@@ -235,6 +235,12 @@ public class JobOfferService {
             applicationResponse.setArticles(new HashSet<>());
         }
 
+        if (application.getSmas() != null) {
+            applicationResponse.setSmas(application.getSmas());
+        } else {
+            applicationResponse.setSmas(new HashSet<>());
+        }
+
         return applicationResponse;
     }
 
