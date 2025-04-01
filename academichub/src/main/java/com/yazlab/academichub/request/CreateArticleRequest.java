@@ -20,5 +20,4 @@ public class CreateArticleRequest {
 
     private String photoLink;
 
-    private Long applicationId;
 }

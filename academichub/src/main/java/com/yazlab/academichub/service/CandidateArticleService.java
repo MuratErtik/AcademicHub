@@ -1,5 +1,6 @@
 package com.yazlab.academichub.service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,14 +44,17 @@ public class CandidateArticleService {
             throw new ApplicationException("Application could not find by Id -> " + applictionId.toString());
         }
 
-        CandidateArticle existCandidateArticle = candidateArticleRepository.findByArticleName(request.getArticleName());
+        List<CandidateArticle> existCandidateArticles = candidateArticleRepository
+                .findByArticleName(request.getArticleName());
 
-        if (existCandidateArticle != null) {
+        boolean articleExists = existCandidateArticles != null &&
+                existCandidateArticles.stream()
+                        .anyMatch(article -> article.getApplication() != null &&
+                                article.getApplication().getApplicationId().equals(applictionId));
 
+        if (articleExists) {
             ApiResponse apiResponse = new ApiResponse();
-
             apiResponse.setMessage("The Article loaded already!");
-
             return apiResponse;
         }
 
@@ -88,19 +92,18 @@ public class CandidateArticleService {
 
         apiResponse.setMessage("Article has been loaded successfully!");
 
-        //change the application!!! add the new article to set of articles of application
-
-
+        // change the application!!! add the new article to set of articles of
+        // application
 
         return apiResponse;
     }
-    
+
     public Set<CandidateAuthor> convert(Set<AddAuthorRequest> addAuthorRequests) {
 
         return addAuthorRequests.stream().map(this::convertSingleAuthor).collect(Collectors.toSet());
     }
 
-    public CandidateAuthor convertSingleAuthor(AddAuthorRequest request){
+    public CandidateAuthor convertSingleAuthor(AddAuthorRequest request) {
 
         CandidateAuthor candidateAuthor = new CandidateAuthor();
 
