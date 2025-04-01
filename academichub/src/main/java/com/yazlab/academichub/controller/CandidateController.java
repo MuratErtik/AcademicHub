@@ -15,15 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.ApplicationException;
 import com.yazlab.academichub.exception.JobOfferException;
+import com.yazlab.academichub.exception.SmaException;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.CreateArticleRequest;
 import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.JobOfferResponse;
 import com.yazlab.academichub.service.CandidateArticleService;
 import com.yazlab.academichub.service.CandidateService;
+import com.yazlab.academichub.service.CandidateSmaService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +42,8 @@ public class CandidateController {
     private final UserRepository userRepository;
 
     private final CandidateArticleService candidateArticleService;
+
+    private final CandidateSmaService candidateSmaService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -115,6 +120,27 @@ public class CandidateController {
             ApiResponse apiResponse = candidateArticleService.deleteArticle(applicationId, articleId);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/{applicationId}/add-sma")
+    public ResponseEntity<ApiResponse> addSma(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateSMA request) throws AdminException, ApplicationException, SmaException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateSmaService.addSma(applicationId, request);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
         }
         else{
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
