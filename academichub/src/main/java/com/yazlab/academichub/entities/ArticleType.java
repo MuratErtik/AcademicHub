@@ -16,7 +16,7 @@ public class ArticleType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long articleTypeid;
+    private Long articleTypeId;
 
     private String articleTypeName;
 

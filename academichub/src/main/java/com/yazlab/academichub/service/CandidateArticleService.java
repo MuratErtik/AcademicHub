@@ -19,6 +19,7 @@ import com.yazlab.academichub.request.AddAuthorRequest;
 import com.yazlab.academichub.request.CreateArticleRequest;
 import com.yazlab.academichub.response.ApiResponse;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -33,6 +34,7 @@ public class CandidateArticleService {
 
     private final AuthorTypeRepository authorTypeRepository;
 
+    @Transactional
     public ApiResponse addArticle(Long applictionId, CreateArticleRequest request) throws ApplicationException {
 
         Application application = applicationRepository.findByApplicationId(applictionId);
