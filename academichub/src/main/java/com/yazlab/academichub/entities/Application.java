@@ -7,6 +7,7 @@ import java.util.Set;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 
 import jakarta.persistence.*;
@@ -77,6 +78,14 @@ public class Application {
     public void addCitation(CandidateCitation citation) {
         this.citations.add(citation);
         citation.setApplication(this);
+    }
+
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateEducationAction> educationActions  = new HashSet<>();
+
+    public void addEducationAction(CandidateEducationAction educationAction) {
+        this.educationActions.add(educationAction);
+        educationAction.setApplication(this);
     }
 
     
