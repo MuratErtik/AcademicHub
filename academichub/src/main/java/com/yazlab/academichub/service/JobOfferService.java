@@ -277,6 +277,11 @@ public class JobOfferService {
             applicationResponse.setResearchProjects(new HashSet<>());
         }
         
+        if (application.getEditorships() != null) {
+            applicationResponse.setEditorships(application.getEditorships());
+        } else {
+            applicationResponse.setEditorships(new HashSet<>());
+        }
 
         return applicationResponse;
     }
