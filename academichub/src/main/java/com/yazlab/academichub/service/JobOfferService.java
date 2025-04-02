@@ -289,6 +289,12 @@ public class JobOfferService {
             applicationResponse.setAwards(new HashSet<>());
         }
 
+        if (application.getCandidateContributionActivities() != null) {
+            applicationResponse.setContributionActivities(application.getCandidateContributionActivities());
+        } else {
+            applicationResponse.setContributionActivities(new HashSet<>());
+        }
+
         return applicationResponse;
     }
 
