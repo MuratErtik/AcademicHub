@@ -7,6 +7,7 @@ import java.util.Set;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateEditorship;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidatePatent;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateResearchProject;
@@ -115,5 +116,12 @@ public class Application {
         candidateResearchProject.setApplication(this);
     }
 
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateEditorship>  editorships  = new HashSet<>();
+
+    public void addEditorship(CandidateEditorship candidateEditorship) {
+        this.editorships.add(candidateEditorship);
+        candidateEditorship.setApplication(this);
+    }    
     
 }
