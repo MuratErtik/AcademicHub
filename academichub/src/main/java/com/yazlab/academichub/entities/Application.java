@@ -9,6 +9,7 @@ import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidatePatent;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateResearchProject;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervision;
 
@@ -104,6 +105,14 @@ public class Application {
     public void addPatent(CandidatePatent candidatePatent) {
         this.patents.add(candidatePatent);
         candidatePatent.setApplication(this);
+    }
+
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateResearchProject> researchProjects   = new HashSet<>();
+
+    public void addResearchProject(CandidateResearchProject candidateResearchProject) {
+        this.researchProjects.add(candidateResearchProject);
+        candidateResearchProject.setApplication(this);
     }
 
     
