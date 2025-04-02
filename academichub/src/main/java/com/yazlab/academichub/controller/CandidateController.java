@@ -17,6 +17,7 @@ import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateEditorship;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidatePatent;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateResearchProject;
@@ -39,6 +40,7 @@ import com.yazlab.academichub.response.JobOfferResponse;
 import com.yazlab.academichub.service.CandidateArticleService;
 import com.yazlab.academichub.service.CandidateBookService;
 import com.yazlab.academichub.service.CandidateCitationService;
+import com.yazlab.academichub.service.CandidateEditorshipService;
 import com.yazlab.academichub.service.CandidatePatentService;
 import com.yazlab.academichub.service.CandidateResearchProjectService;
 import com.yazlab.academichub.service.CandidateService;
@@ -74,6 +76,8 @@ public class CandidateController {
     private final CandidatePatentService patentService;
 
     private final CandidateResearchProjectService projectService;
+
+    private final CandidateEditorshipService editorshipService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -441,6 +445,47 @@ public class CandidateController {
 
         if (role.equals("ADAY")) {
             ApiResponse apiResponse = patentService.deletePatent(applicationId, patentId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/{applicationId}/add-editorship")
+    public ResponseEntity<ApiResponse> addEditorship(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateEditorship request) throws AdminException, ApplicationException, EducationActionException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = editorshipService.addEditorship(applicationId, request);
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-editorship/{editorshipId}")
+    public ResponseEntity<ApiResponse> deleteEditorship(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long editorshipId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = editorshipService.deleteEditorship(applicationId, editorshipId);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
