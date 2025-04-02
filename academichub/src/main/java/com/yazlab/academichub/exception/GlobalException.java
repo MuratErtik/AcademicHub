@@ -118,4 +118,16 @@ public class GlobalException {
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(ThesisSupervisionException.class)
+    public ResponseEntity<ErrorDetail> AdminExceptionHandler(ThesisSupervisionException tse, WebRequest webRequest) {
+
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setError(tse.getMessage());
+        errorDetail.setDetails(webRequest.getDescription(false));
+        errorDetail.setTimestamp(LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+
+    }
 }
