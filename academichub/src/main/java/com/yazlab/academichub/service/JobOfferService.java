@@ -258,6 +258,12 @@ public class JobOfferService {
         } else {
             applicationResponse.setEducationActions(new HashSet<>());
         }
+
+        if (application.getThesisSupervisions() != null) {
+            applicationResponse.setThesisSupervisions(application.getThesisSupervisions());
+        } else {
+            applicationResponse.setThesisSupervisions(new HashSet<>());
+        }
         
 
         return applicationResponse;

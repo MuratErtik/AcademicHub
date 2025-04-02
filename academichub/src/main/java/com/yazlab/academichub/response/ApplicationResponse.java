@@ -8,6 +8,7 @@ import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervision;
 
 import lombok.Data;
 
@@ -31,6 +32,8 @@ public class ApplicationResponse {
     private Set<CandidateCitation> citations = new HashSet<>();
 
     private Set<CandidateEducationAction> educationActions = new HashSet<>();
+
+    private Set<CandidateThesisSupervision> thesisSupervisions = new HashSet<>();
 
 
 
