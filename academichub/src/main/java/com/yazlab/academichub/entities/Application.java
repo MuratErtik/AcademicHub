@@ -9,6 +9,7 @@ import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervision;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -86,6 +87,14 @@ public class Application {
     public void addEducationAction(CandidateEducationAction educationAction) {
         this.educationActions.add(educationAction);
         educationAction.setApplication(this);
+    }
+
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateThesisSupervision>  thesisSupervisions  = new HashSet<>();
+
+    public void addThesisSupervisions(CandidateThesisSupervision candidateThesisSupervision) {
+        this.thesisSupervisions.add(candidateThesisSupervision);
+        candidateThesisSupervision.setApplication(this);
     }
 
     
