@@ -19,6 +19,7 @@ import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidatePatent;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateResearchProject;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervision;
 import com.yazlab.academichub.exception.AdminException;
@@ -28,6 +29,7 @@ import com.yazlab.academichub.exception.CitationException;
 import com.yazlab.academichub.exception.EducationActionException;
 import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.exception.PatentException;
+import com.yazlab.academichub.exception.ResearchProjectException;
 import com.yazlab.academichub.exception.SmaException;
 import com.yazlab.academichub.exception.ThesisSupervisionException;
 import com.yazlab.academichub.repository.UserRepository;
@@ -38,6 +40,7 @@ import com.yazlab.academichub.service.CandidateArticleService;
 import com.yazlab.academichub.service.CandidateBookService;
 import com.yazlab.academichub.service.CandidateCitationService;
 import com.yazlab.academichub.service.CandidatePatentService;
+import com.yazlab.academichub.service.CandidateResearchProjectService;
 import com.yazlab.academichub.service.CandidateService;
 import com.yazlab.academichub.service.CandidateSmaService;
 import com.yazlab.academichub.service.EducationActionService;
@@ -69,6 +72,8 @@ public class CandidateController {
     private final ThesisSupervisionService thesisSupervisionService;
 
     private final CandidatePatentService patentService;
+
+    private final CandidateResearchProjectService projectService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -354,6 +359,47 @@ public class CandidateController {
 
         if (role.equals("ADAY")) {
             ApiResponse apiResponse = thesisSupervisionService.deleteThesisSupervision(applicationId, thesisSuperivisonId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/{applicationId}/add-research-project")
+    public ResponseEntity<ApiResponse> addResearchProject(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateResearchProject request) throws AdminException, ApplicationException, ResearchProjectException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = projectService.addResearchProject(applicationId, request);
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-research-project/{projectId}")
+    public ResponseEntity<ApiResponse> deleteResearchProject(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long projectId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse =projectService.deleteReserchProject(applicationId, projectId);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
