@@ -19,6 +19,7 @@ import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervision;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.ApplicationException;
 import com.yazlab.academichub.exception.CandidateBookException;
@@ -26,6 +27,7 @@ import com.yazlab.academichub.exception.CitationException;
 import com.yazlab.academichub.exception.EducationActionException;
 import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.exception.SmaException;
+import com.yazlab.academichub.exception.ThesisSupervisionException;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.CreateArticleRequest;
 import com.yazlab.academichub.response.ApiResponse;
@@ -36,6 +38,7 @@ import com.yazlab.academichub.service.CandidateCitationService;
 import com.yazlab.academichub.service.CandidateService;
 import com.yazlab.academichub.service.CandidateSmaService;
 import com.yazlab.academichub.service.EducationActionService;
+import com.yazlab.academichub.service.ThesisSupervisionService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -59,6 +62,8 @@ public class CandidateController {
     private final CandidateCitationService candidateCitationService;
 
     private final EducationActionService educationActionService;
+
+    private final ThesisSupervisionService thesisSupervisionService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -302,6 +307,48 @@ public class CandidateController {
 
         if (role.equals("ADAY")) {
             ApiResponse apiResponse = educationActionService.deleteEducationAction(applicationId, educationActionId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/{applicationId}/add-thesis-superivision")
+    public ResponseEntity<ApiResponse> addThesisSupervision(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateThesisSupervision request) throws AdminException, ApplicationException, ThesisSupervisionException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = thesisSupervisionService.addThesisSupervision(applicationId, request);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-thesis-supervision/{thesisSuperivisonId}")
+    public ResponseEntity<ApiResponse> deleteThesisSupervision(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long thesisSuperivisonId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = thesisSupervisionService.deleteThesisSupervision(applicationId, thesisSuperivisonId);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
