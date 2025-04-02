@@ -18,6 +18,7 @@ import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateAward;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateContributionActivity;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEditorship;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
 import com.yazlab.academichub.entities.candidateDocuments.CandidatePatent;
@@ -43,6 +44,7 @@ import com.yazlab.academichub.service.CandidateArticleService;
 import com.yazlab.academichub.service.CandidateAwardService;
 import com.yazlab.academichub.service.CandidateBookService;
 import com.yazlab.academichub.service.CandidateCitationService;
+import com.yazlab.academichub.service.CandidateContributionActivityService;
 import com.yazlab.academichub.service.CandidateEditorshipService;
 import com.yazlab.academichub.service.CandidatePatentService;
 import com.yazlab.academichub.service.CandidateResearchProjectService;
@@ -83,6 +85,8 @@ public class CandidateController {
     private final CandidateEditorshipService editorshipService;
 
     private final CandidateAwardService awardService;
+
+    private final CandidateContributionActivityService candidateContributionActivityService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -532,6 +536,47 @@ public class CandidateController {
 
         if (role.equals("ADAY")) {
             ApiResponse apiResponse = awardService.deleteAward(applicationId, awardId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/{applicationId}/add-ca")
+    public ResponseEntity<ApiResponse> addCa(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateContributionActivity request) throws AdminException, ApplicationException, AwardException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateContributionActivityService.addca(applicationId, request);
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-ca/{caId}")
+    public ResponseEntity<ApiResponse> deleteCa(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long caId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateContributionActivityService.deleteCa(applicationId, caId);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
