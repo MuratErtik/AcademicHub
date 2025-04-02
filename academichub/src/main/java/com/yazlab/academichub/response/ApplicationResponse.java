@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.yazlab.academichub.entities.candidateDocuments.CandidateAward;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEditorship;
@@ -43,6 +44,9 @@ public class ApplicationResponse {
     private Set<CandidateResearchProject> researchProjects  = new HashSet<>();
 
     private Set<CandidateEditorship> editorships = new HashSet<>();
+
+    private Set<CandidateAward> awards = new HashSet<>();
+
 
 
 }

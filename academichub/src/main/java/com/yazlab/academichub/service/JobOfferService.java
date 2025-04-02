@@ -283,6 +283,12 @@ public class JobOfferService {
             applicationResponse.setEditorships(new HashSet<>());
         }
 
+        if (application.getAwards() != null) {
+            applicationResponse.setAwards(application.getAwards());
+        } else {
+            applicationResponse.setAwards(new HashSet<>());
+        }
+
         return applicationResponse;
     }
 
