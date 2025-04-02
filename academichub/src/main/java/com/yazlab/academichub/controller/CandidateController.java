@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.ApplicationException;
 import com.yazlab.academichub.exception.CandidateBookException;
+import com.yazlab.academichub.exception.CitationException;
 import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.exception.SmaException;
 import com.yazlab.academichub.repository.UserRepository;
@@ -28,6 +30,7 @@ import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.JobOfferResponse;
 import com.yazlab.academichub.service.CandidateArticleService;
 import com.yazlab.academichub.service.CandidateBookService;
+import com.yazlab.academichub.service.CandidateCitationService;
 import com.yazlab.academichub.service.CandidateService;
 import com.yazlab.academichub.service.CandidateSmaService;
 
@@ -49,6 +52,8 @@ public class CandidateController {
     private final CandidateSmaService candidateSmaService;
 
     private final CandidateBookService candidateBookService;
+
+    private final CandidateCitationService candidateCitationService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -216,4 +221,46 @@ public class CandidateController {
 
     }
     
+
+    @PostMapping("/{applicationId}/add-citation")
+    public ResponseEntity<ApiResponse> addCitation(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateCitation request) throws AdminException, ApplicationException, CitationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateCitationService.addCitation(applicationId, request);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-citation/{citationId}")
+    public ResponseEntity<ApiResponse> deleteCitation(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long citationId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = candidateCitationService.deleteCitation(applicationId, citationId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
 }
