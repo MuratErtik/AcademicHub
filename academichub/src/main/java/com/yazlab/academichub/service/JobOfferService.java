@@ -235,6 +235,66 @@ public class JobOfferService {
             applicationResponse.setArticles(new HashSet<>());
         }
 
+        if (application.getSmas() != null) {
+            applicationResponse.setSmas(application.getSmas());
+        } else {
+            applicationResponse.setSmas(new HashSet<>());
+        }
+
+        if (application.getBooks() != null) {
+            applicationResponse.setBooks(application.getBooks());
+        } else {
+            applicationResponse.setBooks(new HashSet<>());
+        }
+
+        if (application.getCitations() != null) {
+            applicationResponse.setCitations(application.getCitations());
+        } else {
+            applicationResponse.setCitations(new HashSet<>());
+        }
+
+        if (application.getEducationActions() != null) {
+            applicationResponse.setEducationActions(application.getEducationActions());
+        } else {
+            applicationResponse.setEducationActions(new HashSet<>());
+        }
+
+        if (application.getThesisSupervisions() != null) {
+            applicationResponse.setThesisSupervisions(application.getThesisSupervisions());
+        } else {
+            applicationResponse.setThesisSupervisions(new HashSet<>());
+        }
+
+        if (application.getPatents() != null) {
+            applicationResponse.setPatents(application.getPatents());
+        } else {
+            applicationResponse.setPatents(new HashSet<>());
+        }
+
+        if (application.getResearchProjects() != null) {
+            applicationResponse.setResearchProjects(application.getResearchProjects());
+        } else {
+            applicationResponse.setResearchProjects(new HashSet<>());
+        }
+        
+        if (application.getEditorships() != null) {
+            applicationResponse.setEditorships(application.getEditorships());
+        } else {
+            applicationResponse.setEditorships(new HashSet<>());
+        }
+
+        if (application.getAwards() != null) {
+            applicationResponse.setAwards(application.getAwards());
+        } else {
+            applicationResponse.setAwards(new HashSet<>());
+        }
+
+        if (application.getCandidateContributionActivities() != null) {
+            applicationResponse.setContributionActivities(application.getCandidateContributionActivities());
+        } else {
+            applicationResponse.setContributionActivities(new HashSet<>());
+        }
+
         return applicationResponse;
     }
 
