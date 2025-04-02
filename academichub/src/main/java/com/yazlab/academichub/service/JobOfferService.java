@@ -253,6 +253,13 @@ public class JobOfferService {
             applicationResponse.setCitations(new HashSet<>());
         }
 
+        if (application.getEducationActions() != null) {
+            applicationResponse.setEducationActions(application.getEducationActions());
+        } else {
+            applicationResponse.setEducationActions(new HashSet<>());
+        }
+        
+
         return applicationResponse;
     }
 
