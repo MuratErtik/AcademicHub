@@ -264,6 +264,12 @@ public class JobOfferService {
         } else {
             applicationResponse.setThesisSupervisions(new HashSet<>());
         }
+
+        if (application.getPatents() != null) {
+            applicationResponse.setPatents(application.getPatents());
+        } else {
+            applicationResponse.setPatents(new HashSet<>());
+        }
         
 
         return applicationResponse;

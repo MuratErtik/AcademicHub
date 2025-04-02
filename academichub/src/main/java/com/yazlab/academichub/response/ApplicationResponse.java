@@ -7,6 +7,7 @@ import java.util.Set;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEducationAction;
+import com.yazlab.academichub.entities.candidateDocuments.CandidatePatent;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervision;
 
@@ -35,6 +36,7 @@ public class ApplicationResponse {
 
     private Set<CandidateThesisSupervision> thesisSupervisions = new HashSet<>();
 
+    private Set<CandidatePatent> patents = new HashSet<>();
 
 
 }
