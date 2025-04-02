@@ -270,6 +270,12 @@ public class JobOfferService {
         } else {
             applicationResponse.setPatents(new HashSet<>());
         }
+
+        if (application.getResearchProjects() != null) {
+            applicationResponse.setResearchProjects(application.getResearchProjects());
+        } else {
+            applicationResponse.setResearchProjects(new HashSet<>());
+        }
         
 
         return applicationResponse;
