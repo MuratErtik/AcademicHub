@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateAward;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEditorship;
@@ -123,5 +124,13 @@ public class Application {
         this.editorships.add(candidateEditorship);
         candidateEditorship.setApplication(this);
     }    
+
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<CandidateAward> awards   = new HashSet<>();
+
+    public void addAward(CandidateAward award) {
+        this.awards.add(award);
+        award.setApplication(this);
+    } 
     
 }
