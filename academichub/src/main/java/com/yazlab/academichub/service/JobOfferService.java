@@ -247,6 +247,12 @@ public class JobOfferService {
             applicationResponse.setBooks(new HashSet<>());
         }
 
+        if (application.getCitations() != null) {
+            applicationResponse.setCitations(application.getCitations());
+        } else {
+            applicationResponse.setCitations(new HashSet<>());
+        }
+
         return applicationResponse;
     }
 
