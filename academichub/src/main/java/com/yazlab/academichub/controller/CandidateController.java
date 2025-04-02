@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.entities.User;
+import com.yazlab.academichub.entities.candidateDocuments.CandidateAward;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateBook;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateCitation;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateEditorship;
@@ -25,6 +26,7 @@ import com.yazlab.academichub.entities.candidateDocuments.CandidateSMA;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervision;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.ApplicationException;
+import com.yazlab.academichub.exception.AwardException;
 import com.yazlab.academichub.exception.CandidateBookException;
 import com.yazlab.academichub.exception.CitationException;
 import com.yazlab.academichub.exception.EducationActionException;
@@ -38,6 +40,7 @@ import com.yazlab.academichub.request.CreateArticleRequest;
 import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.JobOfferResponse;
 import com.yazlab.academichub.service.CandidateArticleService;
+import com.yazlab.academichub.service.CandidateAwardService;
 import com.yazlab.academichub.service.CandidateBookService;
 import com.yazlab.academichub.service.CandidateCitationService;
 import com.yazlab.academichub.service.CandidateEditorshipService;
@@ -78,6 +81,8 @@ public class CandidateController {
     private final CandidateResearchProjectService projectService;
 
     private final CandidateEditorshipService editorshipService;
+
+    private final CandidateAwardService awardService;
 
     @GetMapping("/getAllJobOffer")
     public ResponseEntity<List<JobOfferResponse>> getAJobOffers(@RequestHeader("Authorization") String jwt)
@@ -486,6 +491,47 @@ public class CandidateController {
 
         if (role.equals("ADAY")) {
             ApiResponse apiResponse = editorshipService.deleteEditorship(applicationId, editorshipId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @PostMapping("/{applicationId}/add-award")
+    public ResponseEntity<ApiResponse> addAward(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody CandidateAward request) throws AdminException, ApplicationException, AwardException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = awardService.addAward(applicationId, request);
+            return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @DeleteMapping("/{applicationId}/delete-award/{awardId}")
+    public ResponseEntity<ApiResponse> deleteAward(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @PathVariable Long awardId ) throws AdminException, ApplicationException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            ApiResponse apiResponse = awardService.deleteAward(applicationId, awardId);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
