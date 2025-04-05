@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.entities.Application;
+import com.yazlab.academichub.entities.ApplicationStatus;
 import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.exception.JobOfferException;
 import com.yazlab.academichub.repository.ApplicationRepository;
+import com.yazlab.academichub.repository.ApplicationStatusRepository;
 import com.yazlab.academichub.repository.JobOfferRepository;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.response.ApiResponse;
@@ -31,6 +33,8 @@ public class CandidateService {
     private final JobOfferRepository jobOfferRepository;
 
     private final ApplicationRepository applicationRepository;
+
+    private final ApplicationStatusRepository applicationStatusRepository;
 
     public List<JobOfferResponse> listAllOffers() {
 
@@ -91,7 +95,7 @@ public class CandidateService {
             ApiResponse apiResponse = new ApiResponse();
 
             apiResponse.setMessage("The Application created already!");
-            
+
             return apiResponse;
         }
 
@@ -126,5 +130,46 @@ public class CandidateService {
         apiResponse.setMessage("The Application just created!");
 
         return apiResponse;
+    }
+
+    public ApiResponse completeApplication(Long applicationId) {
+        Application existApplication = applicationRepository.findByApplicationId(applicationId);
+
+        if (existApplication == null) {
+
+            ApiResponse apiResponse = new ApiResponse();
+
+            apiResponse.setMessage("The Application did not find!");
+
+            return apiResponse;
+        }
+
+        ApplicationStatus applicationStatus = applicationStatusRepository.findByApplicationStatus("pending");
+
+        
+
+        if (applicationStatus == null) {
+
+            ApiResponse apiResponse = new ApiResponse();
+
+            apiResponse.setMessage("Status could not indicate!");
+
+            return apiResponse;
+
+        }
+
+        // System.out.println(applicationStatus.getApplicationStatus());
+        // System.out.println(applicationStatus.getApplicationStatusId());
+
+        existApplication.setApplicationStatus(applicationStatus);
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setMessage("The Application has been completed!");
+
+        applicationRepository.save(existApplication);
+
+        return apiResponse;
+
     }
 }
