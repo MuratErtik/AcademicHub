@@ -8,15 +8,25 @@ import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.DepartmentMenagerJobOffer;
+import com.yazlab.academichub.entities.FacultyGroup;
 import com.yazlab.academichub.entities.JobOffer;
+import com.yazlab.academichub.entities.Table3Action;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.entities.UserRole;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.repository.DepartmentMenagerJobOfferRepository;
+import com.yazlab.academichub.repository.FacultyGroupRepository;
+import com.yazlab.academichub.repository.PositionRepository;
+import com.yazlab.academichub.repository.Table3ActionRepository;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.repository.UserRoleRepository;
+import com.yazlab.academichub.request.Table3ActionRequest;
 import com.yazlab.academichub.response.CandidateResponse;
+import com.yazlab.academichub.response.Table3ActionResponse;
 import com.yazlab.academichub.response.UserResponse;
+
+import com.yazlab.academichub.entities.Position;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +41,10 @@ import lombok.RequiredArgsConstructor;
 // 4. İlan başvurularını goruntuleyebilir ve
 // gerektiginde yetkililere yonlendirebilir.
 public class AdminService {
+    
+    private final Table3ActionRepository table3ActionRepository;
+    private final FacultyGroupRepository facultyGroupRepository;
+    private final PositionRepository positionRepository;
 
     private final UserRepository userRepository;
 
@@ -166,4 +180,75 @@ public class AdminService {
 
     }
 
+    // Table3Action CRUD operations
+    // 1. Table3Action Create:
+    public Table3ActionResponse createTable3Action(Table3ActionRequest request) {
+    FacultyGroup facultyGroup = facultyGroupRepository.findById(request.getFacultyGroupId())
+            .orElseThrow(() -> new RuntimeException("FacultyGroup not found"));
+
+    Position position = positionRepository.findById(request.getPositionId())
+            .orElseThrow(() -> new RuntimeException("Position not found"));
+
+    Table3Action action = new Table3Action();
+    action.setActionName(request.getActionName());
+    action.setFacultyGroup(facultyGroup);
+    action.setPosition(position);
+
+    Table3Action saved = table3ActionRepository.save(action);
+
+    return mapToResponse(saved);
+    }
+
+    private Table3ActionResponse mapToResponse(Table3Action action) {
+        Table3ActionResponse res = new Table3ActionResponse();
+        res.setId(action.getTable3ActionId());
+        res.setActionName(action.getActionName());
+        res.setFacultyGroupName(action.getFacultyGroup().getFacultyGroupName());
+        res.setPositionName(action.getPosition().getPositionName());
+        return res;
+    }    
+
+
+    // 2. Table3Action Update:
+    public Table3ActionResponse updateTable3Action(Long id, Table3ActionRequest request) {
+        Table3Action action = table3ActionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Table3Action not found with id: " + id));
+    
+        action.setActionName(request.getActionName());
+    
+        if (request.getFacultyGroupId() != null) {
+            FacultyGroup facultyGroup = facultyGroupRepository.findById(request.getFacultyGroupId())
+                    .orElseThrow(() -> new RuntimeException("FacultyGroup not found"));
+            action.setFacultyGroup(facultyGroup);
+        }
+    
+        if (request.getPositionId() != null) {
+            Position position = positionRepository.findById(request.getPositionId())
+                    .orElseThrow(() -> new RuntimeException("Position not found"));
+            action.setPosition(position);
+        }
+    
+        Table3Action updated = table3ActionRepository.save(action);
+        return mapToResponse(updated);
+    }
+    
+
+    // 3. Table3Action Delete:
+    public void deleteTable3Action(Long id) {
+        if (!table3ActionRepository.existsById(id)) {
+            throw new RuntimeException("Table3Action not found with id: " + id);
+        }
+    
+        table3ActionRepository.deleteById(id);
+    }
+    
+    
+    // 4. Table3Action Get All:
+    public List<Table3ActionResponse> getAllTable3Actions() {
+        return table3ActionRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+    
 }

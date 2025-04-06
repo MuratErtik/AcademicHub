@@ -2,13 +2,23 @@ package com.yazlab.academichub.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yazlab.academichub.config.JwtProvider;
 import com.yazlab.academichub.exception.AdminException;
+import com.yazlab.academichub.request.Table3ActionRequest;
+import com.yazlab.academichub.response.Table3ActionResponse;
 import com.yazlab.academichub.service.AdminService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
     private final AdminService adminService;
+    private final JwtProvider jwtProvider;
+
 
     @GetMapping("/users")
     public List<?> getUsersByRole(@RequestParam String userRole) {
@@ -30,6 +42,87 @@ public class AdminController {
     public Object getUserByEmail(@RequestBody String email) throws AdminException {
 
         return adminService.getAdminByEmail(email);
+    }
+
+    //Table3Action CRUD operations
+    @PostMapping("/table3actions")
+    public ResponseEntity<?> createTable3Action(@RequestHeader("Authorization") String jwt,
+                                                @RequestBody Table3ActionRequest request) {
+        try {
+            String email = jwtProvider.getEmailFromJwtToken(jwt);
+            String role = jwtProvider.getRolefromjwtByEmail(email);
+
+            if ("YONETICI".equals(role)) {
+                Table3ActionResponse response = adminService.createTable3Action(request);
+                return new ResponseEntity<>(response, HttpStatus.CREATED);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+        } catch (AdminException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Yetki kontrolü sırasında hata: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/table3actions/{id}")
+    public ResponseEntity<?> updateTable3Action(@RequestHeader("Authorization") String jwt,
+                                                @PathVariable Long id,
+                                                @RequestBody Table3ActionRequest request) {
+        try {
+            String email = jwtProvider.getEmailFromJwtToken(jwt);
+            String role = jwtProvider.getRolefromjwtByEmail(email);
+
+            if ("YONETICI".equals(role)) {
+                Table3ActionResponse response = adminService.updateTable3Action(id, request);
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+        } catch (AdminException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Yetki kontrolü sırasında hata: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/table3actions/{id}")
+    public ResponseEntity<?> deleteTable3Action(@RequestHeader("Authorization") String jwt,
+                                                @PathVariable Long id) {
+        try {
+            String email = jwtProvider.getEmailFromJwtToken(jwt);
+            String role = jwtProvider.getRolefromjwtByEmail(email);
+
+            if ("YONETICI".equals(role)) {
+                adminService.deleteTable3Action(id);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+        } catch (AdminException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Yetki kontrolü sırasında hata: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/table3actions")
+    public ResponseEntity<?> getAllTable3Actions(@RequestHeader("Authorization") String jwt) {
+        try {
+            String email = jwtProvider.getEmailFromJwtToken(jwt);
+            String role = jwtProvider.getRolefromjwtByEmail(email);
+
+            if ("YONETICI".equals(role)) {
+                List<Table3ActionResponse> list = adminService.getAllTable3Actions();
+                return ResponseEntity.ok(list);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+        } catch (AdminException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Yetki kontrolü sırasında hata: " + e.getMessage());
+        }
     }
 
 }
