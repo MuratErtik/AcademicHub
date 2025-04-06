@@ -10,23 +10,30 @@ import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.DepartmentMenagerJobOffer;
 import com.yazlab.academichub.entities.FacultyGroup;
 import com.yazlab.academichub.entities.JobOffer;
+import com.yazlab.academichub.entities.MinMaxPointCriteria;
 import com.yazlab.academichub.entities.Table3Action;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.entities.UserRole;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.repository.DepartmentMenagerJobOfferRepository;
 import com.yazlab.academichub.repository.FacultyGroupRepository;
+import com.yazlab.academichub.repository.MinMaxPointCriteriaRepository;
 import com.yazlab.academichub.repository.PositionRepository;
+import com.yazlab.academichub.repository.PublicationCriteriaRepository;
 import com.yazlab.academichub.repository.Table3ActionRepository;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.repository.UserRoleRepository;
+import com.yazlab.academichub.request.MinMaxPointCriteriaRequest;
+import com.yazlab.academichub.request.PublicationCriteriaRequest;
 import com.yazlab.academichub.request.Table3ActionRequest;
 import com.yazlab.academichub.response.CandidateResponse;
+import com.yazlab.academichub.response.MinMaxPointCriteriaResponse;
+import com.yazlab.academichub.response.PublicationCriteriaResponse;
 import com.yazlab.academichub.response.Table3ActionResponse;
 import com.yazlab.academichub.response.UserResponse;
 
 import com.yazlab.academichub.entities.Position;
-
+import com.yazlab.academichub.entities.PublicationCriteria;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +52,9 @@ public class AdminService {
     private final Table3ActionRepository table3ActionRepository;
     private final FacultyGroupRepository facultyGroupRepository;
     private final PositionRepository positionRepository;
+    private final MinMaxPointCriteriaRepository minMaxPointCriteriaRepository;
+    private final PublicationCriteriaRepository publicationCriteriaRepository;
+
 
     private final UserRepository userRepository;
 
@@ -199,15 +209,6 @@ public class AdminService {
     return mapToResponse(saved);
     }
 
-    private Table3ActionResponse mapToResponse(Table3Action action) {
-        Table3ActionResponse res = new Table3ActionResponse();
-        res.setId(action.getTable3ActionId());
-        res.setActionName(action.getActionName());
-        res.setFacultyGroupName(action.getFacultyGroup().getFacultyGroupName());
-        res.setPositionName(action.getPosition().getPositionName());
-        return res;
-    }    
-
 
     // 2. Table3Action Update:
     public Table3ActionResponse updateTable3Action(Long id, Table3ActionRequest request) {
@@ -249,6 +250,136 @@ public class AdminService {
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+
+    private Table3ActionResponse mapToResponse(Table3Action action) {
+        Table3ActionResponse res = new Table3ActionResponse();
+        res.setId(action.getTable3ActionId());
+        res.setActionName(action.getActionName());
+        res.setFacultyGroupName(action.getFacultyGroup().getFacultyGroupName());
+        res.setPositionName(action.getPosition().getPositionName());
+        return res;
+    }    
+
+
+    // MinMaxPointCriteria CRUD operations
+    // 1. MinMaxPointCriteria Create:
+    public MinMaxPointCriteriaResponse createMinMaxCriteria(MinMaxPointCriteriaRequest request) {
+    Table3Action table3Action = table3ActionRepository.findById(request.getTable3ActionId())
+            .orElseThrow(() -> new RuntimeException("Table3Action not found"));
+
+    MinMaxPointCriteria criteria = new MinMaxPointCriteria();
+    criteria.setTable3Action(table3Action);
+    criteria.setMinPoint(request.getMinPoint());
+    criteria.setMaxPoint(request.getMaxPoint());
+
+    MinMaxPointCriteria saved = minMaxPointCriteriaRepository.save(criteria);
+    return mapToMinMaxResponse(saved);
+    }
+
+
+    // 2. MinMaxPointCriteria Update:
+    public MinMaxPointCriteriaResponse updateMinMaxCriteria(Long id, MinMaxPointCriteriaRequest request) {
+        MinMaxPointCriteria criteria = minMaxPointCriteriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("MinMaxPointCriteria not found"));
+    
+        criteria.setMinPoint(request.getMinPoint());
+        criteria.setMaxPoint(request.getMaxPoint());
+    
+        if (request.getTable3ActionId() != null) {
+            Table3Action action = table3ActionRepository.findById(request.getTable3ActionId())
+                    .orElseThrow(() -> new RuntimeException("Table3Action not found"));
+            criteria.setTable3Action(action);
+        }
+    
+        MinMaxPointCriteria updated = minMaxPointCriteriaRepository.save(criteria);
+        return mapToMinMaxResponse(updated);
+    }
+
+
+    // 3. MinMaxPointCriteria Delete:
+    public void deleteMinMaxCriteria(Long id) {
+        if (!minMaxPointCriteriaRepository.existsById(id)) {
+            throw new RuntimeException("MinMaxPointCriteria not found");
+        }
+        minMaxPointCriteriaRepository.deleteById(id);
+    }
+    
+    
+    // 4. MinMaxPointCriteria Get All:
+    public List<MinMaxPointCriteriaResponse> getAllMinMaxCriteria() {
+        return minMaxPointCriteriaRepository.findAll().stream()
+                .map(this::mapToMinMaxResponse)
+                .collect(Collectors.toList());
+    }
+    
+
+    private MinMaxPointCriteriaResponse mapToMinMaxResponse(MinMaxPointCriteria criteria) {
+        MinMaxPointCriteriaResponse response = new MinMaxPointCriteriaResponse();
+        response.setId(criteria.getMinMaxPointCriteriaId());
+        response.setMinPoint(criteria.getMinPoint());
+        response.setMaxPoint(criteria.getMaxPoint());
+        response.setTable3ActionName(criteria.getTable3Action().getActionName());
+        return response;
+    }
+    
+
+    // 1. PublicationCriteria Create:
+    public PublicationCriteriaResponse createPublicationCriteria(PublicationCriteriaRequest request) {
+    Table3Action action = table3ActionRepository.findById(request.getTable3ActionId())
+            .orElseThrow(() -> new RuntimeException("Table3Action not found"));
+
+    PublicationCriteria criteria = new PublicationCriteria();
+    criteria.setArticleCount(request.getArticleCount());
+    criteria.setTable3Action(action);
+
+    PublicationCriteria saved = publicationCriteriaRepository.save(criteria);
+    return mapToPublicationResponse(saved);
+    }
+
+
+    // 2. PublicationCriteria Update:
+    public PublicationCriteriaResponse updatePublicationCriteria(Long id, PublicationCriteriaRequest request) {
+        PublicationCriteria criteria = publicationCriteriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("PublicationCriteria not found"));
+    
+        criteria.setArticleCount(request.getArticleCount());
+    
+        if (request.getTable3ActionId() != null) {
+            Table3Action action = table3ActionRepository.findById(request.getTable3ActionId())
+                    .orElseThrow(() -> new RuntimeException("Table3Action not found"));
+            criteria.setTable3Action(action);
+        }
+    
+        PublicationCriteria updated = publicationCriteriaRepository.save(criteria);
+        return mapToPublicationResponse(updated);
+    }
+
+    
+    // 3. PublicationCriteria Delete:
+    public void deletePublicationCriteria(Long id) {
+        if (!publicationCriteriaRepository.existsById(id)) {
+            throw new RuntimeException("PublicationCriteria not found");
+        }
+        publicationCriteriaRepository.deleteById(id);
+    }
+    
+
+    // 4. PublicationCriteria Get All:
+    public List<PublicationCriteriaResponse> getAllPublicationCriteria() {
+        return publicationCriteriaRepository.findAll().stream()
+                .map(this::mapToPublicationResponse)
+                .collect(Collectors.toList());
+    }
+
+    
+    private PublicationCriteriaResponse mapToPublicationResponse(PublicationCriteria criteria) {
+        PublicationCriteriaResponse response = new PublicationCriteriaResponse();
+        response.setId(criteria.getPublicationCriteriaId());
+        response.setArticleCount(criteria.getArticleCount());
+        response.setTable3ActionName(criteria.getTable3Action().getActionName());
+        return response;
     }
     
 }
