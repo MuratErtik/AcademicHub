@@ -32,6 +32,7 @@ import com.yazlab.academichub.response.ApplicationResponse;
 import com.yazlab.academichub.response.CandidateArticleResponse;
 import com.yazlab.academichub.response.CandidateAuthorResponse;
 import com.yazlab.academichub.response.JobOfferResonseToAdmin;
+import com.yazlab.academichub.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -295,6 +296,12 @@ public class JobOfferService {
             applicationResponse.setContributionActivities(new HashSet<>());
         }
 
+        if (application.getJuryApplications() != null) {
+            applicationResponse.setJuryApplications(application.getJuryApplications());
+        } else {
+            applicationResponse.setJuryApplications(new HashSet<>());
+        }
+
         return applicationResponse;
     }
 
@@ -327,6 +334,29 @@ public class JobOfferService {
         return candidateArticleResponse;
 
     }
+
+    // public Set<UserResponse> convertJuries
+
+    // public UserResponse convertJuryToResponse(User jury){
+
+    //     UserResponse userResponse = new UserResponse();
+
+    //     userResponse.setDepartmentName(jury.getDepartment().getDepartmentName());
+
+    //     userResponse.setEmail(jury.getEmail());
+
+    //     userResponse.setLastname(jury.getLastname());
+
+    //     userResponse.setMobileNo(jury.getMobileNo());
+
+    //     userResponse.setName(jury.getName());
+
+    //     userResponse.setUserId(jury.getUserId());
+
+    //     userResponse.setUserRole(jury.getUserRole().getUserRole());
+
+    //     return userResponse;
+    // }
 
     public Set<CandidateAuthorResponse> convertAuthor(Set<CandidateAuthor> authors) {
         return authors.stream()
