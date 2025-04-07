@@ -4,11 +4,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.yazlab.academichub.entities.Application;
+import com.yazlab.academichub.entities.ApplicationStatus;
 import com.yazlab.academichub.entities.JuryApplication;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.ApplicationException;
 import com.yazlab.academichub.exception.AuthException;
 import com.yazlab.academichub.repository.ApplicationRepository;
+import com.yazlab.academichub.repository.ApplicationStatusRepository;
 import com.yazlab.academichub.repository.JuryApplicationRepository;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.OtherSignupRequest;
@@ -27,6 +29,9 @@ public class ManagerService {
     private final JuryApplicationRepository juryApplicationRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final ApplicationStatusRepository applicationStatusRepository;
+
 
     public ApiResponse addJuryToApplication(Long applicationId, OtherSignupRequest request)
             throws ApplicationException, AuthException {
@@ -69,6 +74,10 @@ public class ManagerService {
             juryApplicationRepository.save(juryApplication);
 
             applicationToAddJury.addJuryEvaluation(juryApplication);
+
+            ApplicationStatus applicationStatus = applicationStatusRepository.findByApplicationStatus("processing");
+
+            applicationToAddJury.setApplicationStatus(applicationStatus);
 
             applicationRepository.save(applicationToAddJury);
 
