@@ -356,6 +356,10 @@ public class JobOfferService {
 
         UserResponse jury = convertJuryToResponse(juryApplication.getJury());
 
+        jury.setUserRole("JURI");
+
+        jury.setUserId(juryApplication.getJury().getUserId());
+
         juryApplicationResponse.setJury(jury);
 
         juryApplicationResponse.setJuryevalutationResponse(juryApplication.getJuryevalutationResponse());
