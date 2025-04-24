@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yazlab.academichub.config.JwtProvider;
-import com.yazlab.academichub.entities.JuryApplication;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.exception.AdminException;
 import com.yazlab.academichub.repository.UserRepository;
+import com.yazlab.academichub.response.ApplicationResponseToJury;
 import com.yazlab.academichub.service.JuryService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class JuryContoller {
     private final UserRepository userRepository;
 
     @GetMapping("/get-all-application")
-    public ResponseEntity<Set<JuryApplication>> getAllApplication(@RequestHeader("Authorization") String jwt) throws AdminException{
+    public ResponseEntity<Set<ApplicationResponseToJury>> getAllApplication(@RequestHeader("Authorization") String jwt) throws AdminException{
 
         String email = jwtProvider.getEmailFromJwtToken(jwt);
         String role = jwtProvider.getRolefromjwtByEmail(email);
@@ -39,7 +39,7 @@ public class JuryContoller {
 
         if (role.equals("JURI")) {
 
-            Set<JuryApplication> applications = juryService.getAllApplicationToFill(user.getUserId());
+            Set<ApplicationResponseToJury> applications = juryService.getAllApplicationToFill(user.getUserId());
 
             return new ResponseEntity<>(applications, HttpStatus.OK);
 
