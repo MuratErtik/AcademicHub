@@ -204,6 +204,8 @@ public class JobOfferService {
 
         jobOfferResonseToAdmin.setApplications(applicationResponses);
 
+        jobOfferResonseToAdmin.setApplicationCount(jobOffer.getApplications().size());
+
         return jobOfferResonseToAdmin;
 
     }
