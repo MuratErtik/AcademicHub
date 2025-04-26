@@ -1,31 +1,25 @@
 package com.yazlab.academichub.service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.yazlab.academichub.entities.Department;
-import com.yazlab.academichub.entities.JobOffer;
 import com.yazlab.academichub.entities.JuryApplication;
-import com.yazlab.academichub.entities.Position;
 import com.yazlab.academichub.entities.User;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateArticle;
 import com.yazlab.academichub.entities.candidateDocuments.CandidateAuthor;
-import com.yazlab.academichub.exception.JobOfferException;
-import com.yazlab.academichub.repository.DepartmentRepository;
-import com.yazlab.academichub.repository.JobOfferRepository;
+
 import com.yazlab.academichub.repository.JuryApplicationRepository;
-import com.yazlab.academichub.repository.PositionRepository;
-import com.yazlab.academichub.request.CreateJobOfferRequest;
+import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.ApplicationResponseToJury;
 import com.yazlab.academichub.response.CandidateArticleResponse;
 import com.yazlab.academichub.response.CandidateAuthorResponse;
 import com.yazlab.academichub.response.JuryApplicationResponse;
 import com.yazlab.academichub.response.UserResponse;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -34,20 +28,11 @@ public class JuryService {
 
     private final JuryApplicationRepository juryApplicationRepository;
 
-    private final JobOfferRepository jobOfferRepository;
-
-    private final AdminService adminService;
-
-    private final DepartmentRepository departmentRepository;
-
-    private final PositionRepository positionRepository;
-
     public Set<ApplicationResponseToJury> getAllApplicationToFill(Long userId) {
 
         Set<JuryApplication> applications = juryApplicationRepository.findByUser(userId);
 
         Set<ApplicationResponseToJury> apps = convert(applications);
-
 
         return apps;
 
@@ -140,6 +125,10 @@ public class JuryService {
         } else {
             applicationResponse.setContributionActivities(new HashSet<>());
         }
+
+        applicationResponse.setResponse(application.getJuryevalutationResponse());
+
+        applicationResponse.setApproved(application.isApproved());
 
         return applicationResponse;
 
@@ -254,67 +243,27 @@ public class JuryService {
 
     }
 
-    public List<JobOffer> getJobOfferByPosition(String positionName) {
+    // complete the evaluation!
 
-        Position position = positionRepository.findByPositionName(positionName);
+    @Transactional
+    public ApiResponse completeEvaluationOfApplication(Long applicationId, String response, Long userId,
+            Boolean isApproved) {
 
-        String positionId = position.getPositionId().toString();
+        JuryApplication juryApplication = juryApplicationRepository.findByJuryIdAndApplicationId(userId, applicationId);
 
-        return jobOfferRepository.findByPosition(positionId);
-    }
-
-    public List<JobOffer> getAllJobOffer() {
-
-        return jobOfferRepository.findAll();
-    }
-
-    public void deleteJobOffer(Long jobOfferId) {
-
-        JobOffer jobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
-
-        jobOfferRepository.delete(jobOffer);
-    }
-
-    public JobOffer updateJobOffer(Long jobOfferId, CreateJobOfferRequest request) throws JobOfferException {
-
-        JobOffer existJobOffer = jobOfferRepository.findByJobOfferId(jobOfferId);
-
-        if (existJobOffer.getTitle() != null) {
-            existJobOffer.setTitle(request.getTitle());
+        if (juryApplication == null) {
+            throw new RuntimeException("Jury Application not found!"); 
         }
 
-        if (existJobOffer.getDescription() != null) {
-            existJobOffer.setDescription(request.getDescription());
-        }
+        juryApplication.setJuryevalutationResponse(response);
+        juryApplication.setApproved(isApproved);
 
-        if (existJobOffer.getDescription() != null) {
-            existJobOffer.setDescription(request.getDescription());
-        }
+        juryApplicationRepository.save(juryApplication);
 
-        if (existJobOffer.getStartDate() != null) {
-            existJobOffer.setStartDate(request.getStartDate());
-        }
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage("The Evaluation completed successfully!");
 
-        if (existJobOffer.getEndDate() != null) {
-            existJobOffer.setEndDate(request.getEndDate());
-        }
-
-        Department department = departmentRepository.findByDepartmentName(request.getDepartmentName());
-
-        if (existJobOffer.getDepartment() != null) {
-            existJobOffer.setDepartment(department);
-        }
-
-        Position position = positionRepository.findByPositionName(request.getPositionName());
-
-        if (existJobOffer.getPosition() != null) {
-            existJobOffer.setPosition(position);
-        }
-
-        adminService.addManegerToJobOffer(department.getDepartmentId(), existJobOffer);
-
-        return jobOfferRepository.save(existJobOffer);
-
+        return apiResponse;
     }
 
 }

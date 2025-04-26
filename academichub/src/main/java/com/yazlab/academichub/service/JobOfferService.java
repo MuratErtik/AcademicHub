@@ -350,6 +350,8 @@ public class JobOfferService {
 
         juryApplicationResponse.setApplicationId(juryApplication.getApplication().getApplicationId());
 
+        juryApplicationResponse.setJuryevalutationResponse(juryApplication.getJuryevalutationResponse());
+
         juryApplicationResponse.setApproved(juryApplication.isApproved());
 
         juryApplicationResponse.setId(juryApplication.getId());

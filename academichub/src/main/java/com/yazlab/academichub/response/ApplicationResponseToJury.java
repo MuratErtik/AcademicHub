@@ -50,4 +50,8 @@ public class ApplicationResponseToJury {
 
     private Set<CandidateContributionActivity> contributionActivities = new HashSet<>();
 
+    private String response;
+
+    private boolean isApproved;
+
 }
