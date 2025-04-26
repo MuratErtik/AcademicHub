@@ -15,6 +15,7 @@ import com.yazlab.academichub.repository.JuryApplicationRepository;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.response.ApiResponse;
+import com.yazlab.academichub.response.DecisionResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,17 +33,14 @@ public class ManagerService {
 
     private final ApplicationStatusRepository applicationStatusRepository;
 
-
     public ApiResponse addJuryToApplication(Long applicationId, OtherSignupRequest request)
             throws ApplicationException, AuthException {
-
 
         Application applicationToAddJury = applicationRepository.findByApplicationId(applicationId);
 
         if (applicationToAddJury == null) {
             throw new ApplicationException("The Application could not find to adding jury in it.");
         }
-
 
         User jury = userRepository.findByEmail(request.getEmail());
 
@@ -51,7 +49,6 @@ public class ManagerService {
         }
 
         if (jury.getUserRole().getUserRole().equals("JURI")) {
-
 
             if (!passwordEncoder.matches(request.getTcNo(), jury.getTcNo())) {
                 throw new AuthException("Invalid Tc No!");
@@ -88,13 +85,34 @@ public class ManagerService {
             return apiResponse;
         }
 
-        else{
+        else {
             ApiResponse apiResponse = new ApiResponse();
 
             apiResponse.setMessage("User have not Jury Role!");
 
             return apiResponse;
         }
+    }
+
+    public ApiResponse finishEvaluation(Long applicationId, DecisionResponse decision) {
+
+        Application application = applicationRepository.findByApplicationId(applicationId);
+
+        if (decision.getIsApproved()) {
+            ApplicationStatus applicationStatus = applicationStatusRepository.findByApplicationStatus("approved");
+            application.setApplicationStatus(applicationStatus);
+        } else {
+            ApplicationStatus applicationStatus = applicationStatusRepository.findByApplicationStatus("rejected");
+            application.setApplicationStatus(applicationStatus);
+        }
+
+        applicationRepository.save(application);
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setMessage("Menager Decision has been processed successfully!");
+
+        return apiResponse;
     }
 
 }

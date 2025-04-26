@@ -15,6 +15,7 @@ import com.yazlab.academichub.exception.ApplicationException;
 import com.yazlab.academichub.exception.AuthException;
 import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.response.ApiResponse;
+import com.yazlab.academichub.response.DecisionResponse;
 import com.yazlab.academichub.service.ManagerService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,24 @@ public class ManagerContoller {
         if (role.equals("YONETICI")) {
 
             ApiResponse apiResponse = managerService.addJuryToApplication(applicationId, request);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/finish-application/{applicationId}")
+    public ResponseEntity<ApiResponse> finishApplication(@RequestHeader("Authorization") String jwt,
+            @PathVariable Long applicationId, @RequestBody DecisionResponse request) throws ApplicationException, AdminException, AuthException {
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+        if (role.equals("YONETICI")) {
+
+            ApiResponse apiResponse = managerService.finishEvaluation(applicationId, request);
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
