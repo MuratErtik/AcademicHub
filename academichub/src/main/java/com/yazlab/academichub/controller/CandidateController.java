@@ -1,6 +1,7 @@
 package com.yazlab.academichub.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,7 @@ import com.yazlab.academichub.exception.ThesisSupervisionException;
 import com.yazlab.academichub.repository.UserRepository;
 import com.yazlab.academichub.request.CreateArticleRequest;
 import com.yazlab.academichub.response.ApiResponse;
+import com.yazlab.academichub.response.ApplicationResponseToCandidate;
 import com.yazlab.academichub.response.JobOfferResponse;
 import com.yazlab.academichub.service.CandidateArticleService;
 import com.yazlab.academichub.service.CandidateAwardService;
@@ -598,6 +600,28 @@ public class CandidateController {
 
         if (role.equals("ADAY")) {
             ApiResponse apiResponse = candidateService.completeApplication(applicationId);
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    @GetMapping("/get-all-application")
+    public ResponseEntity<Set<ApplicationResponseToCandidate>> getAllApplication(@RequestHeader("Authorization") String jwt) throws AdminException{
+
+        String email = jwtProvider.getEmailFromJwtToken(jwt);
+
+        User user = userRepository.findByEmail(email);
+
+        String role = jwtProvider.getRolefromjwtByEmail(email);
+
+
+
+        if (role.equals("ADAY")) {
+            Set<ApplicationResponseToCandidate> apiResponse = candidateService.getAllApplication(user.getUserId());
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
