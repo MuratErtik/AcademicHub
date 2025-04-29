@@ -80,5 +80,3 @@ public class EmailService {
 
     }
 }
-
-//juri tamamlayinca gelsin 
