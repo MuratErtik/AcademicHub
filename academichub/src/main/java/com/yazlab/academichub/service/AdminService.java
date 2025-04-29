@@ -18,6 +18,7 @@ import com.yazlab.academichub.repository.UserRoleRepository;
 import com.yazlab.academichub.response.CandidateResponse;
 import com.yazlab.academichub.response.UserResponse;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -37,6 +38,8 @@ public class AdminService {
     private final DepartmentMenagerJobOfferRepository departmentMenagerJobOfferRepository;
 
     private final UserRoleRepository userRoleRepository;
+
+    private final EmailService emailService;
 
     public List<?> getUsersByRole(String role) {
 
@@ -112,13 +115,24 @@ public class AdminService {
 
     public void addManegerToJobOffer(Long departmentId, JobOffer jobOffer) {
 
-        List<User> usersToAddMenagerJobOffer = userRepository.findByUserRoleAndDepartment(2L, departmentId);
-
-        usersToAddMenagerJobOffer.stream()
-                .map(user -> addToInnerTable(user, jobOffer))
-                .collect(Collectors.toList());
-
+        List<User> usersToAddManagerJobOffer = userRepository.findByUserRoleAndDepartment(2L, departmentId);
+    
+        // Burada mail metni hazırlanıyor
+        String subject = "ONAYLANMASI GEREKEN ILAN";
+        String text = jobOffer.getTitle() + " adlı ilani onaylamaniz gerekmektedir!";
+    
+        usersToAddManagerJobOffer.forEach(user -> {
+            try {
+                emailService.completeJobOffer(user.getEmail(), jobOffer.getTitle(), subject, text);
+            } catch (MessagingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            addToInnerTable(user, jobOffer);
+        });
     }
+    
 
     public DepartmentMenagerJobOffer addToInnerTable(User user, JobOffer jobOffer) {
 

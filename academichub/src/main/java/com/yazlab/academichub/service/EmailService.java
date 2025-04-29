@@ -16,7 +16,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendVerificationOtpMail(String userEmail,String otp, String subject, String text) throws MessagingException{
+    public void afterTheRegisteration(String userEmail,String name,String lastname, String subject, String text) throws MessagingException{
 
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -32,7 +32,7 @@ public class EmailService {
 
     }
 
-    public void afterTheRegisteration(String userEmail,String name,String lastname, String subject, String text) throws MessagingException{
+    public void completeJobOffer(String userEmail,String title , String subject, String text) throws MessagingException{
 
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -49,9 +49,7 @@ public class EmailService {
     }
 }
 
-//yoneticiye tamamlamasi icin mail gelebilir
 //juri eklendigi zaman juriye mail gelebilir
 //adayin basvuru durumu degistigi zaman mail gelebilir
 //basvuru tamamlayinca gelebilir
-//kayit esnasinda yapilabilir(aday icin tamam,)
 //juri tamamlayinca gelsin 
