@@ -47,6 +47,22 @@ public class EmailService {
         }
 
     }
+
+    public void addJury(String userEmail,String name ,String lastname, String subject, String text) throws MessagingException{
+
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,"utf-8");
+            messageHelper.setSubject(subject);
+            messageHelper.setText(text);
+            messageHelper.setTo(userEmail);
+
+            javaMailSender.send(mimeMessage);
+        } catch (MailException e) {
+            throw new MailSendException("failed to send mail");
+        }
+
+    }
 }
 
 //juri eklendigi zaman juriye mail gelebilir

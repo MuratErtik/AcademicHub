@@ -18,6 +18,7 @@ import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.DecisionResponse;
 import com.yazlab.academichub.service.ManagerService;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -31,7 +32,7 @@ public class ManagerContoller {
 
     @PostMapping("/add-jury-to-application/{applicationId}")
     public ResponseEntity<ApiResponse> addJuryToApplication(@RequestHeader("Authorization") String jwt,
-            @PathVariable Long applicationId, @RequestBody OtherSignupRequest request) throws ApplicationException, AdminException, AuthException {
+            @PathVariable Long applicationId, @RequestBody OtherSignupRequest request) throws ApplicationException, AdminException, AuthException, MessagingException {
 
         String email = jwtProvider.getEmailFromJwtToken(jwt);
         String role = jwtProvider.getRolefromjwtByEmail(email);

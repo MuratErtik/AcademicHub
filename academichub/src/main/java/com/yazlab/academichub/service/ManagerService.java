@@ -17,6 +17,7 @@ import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.response.ApiResponse;
 import com.yazlab.academichub.response.DecisionResponse;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -33,8 +34,10 @@ public class ManagerService {
 
     private final ApplicationStatusRepository applicationStatusRepository;
 
+    private final EmailService emailService;
+
     public ApiResponse addJuryToApplication(Long applicationId, OtherSignupRequest request)
-            throws ApplicationException, AuthException {
+            throws ApplicationException, AuthException, MessagingException {
 
         Application applicationToAddJury = applicationRepository.findByApplicationId(applicationId);
 
@@ -81,6 +84,12 @@ public class ManagerService {
             ApiResponse apiResponse = new ApiResponse();
 
             apiResponse.setMessage("Replacement has been completed successfully");
+
+            String subject = "TAMAMLANMASI GEREKEN BASVURU DEGERLENDIRMESI";
+
+            String text = request.getName()+" "+request.getLastname() + " tamamlamaniz gereken bir basvuru degerlendirmesi vardir.";
+
+            emailService.addJury(request.getEmail(), request.getName(), request.getLastname(), subject, text);
 
             return apiResponse;
         }
