@@ -31,4 +31,6 @@ public class JobOfferResonseToAdmin {
     private Set<PublicationCriteria> publicationCriterias = new HashSet<>();
 
     private Set<ApplicationResponse> applications = new HashSet<>();
+
+    private int applicationCount;
 }

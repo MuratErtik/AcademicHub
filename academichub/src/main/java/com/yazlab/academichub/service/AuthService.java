@@ -23,6 +23,7 @@ import com.yazlab.academichub.request.OtherSignupRequest;
 import com.yazlab.academichub.request.SignupRequest;
 import com.yazlab.academichub.response.AuthResponse;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,7 +40,9 @@ public class AuthService {
 
     private final UserRoleRepository userRoleRepository;
 
-    public User createCandidate(SignupRequest req) {
+    private final EmailService emailService;
+
+    public User createCandidate(SignupRequest req) throws MessagingException {
 
         // User user = userRepository.findByEmail(req.getEmail());
 
@@ -59,6 +62,12 @@ public class AuthService {
 
         newUser.setUserRole(userRole);
 
+        String subject = "KOU AKADEMIK KADRO BASVURU SISTEMI";
+
+        String text = "Sayın " + req.getName()+ " "+req.getLastname()+ ", KOU akademik kadro basvuru portalina kayit isleminiz basarili bir sekilde gerceklesmistir";
+
+        emailService.afterTheRegisteration(req.getEmail(), req.getName(), req.getLastname(), subject, text);
+
         return userRepository.save(newUser);
 
         // yeni nesneler olusturulabilir buradan -> basvuru vs...
@@ -76,7 +85,7 @@ public class AuthService {
 
     }
 
-    public AuthResponse signIn(SignupRequest req) throws AuthException {
+    public AuthResponse signIn(SignupRequest req) throws AuthException, MessagingException {
 
         User user = userRepository.findByEmail(req.getEmail());
 
@@ -116,7 +125,7 @@ public class AuthService {
 
     }
 
-    public String createUser(OtherSignupRequest req, UserRole role) {
+    public String createUser(OtherSignupRequest req, UserRole role) throws MessagingException {
 
         User user = userRepository.findByEmail(req.getEmail());
 
@@ -154,6 +163,12 @@ public class AuthService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(req.getEmail(), null, authorities);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String subject = "KOU AKADEMIK KADRO BASVURU SISTEMI";
+
+        String text = "Sayın " + req.getName()+ " "+req.getLastname()+ ", KOU akademik kadro basvuru portalina kayit isleminiz basarili bir sekilde gerceklesmistir";
+
+        emailService.afterTheRegisteration(req.getEmail(), req.getName(), req.getLastname(), subject, text);
 
         return jwtProvider.generateToken(authentication);
 

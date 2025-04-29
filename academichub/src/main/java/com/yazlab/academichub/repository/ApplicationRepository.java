@@ -1,6 +1,8 @@
 package com.yazlab.academichub.repository;
 
 
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,4 +15,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     Application findByUserAndJobOffer(@Param("userId") Long userId, @Param("jobOfferId") Long jobOfferId);
 
     Application findByApplicationId(Long applicationId);
+
+    Set<Application> findByCandidate_UserId(Long userId);
+
 }

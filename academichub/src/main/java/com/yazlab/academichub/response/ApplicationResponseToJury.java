@@ -18,15 +18,15 @@ import com.yazlab.academichub.entities.candidateDocuments.CandidateThesisSupervi
 import lombok.Data;
 
 @Data
-public class ApplicationResponse {
+public class ApplicationResponseToJury {
+
+    private Long id;
 
     private Long applicationId;
 
     private Long userId;
 
     private LocalDateTime applicationDate;
-
-    private String applicationStatusName;
 
     private Set<CandidateArticleResponse> articles = new HashSet<>();
 
@@ -42,18 +42,16 @@ public class ApplicationResponse {
 
     private Set<CandidatePatent> patents = new HashSet<>();
 
-    private Set<CandidateResearchProject> researchProjects  = new HashSet<>();
+    private Set<CandidateResearchProject> researchProjects = new HashSet<>();
 
     private Set<CandidateEditorship> editorships = new HashSet<>();
 
     private Set<CandidateAward> awards = new HashSet<>();
 
-    private Set<CandidateContributionActivity> contributionActivities  = new HashSet<>();
+    private Set<CandidateContributionActivity> contributionActivities = new HashSet<>();
 
-    private Set<JuryApplicationResponse>  juryApplications  = new HashSet<>();
+    private String response;
 
-
-
-
+    private boolean isApproved;
 
 }

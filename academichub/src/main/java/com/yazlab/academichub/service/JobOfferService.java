@@ -13,6 +13,7 @@ import com.yazlab.academichub.entities.AdminJobOffer;
 import com.yazlab.academichub.entities.Application;
 import com.yazlab.academichub.entities.Department;
 import com.yazlab.academichub.entities.JobOffer;
+import com.yazlab.academichub.entities.JuryApplication;
 import com.yazlab.academichub.entities.MinMaxPointCriteria;
 import com.yazlab.academichub.entities.Position;
 import com.yazlab.academichub.entities.PublicationCriteria;
@@ -32,6 +33,8 @@ import com.yazlab.academichub.response.ApplicationResponse;
 import com.yazlab.academichub.response.CandidateArticleResponse;
 import com.yazlab.academichub.response.CandidateAuthorResponse;
 import com.yazlab.academichub.response.JobOfferResonseToAdmin;
+import com.yazlab.academichub.response.JuryApplicationResponse;
+import com.yazlab.academichub.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -201,6 +204,8 @@ public class JobOfferService {
 
         jobOfferResonseToAdmin.setApplications(applicationResponses);
 
+        jobOfferResonseToAdmin.setApplicationCount(jobOffer.getApplications().size());
+
         return jobOfferResonseToAdmin;
 
     }
@@ -295,6 +300,13 @@ public class JobOfferService {
             applicationResponse.setContributionActivities(new HashSet<>());
         }
 
+        if (application.getJuryApplications() != null) {
+
+            applicationResponse.setJuryApplications(convertJuryApp(application.getJuryApplications()));
+        } else {
+            applicationResponse.setJuryApplications(new HashSet<>());
+        }
+
         return applicationResponse;
     }
 
@@ -326,6 +338,65 @@ public class JobOfferService {
 
         return candidateArticleResponse;
 
+    }
+
+    public Set<JuryApplicationResponse> convertJuryApp(Set<JuryApplication> juries){
+        return juries.stream()
+                .map(this::convertSingleEvalaution)
+                .collect(Collectors.toSet());
+    }
+
+    public JuryApplicationResponse convertSingleEvalaution(JuryApplication juryApplication){
+
+        JuryApplicationResponse juryApplicationResponse = new JuryApplicationResponse();
+
+        juryApplicationResponse.setApplicationId(juryApplication.getApplication().getApplicationId());
+
+        juryApplicationResponse.setJuryevalutationResponse(juryApplication.getJuryevalutationResponse());
+
+        juryApplicationResponse.setApproved(juryApplication.isApproved());
+
+        juryApplicationResponse.setId(juryApplication.getId());
+
+        UserResponse jury = convertJuryToResponse(juryApplication.getJury());
+
+        jury.setUserRole("JURI");
+
+        jury.setUserId(juryApplication.getJury().getUserId());
+
+        juryApplicationResponse.setJury(jury);
+
+        juryApplicationResponse.setJuryevalutationResponse(juryApplication.getJuryevalutationResponse());
+
+        return juryApplicationResponse;
+        
+    }
+
+    public Set<UserResponse> convertJuries(Set<User> juries){
+        return juries.stream()
+                .map(this::convertJuryToResponse)
+                .collect(Collectors.toSet());
+    }
+
+    public UserResponse convertJuryToResponse(User jury){
+
+        UserResponse userResponse = new UserResponse();
+
+        userResponse.setDepartmentName(jury.getDepartment().getDepartmentName());
+
+        userResponse.setEmail(jury.getEmail());
+
+        userResponse.setLastname(jury.getLastname());
+
+        userResponse.setMobileNo(jury.getMobileNo());
+
+        userResponse.setName(jury.getName());
+
+        // userResponse.setUserId(jury.getUserId());
+
+        // userResponse.setUserRole(jury.getUserRole().getUserRole());
+
+        return userResponse;
     }
 
     public Set<CandidateAuthorResponse> convertAuthor(Set<CandidateAuthor> authors) {

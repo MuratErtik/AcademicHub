@@ -141,5 +141,13 @@ public class Application {
         this.candidateContributionActivities.add(candidateContributionActivity);
         candidateContributionActivity.setApplication(this);
     } 
+
+    @OneToMany(mappedBy = "application" ,cascade = CascadeType.ALL, orphanRemoval = true )
+    private Set<JuryApplication> juryApplications   = new HashSet<>();
+
+    public void addJuryEvaluation(JuryApplication juryApplication) {
+        this.juryApplications.add(juryApplication);
+        juryApplication.setApplication(this);
+    }
     
 }

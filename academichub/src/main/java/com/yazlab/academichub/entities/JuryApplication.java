@@ -1,5 +1,6 @@
 package com.yazlab.academichub.entities;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,6 +19,10 @@ public class JuryApplication {
     @ManyToOne
     @JoinColumn(name = "application_id",nullable = false)
     private Application application;
+
+    private String juryevalutationResponse;
+
+    private boolean isApproved;
 
     
 }
