@@ -103,7 +103,7 @@ public class ManagerService {
         }
     }
 
-    public ApiResponse finishEvaluation(Long applicationId, DecisionResponse decision) {
+    public ApiResponse finishEvaluation(Long applicationId, DecisionResponse decision) throws MessagingException {
 
         Application application = applicationRepository.findByApplicationId(applicationId);
 
@@ -120,6 +120,12 @@ public class ManagerService {
         ApiResponse apiResponse = new ApiResponse();
 
         apiResponse.setMessage("Menager Decision has been processed successfully!");
+
+        String subject = "BASVURU SONUCU";
+
+        String text = application.getCandidate().getName()+" "+application.getCandidate().getLastname() + " basvuru sonucunuzu web sitemizden kontrol edebilirsiniz.";
+
+        emailService.completeEvaluation(application.getCandidate().getEmail(), application.getCandidate().getName(), application.getCandidate().getLastname(), subject, text);
 
         return apiResponse;
     }

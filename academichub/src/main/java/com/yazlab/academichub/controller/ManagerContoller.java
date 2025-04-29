@@ -50,7 +50,7 @@ public class ManagerContoller {
 
     @PostMapping("/finish-application/{applicationId}")
     public ResponseEntity<ApiResponse> finishApplication(@RequestHeader("Authorization") String jwt,
-            @PathVariable Long applicationId, @RequestBody DecisionResponse request) throws ApplicationException, AdminException, AuthException {
+            @PathVariable Long applicationId, @RequestBody DecisionResponse request) throws ApplicationException, AdminException, AuthException, MessagingException {
 
         String email = jwtProvider.getEmailFromJwtToken(jwt);
         String role = jwtProvider.getRolefromjwtByEmail(email);
