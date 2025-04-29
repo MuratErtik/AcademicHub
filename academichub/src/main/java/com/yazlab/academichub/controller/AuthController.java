@@ -14,6 +14,7 @@ import com.yazlab.academichub.request.SignupRequest;
 import com.yazlab.academichub.response.AuthResponse;
 import com.yazlab.academichub.service.AuthService;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,7 +27,7 @@ public class AuthController {
     private final UserRoleRepository userRoleRepository;
 
     @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> loginHandler(@RequestBody SignupRequest signupRequest) throws AuthException {
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody SignupRequest signupRequest) throws AuthException, MessagingException {
 
         AuthResponse authResponse = authService.signIn(signupRequest);
 
@@ -52,7 +53,7 @@ public class AuthController {
     // }
 
     @PostMapping("user-signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody OtherSignupRequest request) {
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody OtherSignupRequest request) throws MessagingException {
 
         UserRole userRole = userRoleRepository.findUserRoleByUserRole(request.getRole());
 
