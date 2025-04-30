@@ -21,26 +21,32 @@ import jakarta.servlet.http.HttpServletRequest;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         
         httpSecurity.sessionManagement(management -> management.sessionCreationPolicy(
-                SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/**").authenticated()
-                        // .requestMatchers("/api/candidate/**").permitAll()
-                        //ekleme yapilacak...
-                        .anyRequest().permitAll()
+        SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorize -> authorize
 
-        )
-                .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        // 🔥 GEÇİCİ EKLEME: print-articles, article-category-count, print-publication-criteria ve validate endpointlerini açık bırakıyoruz
+        .requestMatchers(
+            "/api/application/print-articles/**",
+            "/api/application/article-category-count/**",
+            "/api/application/print-publication-criteria/**",
+            "/api/application/validate/**" // ✅ EKLENDİ
+        ).permitAll()
+    
+        // 🔒 Diğer tüm api/** endpoint'leri eskisi gibi authentication ister
+        .requestMatchers("/api/**").authenticated()
+    
+        .anyRequest().permitAll()
+    )    
+        .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
+        .csrf(csrf -> csrf.disable())
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return httpSecurity.build();
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
-
-
         return new CorsConfigurationSource() {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
@@ -51,14 +57,13 @@ public class SecurityConfig {
                 cfg.setAllowCredentials(true);
                 cfg.setExposedHeaders(Collections.singletonList("Authorization"));
                 cfg.setMaxAge(3600L);
-                //Tarayıcı bu CORS yapılandırmasını 1 saat boyunca önbelleğe alır.
                 return cfg;
             }
         };
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
